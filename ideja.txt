@@ -1,0 +1,67 @@
+Bilo bi dobro da tu zapisujemo cijelu ideju projekta.
+Stvoril sam i datoteke u svim dijelovima MVC-a, ali mozda je prakticnije sve na jednom mjestu?
+
+OBAVEZNO:
+    -   Registracija (izrada profila)
+    
+    -   Stvaranje popisa za kupovinu (punjenje košarice)
+        --> pretraživanje baze
+        --> sortiranje po cijeni
+        --> (( druga opcija vjerojatno abecedno ?? ))
+    
+    -   Mogućnosti
+        --> određivanje trgovine u kojoj je JEDAN PROIZVOD najjeftiniji
+        --> određivanje trgovine u kojoj je CIJELA KOŠARICA najjeftinija
+    
+    -   Popis proizvoda na akciji (za svaku trgovinu)
+        --> (( pretpostavljam da misli one-at-a-time ))
+        --> (( al mozemo i jedno ispod drugog ))
+
+    - Recenziranje trgovine
+
+IDEJA:
+    -   REGISTRACIJA
+        *   kak je opisana u 2. zadaći / u riješenom zadatku (s mailom i kodom za reg.)
+        ILI
+        *   bez registracije, samo izradimo profil i posle se moze ulogirat
+    
+    -   PUNJENJE KOŠARICE
+        *   Jel hoceamo da ostane košarica nakon kaj se izlogiramo?
+        *   Zaboravil sam, jel se cookie briše dok se izlogiramo / ugasimo browser
+        *   Ako nam nije bitno mozemo ju spremat u session pa nek se izbrise na logout
+    
+    -   PRETRAŽIVANJE
+        *   Search bar + padajući izbornik za izbor sortiranja (po cijeni, abecedi, direktno iz baze...)
+        *   Dalje samo povućemo iz baze i ispisujemo sve proizvode koji odgovaraju frazi
+
+    -   MOGUĆNOST ODREĐIVANJA TRGOVINE
+        *   Ovo nisam siguran kak bi interpretiral
+        
+        *   PRVI NAČIN: 3 opcije (pomoću radio buttona npr.) za vrijeme punjenja
+            --> Prva opcija (bez dodatnih mogućnosti): 
+                    ispisuje proizvode s cijenama i dućanima (kraj njih gumb "dodaj u košaricu")
+            --> Druga opcija (najjeftiniji dućan za JEDAN PROIZVOD): 
+                    ispisuje samo proizvode (bez cijene) i puni košaricu s proizvodom iz dućana di je najjeftinije
+            --> Treća opcija (najjeftiniji dućan za CIJELU KOŠARICU):
+                    isto ko i druga opcija, samo (svaki put) nakon kaj dodaš proizvod u košaricu
+                    provjerava u bazi dal bi jeftinije prošo u nekom drugom dućanu
+        
+        *   DRUGI NAČIN (ovaj vjerojatno ima više smisla):
+            --> Puniš košaricu normalno ko u prvoj opciji gore
+            --> Dok odeš u tab "moja košarica" imaš 2 buttona koja pretraže bazu i nađu najjeftinije opcije
+                za svaki proizvod ili za cijelu košaricu
+
+    -   POPIS PROIZVODA NA akciji
+        *   Ako napravimo dobru bazu onda je ovo lako, samo povućemo iz baze sve proizvode koji imaju oznaku da su na akciji
+
+    -   RECENZIJA
+        *   Textbox. Mislim da je najlakše recenziju spremit u bazu recenzija
+        *   Ako hoćemo u receziji dat ocjenu (1-5) onda bi mozda trebalo limitirat recenzije na 1 po osobi
+            (da ne napuhuje prosjek). Kad ostavljamo ocjenu onda bi trebalo nekak i prosjek prikazat (i kontrolirat)
+
+
+
+
+
+
+
