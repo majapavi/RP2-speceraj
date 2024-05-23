@@ -24,11 +24,13 @@ IDEJA:
         *   kak je opisana u 2. zadaći / u riješenom zadatku (s mailom i kodom za reg.)
         ILI
         *   bez registracije, samo izradimo profil i posle se moze ulogirat
-    
+        --> BEZ REG (za pocetak)
+
     -   PUNJENJE KOŠARICE
         *   Jel hoceamo da ostane košarica nakon kaj se izlogiramo?
         *   Zaboravil sam, jel se cookie briše dok se izlogiramo / ugasimo browser
         *   Ako nam nije bitno mozemo ju spremat u session pa nek se izbrise na logout
+        --> COOKIE
     
     -   PRETRAŽIVANJE
         *   Search bar + padajući izbornik za izbor sortiranja (po cijeni, abecedi, direktno iz baze...)
@@ -50,6 +52,7 @@ IDEJA:
             --> Puniš košaricu normalno ko u prvoj opciji gore
             --> Dok odeš u tab "moja košarica" imaš 2 buttona koja pretraže bazu i nađu najjeftinije opcije
                 za svaki proizvod ili za cijelu košaricu
+        --> drugi način
 
     -   POPIS PROIZVODA NA akciji
         *   Ako napravimo dobru bazu onda je ovo lako, samo povućemo iz baze sve proizvode koji imaju oznaku da su na akciji
@@ -60,7 +63,13 @@ IDEJA:
             (da ne napuhuje prosjek). Kad ostavljamo ocjenu onda bi trebalo nekak i prosjek prikazat (i kontrolirat)
 
 
-
+BAZE (Imena ua prilagodit):
+    - Dućan:    ID, IME, Prosjek
+    - Review:   ID, ID_dućana, ID_user, Ocjena, tekst_reviewa
+    - User:     ID, Ime, Prezime, Hash, (e-mail, niz za reg, flag za reg)
+    - Ponude:   ID, ID_proizvod, ID_dućan, cijena, (flag akcija?)
+    - Proizvodi:ID, Ime, Link na sliku
+    - Akcije:   ID, ID_ponude, postotak, datum_početak, datum_kraj
 
 
 
