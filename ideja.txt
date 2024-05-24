@@ -31,6 +31,7 @@ IDEJA:
         *   Zaboravil sam, jel se cookie briše dok se izlogiramo / ugasimo browser
         *   Ako nam nije bitno mozemo ju spremat u session pa nek se izbrise na logout
         --> COOKIE
+            B: Mozemo na logout javascriptom stavit popup poruku "Ako se izlogirate, ispraznit će vam se košarica"
     
     -   PRETRAŽIVANJE
         *   Search bar + padajući izbornik za izbor sortiranja (po cijeni, abecedi, direktno iz baze...)
