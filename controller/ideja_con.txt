@@ -1,2 +1,23 @@
 U "ideja_X.txt" zapiši kaj sve mislis da treba napravit i oznaci ako radiš / planiraš radit na tome.
 Vjerojatno budemo radili par dana, pa onda par tjedana opet ne dok ne uhvatimo lufta pa ovak ne zaboravimo ideju.
+
+
+
+Josip:
+- kontroleri sadrže funkcije koji dohvaćaju marketservice, (potrebne) modele/klase te na kraju generiraju view-ove
+- primjer:
+
+//----------------------------------------------------------
+class SalesController
+{
+      function index() {
+          $ms = new MarketService();
+          $akcije = $ms->getAllItemsOnSale();
+          $loginUser = $_SESSION['username'];
+          
+          require_once __DIR__ . '/../view/sale_index.php';
+      }
+
+      (...)
+}
+//----------------------------------------------------------

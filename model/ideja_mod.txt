@@ -1,2 +1,13 @@
 U "ideja_X.txt" zapiši kaj sve mislis da treba napravit i oznaci ako radiš / planiraš radit na tome.
 Vjerojatno budemo radili par dana, pa onda par tjedana opet ne dok ne uhvatimo lufta pa ovak ne zaboravimo ideju.
+
+
+Josip:
+- treba dodati nekoliko klasa koje će nam služiti za lakše baratanje s elementima iz baze.
+- primjer:
+    - marketservice.class.php
+        - sadrži sve servise koji dohvaćaju podatke iz baze ili upisuju podatke u bazu
+        - jedini (!) komunicira s bazom -> sve što treba bazu ide preko servisa
+        - mora imati includeane sve ostale modele (klase) i includeanu bazu
+    - ostale klase = 'kopija' tablica iz baze --> npr. tablica Users >> users.class.php (itd.)
+        - sadrži konstruktore, gettere, settere
