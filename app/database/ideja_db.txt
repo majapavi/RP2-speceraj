@@ -1,2 +1,42 @@
 U "ideja_X.txt" zapiši kaj sve mislis da treba napravit i oznaci ako radiš / planiraš radit na tome.
 Vjerojatno budemo radili par dana, pa onda par tjedana opet ne dok ne uhvatimo lufta pa ovak ne zaboravimo ideju.
+
+
+
+Shema tablica:
+
+Kupci
++-----------------------------------+
+| ID | Ime | Prezime | Password_Hash|
++-----------------------------------+
+
+
+
+Ducani
++----------------------+
+| ID | Naziv | Prosjek |
++----------------------+
+
+
+
+Proizvodi
++----------------------------+
+| ID | Naziv | Link_na_sliku |
++----------------------------+
+
+
+
+Ponude
++-----------------------------------------------+
+| ID | ID_Proizvod | ID_Ducan | Cijena | Akcija |
++-----------------------------------------------+
+Napomena:
+- ako je par ID_Proizvod i ID_Ducan jednak, razlika je u Akcija flag-u
+- ako je Akcija True onda ispisujemo tu cijenu, te prekriženo ispisujemo i cijenu bez akcije
+
+
+
+Recenzije
++------------------------------------------+
+| ID | ID_Ducan | ID_User | Ocjena | Tekst |
++------------------------------------------+
