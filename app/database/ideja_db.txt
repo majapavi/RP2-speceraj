@@ -14,7 +14,7 @@ Kupci
 
 Ducani
 +----------------------+
-| ID | Naziv | Prosjek |
+| ID | Naziv | Prosjek |    BRUNO: dodat link na logo/sliku
 +----------------------+
 
 
