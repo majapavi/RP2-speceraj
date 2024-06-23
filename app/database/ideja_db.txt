@@ -13,16 +13,16 @@ Kupci
 
 
 Ducani
-+----------------------+
-| ID | Naziv | Prosjek |    BRUNO: dodat link na logo/sliku
-+----------------------+
++-------------------------------------+
+| ID | Naziv | Prosjek | Link_na_logo |
++-------------------------------------+
 
 
 
 Proizvodi
-+----------------------------+
-| ID | Naziv | Link_na_sliku |
-+----------------------------+
++------------------------------------+
+| ID | Naziv | Link_na_sliku | Korak |
++------------------------------------+
 
 
 
@@ -30,10 +30,12 @@ Ponude
 +-----------------------------------------------+
 | ID | ID_Proizvod | ID_Ducan | Cijena | Akcija |
 +-----------------------------------------------+
-Napomena:
-- ako je par ID_Proizvod i ID_Ducan jednak, razlika je u Akcija flag-u
-- ako je Akcija True onda ispisujemo tu cijenu, te prekriženo ispisujemo i cijenu bez akcije
-
+UPDATE:
+    - Akcija više nije flag neko DECIMAL(10,2) isto ko i cijena.
+    - Ako je proizvod NIJE na akciji, Akcija == NULL
+        --> Čitamo Cijena
+    - Inače (proizvod JE na akciji), Akcija != NULL
+        --> Čitamo Akcija
 
 
 Recenzije

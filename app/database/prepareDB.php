@@ -63,7 +63,8 @@ try {
         CREATE TABLE IF NOT EXISTS projekt_Ducani (
             ID INT AUTO_INCREMENT PRIMARY KEY,
             Naziv VARCHAR(100) NOT NULL,
-            Prosjek FLOAT NOT NULL
+            Prosjek FLOAT NOT NULL,
+            Link_na_logo VARCHAR(255) NOT NULL
         )
     ");
     $st->execute();
@@ -77,7 +78,8 @@ try {
         CREATE TABLE IF NOT EXISTS projekt_Proizvodi (
             ID INT AUTO_INCREMENT PRIMARY KEY,
             Naziv VARCHAR(100) NOT NULL,
-            Link_na_sliku VARCHAR(255) NOT NULL
+            Link_na_sliku VARCHAR(255) NOT NULL,
+            Korak NUMERIC DEFAULT 1.0
         )
     ");
     $st->execute();
@@ -93,7 +95,7 @@ try {
             ID_Proizvod INT NOT NULL,
             ID_Ducan INT NOT NULL,
             Cijena DECIMAL(10, 2) NOT NULL,
-            Akcija BOOLEAN NOT NULL
+            Akcija DECIMAL(10, 2) DEFAULT NULL
         )
     ");
     $st->execute();
@@ -136,11 +138,11 @@ echo "Ubacio u tablicu projekt_Kupci.<br />";
 
 // Insert examples into Ducani
 try {
-    $st = $db->prepare('INSERT INTO projekt_Ducani (Naziv, Prosjek) VALUES (:naziv, :prosjek)');
+    $st = $db->prepare('INSERT INTO projekt_Ducani (Naziv, Prosjek, Link_na_logo) VALUES (:naziv, :prosjek, :logo)');
 
-    $st->execute(array('naziv' => 'Konzum', 'prosjek' => 4.5));
-    $st->execute(array('naziv' => 'Spar', 'prosjek' => 3.8));
-    $st->execute(array('naziv' => 'Lidl', 'prosjek' => 4.2));
+    $st->execute(array('naziv' => 'Konzum', 'prosjek' => 4.5, 'logo' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/ducani/konzum.png'));
+    $st->execute(array('naziv' => 'Spar', 'prosjek' => 3.8, 'logo' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/ducani/spar.png'));
+    $st->execute(array('naziv' => 'Lidl', 'prosjek' => 4.2, 'logo' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/ducani/lidl.png'));
 }
 catch( PDOException $e ) { exit( "PDO error [projekt_Ducani]: " . $e->getMessage() ); }
 
@@ -149,14 +151,14 @@ echo "Ubacio u tablicu projekt_Ducani.<br />";
 
 // Insert examples into Proizvodi
 try {
-    $st = $db->prepare('INSERT INTO projekt_Proizvodi (Naziv, Link_na_sliku) VALUES (:naziv, :link)');
+    $st = $db->prepare('INSERT INTO projekt_Proizvodi (Naziv, Link_na_sliku, Korak) VALUES (:naziv, :link, :korak)');
 
-    $st->execute(array('naziv' => 'Sir', 'link' => 'sir.jpg'));
-    $st->execute(array('naziv' => 'Krumpir', 'link' => 'krumpir.jpg'));
-    $st->execute(array('naziv' => 'Mrkva', 'link' => 'mrkva.jpg'));
-    $st->execute(array('naziv' => 'Palenta', 'link' => 'palenta.jpg'));
-    $st->execute(array('naziv' => 'Mlijeko', 'link' => 'mlijeko.jpg'));
-    $st->execute(array('naziv' => 'Kruh', 'link' => 'kruh.jpg'));
+    $st->execute(array('naziv' => 'Sir', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/sir.png', 'korak' => 0.1));
+    $st->execute(array('naziv' => 'Krumpir', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/krumpir.png', 'korak' => 0.1));
+    $st->execute(array('naziv' => 'Mrkva', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/mrkva.png', 'korak' => 0.1));
+    $st->execute(array('naziv' => 'Palenta', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/palenta.png', 'korak' => 1.0));
+    $st->execute(array('naziv' => 'Mlijeko', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/mlijeko.png', 'korak' => 1.0));
+    $st->execute(array('naziv' => 'Kruh', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/kruh.png', 'korak' => 0.5));
 }
 catch( PDOException $e ) { exit( "PDO error [projekt_Proizvodi]: " . $e->getMessage() ); }
 
@@ -167,18 +169,16 @@ echo "Ubacio u tablicu projekt_Proizvodi.<br />";
 try {
     $st = $db->prepare('INSERT INTO projekt_Ponude (ID_Proizvod, ID_Ducan, Cijena, Akcija) VALUES (:id_proizvod, :id_ducan, :cijena, :akcija)');
 
-    $st->execute(array('id_proizvod' => 1, 'id_ducan' => 1, 'cijena' => 6.99, 'akcija' => 1));
-    $st->execute(array('id_proizvod' => 1, 'id_ducan' => 1, 'cijena' => 9.99, 'akcija' => 0));
-    $st->execute(array('id_proizvod' => 2, 'id_ducan' => 1, 'cijena' => 1.99, 'akcija' => 0));
-    $st->execute(array('id_proizvod' => 3, 'id_ducan' => 2, 'cijena' => 1.39, 'akcija' => 0));
-    $st->execute(array('id_proizvod' => 4, 'id_ducan' => 3, 'cijena' => 1.09, 'akcija' => 1));
-    $st->execute(array('id_proizvod' => 4, 'id_ducan' => 3, 'cijena' => 1.99, 'akcija' => 0));
-    $st->execute(array('id_proizvod' => 4, 'id_ducan' => 2, 'cijena' => 1.89, 'akcija' => 0));
-    $st->execute(array('id_proizvod' => 5, 'id_ducan' => 3, 'cijena' => 1.07, 'akcija' => 0));
-    $st->execute(array('id_proizvod' => 6, 'id_ducan' => 1, 'cijena' => 0.89, 'akcija' => 0));
+    $st->execute(array('id_proizvod' => 1, 'id_ducan' => 1, 'cijena' => 9.99, 'akcija' => 6.99));
+    $st->execute(array('id_proizvod' => 2, 'id_ducan' => 1, 'cijena' => 1.99, 'akcija' => NULL));
+    $st->execute(array('id_proizvod' => 3, 'id_ducan' => 2, 'cijena' => 1.39, 'akcija' => NULL));
+    $st->execute(array('id_proizvod' => 4, 'id_ducan' => 3, 'cijena' => 1.99, 'akcija' => 1.09));
+    $st->execute(array('id_proizvod' => 4, 'id_ducan' => 2, 'cijena' => 1.89, 'akcija' => NULL));
+    $st->execute(array('id_proizvod' => 5, 'id_ducan' => 3, 'cijena' => 1.07, 'akcija' => NULL));
+    $st->execute(array('id_proizvod' => 6, 'id_ducan' => 1, 'cijena' => 0.89, 'akcija' => NULL));
 }
 catch( PDOException $e ) { exit( "PDO error [projekt_Ponude]: " . $e->getMessage() ); }
-
+    
 echo "Ubacio u tablicu projekt_Ponude.<br />";
 
 

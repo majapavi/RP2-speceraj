@@ -8,17 +8,17 @@
       proizvod: "Sir",
       ducani: {
         konzum: {
-          logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVeELSDUQHmeXN4-q8jB_Q6wSJPet2tAxreg&s",
+          logo: "https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/ducani/konzum.png",
           cijena: "3.2€",
           akcija: "NE"
         },
         spar: {
-          logo: "https://banner2.cleanpng.com/20180518/zte/kisspng-spar-logo-company-marketing-5afe7f0fbac0d3.362503861526628111765.jpg",
+          logo: "https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/ducani/spar.png",
           cijena: "1.7€",
           akcija: "DA"
         },
         lidl: {
-          logo: "https://w7.pngwing.com/pngs/727/982/png-transparent-lidl-logo-ireland-logo-lidl-symbols-lidl-logo-miscellaneous-cdr-text-thumbnail.png",
+          logo: "https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/ducani/lidl.png",
           cijena: "2.8€",
           akcija: "NE"
         }
