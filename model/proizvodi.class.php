@@ -1,13 +1,14 @@
 <?php
 class Proizvod
 {
-    protected $ID, $Naziv, $Link;
+    protected $ID, $Naziv, $Link, $Korak;
 
-    function __construct( $ID, $Naziv, $Link )
+    function __construct( $ID, $Naziv, $Link, $Korak )
     {
         $this->ID = $ID;
         $this->Naziv = $Naziv;
         $this->Link = $Link;
+        $this->Korak = $Korak;
     }
 
     function __get( $property )

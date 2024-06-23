@@ -40,7 +40,7 @@
     //                                                     'akcija' => "NE"
     //                                                 ]
     //                                 ]
-    //                 ];  
+    //                 ];
 </script>
 
 
@@ -49,18 +49,30 @@
 
 <div id="svi_objekti">Tu ide objekt</div>
 
+<?php
+require_once __DIR__ .'/model/specerajservice.class.php';
+
+$ss = new SpecerajService();
+$kartica = $ss->getKarticaByIdProizvoda( 4 );
+?>
+
 <script>
     console.log(test_objekt);
     ubaci_objekt(test_objekt);
     ubaci_objekt(test_objekt);
-    
+
+    // ovdje pokusavam ubacit karticu
+    var kartica = <?php echo json_encode($kartica); ?>;
+    console.log(kartica);
+    ubaci_objekt(kartica);
+
     function ubaci_objekt(input){
         const objekt = $('<div></div>').addClass('objekt');
 
         // Slika i ime
         const opis = $('<div></div>').addClass('opis');
 
-        const slika = $('<img>').attr('src', input.slika);  
+        const slika = $('<img>').attr('src', input.slika);
         opis.append(slika);
         opis.append($('<br>'));
 
@@ -71,13 +83,13 @@
 
         objekt.append(opis);
 
-        
+
         // Količina
         const kolicina = $('<p></p>').append('Količina:<br>');
         unos = $('<input class="kolicina" type="number" min="0.1" step="0.1">').attr('placeholder', 'Quantity');
         unos.val(1.0);
         kolicina.append(unos);
-    
+
         objekt.append(kolicina);
 
         // Dućani

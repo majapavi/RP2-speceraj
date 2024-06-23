@@ -1,13 +1,14 @@
 <?php
 class Ducan
 {
-    protected $ID, $Naziv, $Prosjek;
+    protected $ID, $Naziv, $Prosjek, $Link;
 
-    function __construct( $ID, $Naziv, $Prosjek )
+    function __construct( $ID, $Naziv, $Prosjek, $Link )
     {
         $this->ID = $ID;
         $this->Naziv = $Naziv;
         $this->Prosjek = $Prosjek;
+        $this->Link = $Link;
     }
 
     function __get( $property )
