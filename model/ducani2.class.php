@@ -1,10 +1,11 @@
 <?php
 class Ducan2
 {
-    protected $Logo, $Cijena, $Akcija;
+    public $Naziv, $Logo, $Cijena, $Akcija;
 
-    function __construct( $Logo, $Cijena, $Akcija )
+    function __construct( $Naziv, $Logo, $Cijena, $Akcija )
     {
+        $this->Naziv = $Naziv;
         $this->Logo = $Logo;
         $this->Cijena = $Cijena;
         $this->Akcija = $Akcija;

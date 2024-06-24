@@ -1,13 +1,14 @@
 <?php
 class Kartica
 {
-    protected $Proizvod_ID, $Proizvod_Naziv, $Proizvod_Link, $Ducani;
+    public $Proizvod_ID, $Proizvod_Naziv, $Proizvod_Link, $Proizvod_Korak, $Ducani;
 
-    function __construct( $Proizvod_ID, $Proizvod_Naziv, $Proizvod_Link, $Ducani )
+    function __construct( $Proizvod_ID, $Proizvod_Naziv, $Proizvod_Link, $Proizvod_Korak, $Ducani )
     {
         $this->Proizvod_ID = $Proizvod_ID;
         $this->Proizvod_Naziv = $Proizvod_Naziv;
         $this->Proizvod_Link = $Proizvod_Link;
+        $this->Proizvod_Korak = $Proizvod_Korak;
         $this->Ducani = $Ducani;
     }
 

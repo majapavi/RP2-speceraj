@@ -129,16 +129,16 @@ class SpecerajService
             if( (int)$ponuda->ID_Proizvod === $id_proizvod ) {
                 $ducan = $this->getDucanById( $ponuda->ID_Ducan );
                 if( $ponuda->Akcija === NULL ) {
-                    $ducan2 = new Ducan2( $ducan->Logo, $ponuda->Cijena, "NE" );
+                    $ducan2 = new Ducan2( $ducan->Naziv, $ducan->Link, $ponuda->Cijena, "NE" );
                     $ducani[] = $ducan2;
                 }
                 else {
-                    $ducan2 = new Ducan2( $ducan->Logo, $ponuda->Akcija, "DA" );
+                    $ducan2 = new Ducan2( $ducan->Naziv, $ducan->Link  , $ponuda->Akcija, "DA" );
                     $ducani[] = $ducan2;
                 }
             }
         }
-        $kartica = new Kartica( $proizvod->ID, $proizvod->Naziv, $proizvod->Link, $ducani );
+        $kartica = new Kartica( $proizvod->ID, $proizvod->Naziv, $proizvod->Link, $proizvod->Korak, $ducani );
 
         return $kartica;
     }

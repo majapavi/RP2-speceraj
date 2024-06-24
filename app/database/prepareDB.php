@@ -79,7 +79,7 @@ try {
             ID INT AUTO_INCREMENT PRIMARY KEY,
             Naziv VARCHAR(100) NOT NULL,
             Link_na_sliku VARCHAR(255) NOT NULL,
-            Korak NUMERIC DEFAULT 1.0
+            Korak DECIMAL(3,2) DEFAULT 1.0
         )
     ");
     $st->execute();

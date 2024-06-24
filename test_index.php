@@ -4,25 +4,25 @@
 <script>
     const test_objekt = {
     //   id: 1,
-      slika: "https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/sir.png",
-      proizvod: "Sir",
-      ducani: {
+    slika: "https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/sir.png",
+    proizvod: "Sir",
+    ducani: {
         konzum: {
-          logo: "https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/ducani/konzum.png",
-          cijena: "3.2€",
-          akcija: "NE"
-        },
+            logo: "https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/ducani/konzum.png",
+            cijena: "3.2€",
+            akcija: "NE"
+            },
         spar: {
-          logo: "https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/ducani/spar.png",
-          cijena: "1.7€",
-          akcija: "DA"
-        },
+            logo: "https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/ducani/spar.png",
+            cijena: "1.7€",
+            akcija: "DA"
+            },
         lidl: {
-          logo: "https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/ducani/lidl.png",
-          cijena: "2.8€",
-          akcija: "NE"
+            logo: "https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/ducani/lidl.png",
+            cijena: "2.8€",
+            akcija: "NE"
+            }
         }
-      }
     };
 
     // let test_objekt = [ 'slika' => "https://e7.pngegg.com/pngimages/254/955/png-clipart-gruyere-cheese-cheesecake-swiss-cheese-cheese-cheese-slice-food-cheese.png",
@@ -54,17 +54,33 @@ require_once __DIR__ .'/model/specerajservice.class.php';
 
 $ss = new SpecerajService();
 $kartica = $ss->getKarticaByIdProizvoda( 4 );
+// print_r($kartica);
+$json_kartica = json_encode($kartica);
+echo "<hr>";
+// print($json_kartica);
 ?>
 
 <script>
-    console.log(test_objekt);
-    ubaci_objekt(test_objekt);
-    ubaci_objekt(test_objekt);
+    console.log("PRVI TEST: ", test_objekt);
+    // ubaci_objekt(test_objekt);
+    // ubaci_objekt(test_objekt);
 
     // ovdje pokusavam ubacit karticu
-    var kartica = <?php echo json_encode($kartica); ?>;
-    console.log(kartica);
-    ubaci_objekt(kartica);
+    let kartica = <?php echo $json_kartica; ?>;
+    console.log("DRUGI TEST: ", kartica);
+    // ubaci_objekt(kartica);
+
+    <?php
+        for ($i=1; $i < 7; $i++) { 
+            $kartica = $ss->getKarticaByIdProizvoda( $i );
+            $json_kartica = json_encode($kartica);
+            ?>
+            kartica = <?php echo $json_kartica; ?>;
+            ubaci_objekt(kartica);
+            <?php
+        }
+    ?>
+
 
     function ubaci_objekt(input){
         const objekt = $('<div></div>').addClass('objekt');
@@ -72,13 +88,12 @@ $kartica = $ss->getKarticaByIdProizvoda( 4 );
         // Slika i ime
         const opis = $('<div></div>').addClass('opis');
 
-        const slika = $('<img>').attr('src', input.slika);
+        const slika = $('<img>').attr('src', input.Proizvod_Link);
         opis.append(slika);
         opis.append($('<br>'));
 
         const ime = $('<h4></h4>');
-        ime.append(`${input['proizvod']}`);
-        console.log(ime);
+        ime.append(`${input['Proizvod_Naziv']}`);
         opis.append(ime);
 
         objekt.append(opis);
@@ -86,8 +101,8 @@ $kartica = $ss->getKarticaByIdProizvoda( 4 );
 
         // Količina
         const kolicina = $('<p></p>').append('Količina:<br>');
-        unos = $('<input class="kolicina" type="number" min="0.1" step="0.1">').attr('placeholder', 'Quantity');
-        unos.val(1.0);
+        unos = $(`<input class="kolicina" type="number" min="${input.Proizvod_Korak}" step="${input.Proizvod_Korak}">`).attr('placeholder', 'Unesi količinu');
+        unos.val(input.Proizvod_Korak);
         kolicina.append(unos);
 
         objekt.append(kolicina);
@@ -95,12 +110,15 @@ $kartica = $ss->getKarticaByIdProizvoda( 4 );
         // Dućani
         const ducani = $('<div></div>').addClass('ducani');
 
-        $.each(test_objekt.ducani, function(ducan, info) {
+        console.log("input.Ducani: ", input.Ducani);
+
+        $.each(input.Ducani, function(index, info) {
+            console.log("INFO: ", info);
             const ovaj_ducan = $('<div></div>').addClass('jedan_ducan');
 
-            const logo = $('<img>').attr('src', info.logo);
-            const cijena = $('<p></p>').html(`<strong>${ducan}</strong><br>Cijena: ${info.cijena}<br>`);
-            if(info.akcija == "DA"){
+            const logo = $('<img>').attr('src', info.Logo);
+            const cijena = $('<p></p>').html(`<strong>${info.Naziv}</strong><br>Cijena: ${info.Cijena}<br>`);
+            if(info.Akcija == "DA"){
                 cijena.addClass('akcija');
                 cijena.append("AKCIJA");
             }

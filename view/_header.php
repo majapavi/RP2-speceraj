@@ -23,14 +23,14 @@
             height: 250px;
             margin: 10px;
             align-items: center;
-            justify-content: center;
+            /* justify-content: center; */
         }
         /* Opis je slika i ime proizvoda */
         .objekt .opis{
             height: 100%;
             width: 150px;
             float: left;
-            /* padding: 10px; */
+            padding: 10px;
         }
         .objekt img {
             border-radius: 15px;
@@ -48,7 +48,7 @@
         .objekt .ducani{
             height: 100%;
             float: right;
-            /* padding: 10px; */
+            padding: 10px;
             display: flex;
             flex-direction: row;
             align-items: flex-start;
