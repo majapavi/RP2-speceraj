@@ -117,10 +117,10 @@ echo "<hr>";
             const ovaj_ducan = $('<div></div>').addClass('jedan_ducan');
 
             const logo = $('<img>').attr('src', info.Logo);
-            const cijena = $('<p></p>').html(`<strong>${info.Naziv}</strong><br>Cijena: ${info.Cijena}<br>`);
+            const cijena = $('<p></p>').html(`<strong>${info.Naziv}</strong><br>Cijena: ${info.Cijena} €<br>`);
             if(info.Akcija == "DA"){
                 cijena.addClass('akcija');
-                cijena.append("AKCIJA");
+                cijena.append("<p style='padding:0; margin:0; color:red;'>AKCIJA</p>");
             }
             else{
                 cijena.append("<br>")
