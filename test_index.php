@@ -1,77 +1,97 @@
+<!-- Treba prebaciti ovu stranicu u view ( i prilagoditi require-ove i linkove u headeru da radi ) -->
+
 <?php
-    $title = "Test objekt";
+    $title = "Ponuda";
+    require_once __DIR__ . '/model/specerajservice.class.php';
+    require_once __DIR__ . '/view/_header.php';
 ?>
-<script>
-    const test_objekt = {
-    //   id: 1,
-    slika: "https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/sir.png",
-    proizvod: "Sir",
-    ducani: {
-        konzum: {
-            logo: "https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/ducani/konzum.png",
-            cijena: "3.2€",
-            akcija: "NE"
-            },
-        spar: {
-            logo: "https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/ducani/spar.png",
-            cijena: "1.7€",
-            akcija: "DA"
-            },
-        lidl: {
-            logo: "https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/ducani/lidl.png",
-            cijena: "2.8€",
-            akcija: "NE"
+
+<div id="forma_za_search_i_sort">
+    <form>
+        <input type="text" id="pretrazivanje" name="pretrazivanje" placeholder="Pretraži proizvode...">
+        <label for="sortiranje">Sortiraj po: </label>
+        <select name="sortiranje" id="sortiranje">
+            <option value="bez_opcije">Zadano</option>
+            <option value="naziv_uzlazno">Nazivu (A->Z)</option>
+            <option value="naziv_silazno">Nazivu (Z->A)</option>
+        </select>
+        <input type="submit" value="Pretraži">
+    </form>
+</div>
+
+<div id="sve_ponude"></div>
+
+<?php
+
+if(false){  // Ovaj if je samo da se pseudokod ne pokusava izvrsavat
+    
+    // Pseudokod ove web stranice
+    $pretrazivanje = '';
+    $sortiranje = '';
+
+    // Provjera dal imamo kaj u get-u
+    // Ako imamo pretrazivanje
+    if( isset($_GET['pretrazivanje']) && $_GET['pretrazivanje'] != '' ){ // Mozda provjera dal je null?
+        $pretrazivanje = $_GET['pretrazivanje'];
+    }
+    // Ako imamo sortiranje
+    if( isset($_GET['sortiranje']) && $_GET['sortiranje'] != 'bez_opcije' ){ // Mozda provjera dal je null?
+        $sortiranje = $_GET['sortiranje'];
+    }
+
+    $ss = new SpecerajService();
+    $ss->getAllKartice($pretrazivanje, $sortiranje);
+
+        // Pseudokod za funkciju getAllKartice
+        function getAllKartice($search = '', $sort = ''){
+
+            if( $search == '' && $sort == '' ){
+                // SQL query tipa
+                    /* SELECT id FROM projekt_proizvodi */
             }
+            // else
+                // Ako imamo $search != '' treba dodat
+                    /* WHERE naziv LIKE %:nesto% */
+
+                // Ako imamo $sort != '' treba dodati
+                    /* ORDER BY naziv ASC (DESC) */
+
+            // Dok imamo sve ID-ove proizvoda koji nam trebaju (nek su spremljeni u $indexi npr)
+
+            foreach ($indexi as $i) {
+                $sve_kartice[] = $ss->getKarticaByIdProizvoda($i);
+                // Prilagodit da ne dohvaca sve ponude, smo one s trazenim id_proizvoda
+            }
+
+            // Mozda da se pretvori u JSON prije nego se vrati (moze se i kasnije)
+            return $sve_kartice;
         }
-    };
 
-    // let test_objekt = [ 'slika' => "https://e7.pngegg.com/pngimages/254/955/png-clipart-gruyere-cheese-cheesecake-swiss-cheese-cheese-cheese-slice-food-cheese.png",
-    //                     'proizvod' => "Sir",
-    //                     'ducani' => [   'konzum' => [   'logo' => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVeELSDUQHmeXN4-q8jB_Q6wSJPet2tAxreg&s",
-    //                                                     'cijena' => "3.2€",
-    //                                                     'akcija' => "NE"
-    //                                                 ],
-    //                                     'spar' =>   [   'logo' => "https://banner2.cleanpng.com/20180518/zte/kisspng-spar-logo-company-marketing-5afe7f0fbac0d3.362503861526628111765.jpg",
-    //                                                     'cijena' => "1.7€",
-    //                                                     'akcija' => "DA"
-    //                                                 ],
-    //                                     'lidl' =>   [   'logo' => "https://w7.pngwing.com/pngs/727/982/png-transparent-lidl-logo-ireland-logo-lidl-symbols-lidl-logo-miscellaneous-cdr-text-thumbnail.png",
-    //                                                     'cijena' => "2.8€",
-    //                                                     'akcija' => "NE"
-    //                                                 ]
-    //                                 ]
-    //                 ];
-</script>
+        // Kad pomocu SpecerajService() dobijemo sve kartice, onda javascriptom popunimo stranicu
+        foreach ($sve_kartice as $karica) {
+            // Pretvaranje u JSON
+            ubaci_objekt(kartica);
+        }
 
+        /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-<?php require_once __DIR__ . '/view/_header.php'; ?>
-
-<div id="svi_objekti">Tu ide objekt</div>
-
-<?php
-require_once __DIR__ .'/model/specerajservice.class.php';
-
-$ss = new SpecerajService();
-$kartica = $ss->getKarticaByIdProizvoda( 4 );
-// print_r($kartica);
-$json_kartica = json_encode($kartica);
-echo "<hr>";
-// print($json_kartica);
+        // Pseudokod / napomene za stranicu s akcijama
+        
+        // Slicno ko i gore, ali dodamo uvijet WHERE akcija != NULL u SQL query
+        // Dodamo opcijeza sortiranje po cijeni
+        
+        // Prilagodimo javascript funkciju da generira manji objekt (samo s jednom ponudom, ne s cijelom karticom proizvoda)
+    }
 ?>
 
 <script>
-    console.log("PRVI TEST: ", test_objekt);
-    // ubaci_objekt(test_objekt);
-    // ubaci_objekt(test_objekt);
 
-    // ovdje pokusavam ubacit karticu
-    let kartica = <?php echo $json_kartica; ?>;
-    console.log("DRUGI TEST: ", kartica);
-    // ubaci_objekt(kartica);
+    let kartica;
 
     <?php
-        for ($i=1; $i < 7; $i++) { 
+        $ss = new SpecerajService();
+    
+        for ($i=1; $i < 23; $i++) { 
             $kartica = $ss->getKarticaByIdProizvoda( $i );
             $json_kartica = json_encode($kartica);
             ?>
@@ -134,7 +154,7 @@ echo "<hr>";
         objekt.append(ducani);
 
 
-        $('#svi_objekti').append(objekt);
+        $('#sve_ponude').append(objekt);
     }
 </script>
 
