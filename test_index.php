@@ -64,7 +64,7 @@ if(false){  // Ovaj if je samo da se pseudokod ne pokusava izvrsavat
             }
 
             // Mozda da se pretvori u JSON prije nego se vrati (moze se i kasnije)
-            return $sve_kartice;
+            return $sve_kartice; json_encode($sve_kartice);
         }
 
         // Kad pomocu SpecerajService() dobijemo sve kartice, onda javascriptom popunimo stranicu
@@ -91,7 +91,7 @@ if(false){  // Ovaj if je samo da se pseudokod ne pokusava izvrsavat
     <?php
         $ss = new SpecerajService();
     
-        for ($i=1; $i < 23; $i++) { 
+        for ($i=1; $i < 82; $i++) { 
             $kartica = $ss->getKarticaByIdProizvoda( $i );
             $json_kartica = json_encode($kartica);
             ?>
@@ -121,6 +121,9 @@ if(false){  // Ovaj if je samo da se pseudokod ne pokusava izvrsavat
 
         // Količina
         const kolicina = $('<p></p>').append('Količina:<br>');
+        // PROBAJ
+        // let korak = (int)input.Proizvod_Korak;
+        // if (korak == input.Proizvod_Korak)
         unos = $(`<input class="kolicina" type="number" min="${input.Proizvod_Korak}" step="${input.Proizvod_Korak}">`).attr('placeholder', 'Unesi količinu');
         unos.val(input.Proizvod_Korak);
         kolicina.append(unos);

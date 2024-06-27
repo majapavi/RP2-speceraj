@@ -52,7 +52,7 @@ class SpecerajService
         $proizvodi = [];
         while( $row = $st->fetch() )
         {
-            $proizvod = new Proizvod( $row['ID'], $row['Naziv'], $row['Link_na_sliku'], $row['Korak'] );
+            $proizvod = new Proizvod( $row['ID'], $row['Naziv'], $row['Opis'], $row['Link_na_sliku'], $row['Korak'] );
             $proizvodi[] = $proizvod;
         }
 
@@ -99,7 +99,7 @@ class SpecerajService
         $st->execute();
 
         if( $row = $st->fetch() ) {
-            $proizvod = new Proizvod( $row['ID'], $row['Naziv'], $row['Link_na_sliku'], $row['Korak'] );
+            $proizvod = new Proizvod( $row['ID'], $row['Naziv'], $row['Opis'], $row['Link_na_sliku'], $row['Korak'] );
 
             return $proizvod;
         }

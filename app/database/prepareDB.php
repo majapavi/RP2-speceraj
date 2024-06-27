@@ -78,6 +78,7 @@ try {
         CREATE TABLE IF NOT EXISTS projekt_Proizvodi (
             ID INT AUTO_INCREMENT PRIMARY KEY,
             Naziv VARCHAR(100) NOT NULL,
+            Opis VARCHAR(255),
             Link_na_sliku VARCHAR(255) NOT NULL,
             Korak DECIMAL(3,2) DEFAULT 1.0
         )
@@ -154,31 +155,90 @@ echo "Ubacio u tablicu projekt_Ducani.<br />";
 
 // Insert examples into Proizvodi
 try {
-    $st = $db->prepare('INSERT INTO projekt_Proizvodi (Naziv, Link_na_sliku, Korak) VALUES (:naziv, :link, :korak)');
+    $st = $db->prepare('INSERT INTO projekt_Proizvodi (Naziv, Opis, Link_na_sliku, Korak) VALUES (:naziv, :opis, :link, :korak)');
 
     $products = [
-        ['naziv' => 'Mlijeko', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/mlijeko.png', 'korak' => 1],
-        ['naziv' => 'Jogurt', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/jogurt.png', 'korak' => 1],
-        ['naziv' => 'Maslac', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/maslac.png', 'korak' => 1],
-        ['naziv' => 'Jaja', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/jaja.png', 'korak' => 1],
-        ['naziv' => 'Kruh', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/kruh.png', 'korak' => 0.5],
-        ['naziv' => 'Tjestenina', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/tjestenina.png', 'korak' => 1],
-        ['naziv' => 'Riža', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/riza.png', 'korak' => 1],
-        ['naziv' => 'Pileće meso', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/pilece_meso.png', 'korak' => 0.1],
-        ['naziv' => 'Svinjetina', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/svinjetina.png', 'korak' => 0.1],
-        ['naziv' => 'Govedina', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/govedina.png', 'korak' => 0.1],
-        ['naziv' => 'Jabuka', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/jabuka.png', 'korak' => 0.1],
-        ['naziv' => 'Banana', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/banana.png', 'korak' => 0.1],
-        ['naziv' => 'Naranča', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/naranca.png', 'korak' => 0.1],
-        ['naziv' => 'Grožđe', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/grozde.png', 'korak' => 0.1],
-        ['naziv' => 'Mrkva', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/mrkva.png', 'korak' => 0.1],
-        ['naziv' => 'Krumpir', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/krumpir.png', 'korak' => 0.1],
-        ['naziv' => 'Paprika', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/paprika.png', 'korak' => 0.1],
-        ['naziv' => 'Rajčica', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/rajcica.png', 'korak' => 0.1],
-        ['naziv' => 'Krastavac', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/krastavac.png', 'korak' => 0.1],
-        ['naziv' => 'Salata', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/salata.png', 'korak' => 1],
-        ['naziv' => 'Sir', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/sir.png', 'korak' => 0.1],
-        ['naziv' => 'Palenta', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/palenta.png', 'korak' => 1.0]
+        ['naziv' => 'Mlijeko', 'opis' => 'Mliječni proizvodi, Mlijecni proizvodi', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/mlijeko.png', 'korak' => 1.0],
+        ['naziv' => 'Jogurt', 'opis' => 'Mliječni proizvodi, Mlijecni proizvodi', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/jogurt.png', 'korak' => 1.0],
+        ['naziv' => 'Kiselo vrhnje', 'opis' => 'Mliječni proizvodi, Mlijecni proizvodi', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/kiselo_vrhnje.png', 'korak' => 1.0],
+        ['naziv' => 'Maslac', 'opis' => 'Mliječni proizvodi, Mlijecni proizvodi', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/maslac.png', 'korak' => 1.0],
+        ['naziv' => 'Vrhnje za kuhanje', 'opis' => 'Mliječni proizvodi, Mlijecni proizvodi', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/vrhnje_za_kuhanje.png', 'korak' => 1.0],
+        ['naziv' => 'Svježi sir', 'opis' => 'Mliječni proizvodi, Mlijecni proizvodi, sir', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/svjezi_sir.png', 'korak' => 1.0],
+        ['naziv' => 'Gauda', 'opis' => 'Mliječni proizvodi, Mlijecni proizvodi, narezak, naresci, sir', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/gauda.png', 'korak' => 0.1],
+        ['naziv' => 'Škripavac', 'opis' => 'Mliječni proizvodi, Mlijecni proizvodi, narezak, naresci, sir', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/skripavac.png', 'korak' => 0.1],
+        ['naziv' => 'Mozzarella', 'opis' => 'Mliječni proizvodi, Mlijecni proizvodi, sir', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/mozzarella.png', 'korak' => 1.0],
+        ['naziv' => 'Feta sir', 'opis' => 'Mliječni proizvodi, Mlijecni proizvodi, sir', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/feta_sir.png', 'korak' => 1.0],
+        ['naziv' => 'Bijeli kruh', 'opis' => 'Kruh, peciva, pecivo', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/bijeli_kruh.png', 'korak' => 0.5],
+        ['naziv' => 'Crni kruh', 'opis' => 'Kruh, peciva, pecivo', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/crni_kruh.png', 'korak' => 0.5],
+        ['naziv' => 'Integralni kruh', 'opis' => 'Kruh, peciva, pecivo', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/integralni_kruh.png', 'korak' => 0.5],
+        ['naziv' => 'Kukuruzni kruh', 'opis' => 'Kruh, peciva, pecivo', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/kukuruzni_kruh.png', 'korak' => 0.5],
+        ['naziv' => 'Pšenični kruh', 'opis' => 'Kruh, peciva, pecivo', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/psenicni_kruh.png', 'korak' => 0.5],
+        ['naziv' => 'Pogača', 'opis' => 'Kruh, peciva, pecivo', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/pogaca.png', 'korak' => 1.0],
+        ['naziv' => 'Baget', 'opis' => 'Kruh, peciva, pecivo', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/baget.png', 'korak' => 1.0],
+        ['naziv' => 'Pileća prsa', 'opis' => 'Meso, piletina', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/pileca_prsa.png', 'korak' => 0.1],
+        ['naziv' => 'Pileća krilca', 'opis' => 'Meso, piletina', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/pileca_krilca.png', 'korak' => 0.1],
+        ['naziv' => 'Svinjski kotlet', 'opis' => 'Meso, svinjetina', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/svinjski_kotlet.png', 'korak' => 0.1],
+        ['naziv' => 'Svinjski but', 'opis' => 'Meso, svinjetina', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/svinjski_but.png', 'korak' => 0.1],
+        ['naziv' => 'Goveđi odrezak', 'opis' => 'Meso, govedina', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/govedji_odrezak.png', 'korak' => 0.1],
+        ['naziv' => 'Junetina za gulaš', 'opis' => 'Meso, junetina', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/junetina_za_gulas.png', 'korak' => 0.1],
+        ['naziv' => 'Janjetina', 'opis' => 'Meso, janjetina', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/janjetina.png', 'korak' => 0.1],
+        ['naziv' => 'Kranjske kobasice', 'opis' => 'Meso, kobasica, kobasice', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/kranjske_kobasice.png', 'korak' => 1.0],
+        ['naziv' => 'Roštilj kobasice', 'opis' => 'Meso, kobasica, kobasice', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/rostilj_kobasice.png', 'korak' => 1.0],
+        ['naziv' => 'Špageti', 'opis' => 'Tjestenina, pasta, pašta', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/spageti.png', 'korak' => 1.0],
+        ['naziv' => 'Penne', 'opis' => 'Tjestenina, pasta, pašta', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/penne.png', 'korak' => 1.0],
+        ['naziv' => 'Fusilli', 'opis' => 'Tjestenina, pasta, pašta', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/fusilli.png', 'korak' => 1.0],
+        ['naziv' => 'Tagliatelle', 'opis' => 'Tjestenina, pasta, pašta', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/tagliatelle.png', 'korak' => 1.0],
+        ['naziv' => 'Lasagne', 'opis' => 'Tjestenina, pasta, pašta', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/lasagne.png', 'korak' => 1.0],
+        ['naziv' => 'Rigatoni', 'opis' => 'Tjestenina, pasta, pašta', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/rigatoni.png', 'korak' => 1.0],
+        ['naziv' => 'Farfalle', 'opis' => 'Tjestenina, pasta, pašta', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/farfalle.png', 'korak' => 1.0],
+        ['naziv' => 'Tortellini', 'opis' => 'Tjestenina, pasta, pašta', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/tortellini.png', 'korak' => 1.0],
+        ['naziv' => 'Zobene pahuljice', 'opis' => 'Žitarice, zitarice, sjemenke, pahuljice', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/zobene_pahuljice.png', 'korak' => 1.0],
+        ['naziv' => 'Kukuruzne pahuljice', 'opis' => 'Žitarice, zitarice, sjemenke, pahuljice', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/kukuruzne_pahuljice.png', 'korak' => 1.0],
+        ['naziv' => 'Ječam', 'opis' => 'Žitarice, zitarice, sjemenke', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/jecam.png', 'korak' => 1.0],
+        ['naziv' => 'Proso', 'opis' => 'Žitarice, zitarice, sjemenke', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/proso.png', 'korak' => 1.0],
+        ['naziv' => 'Ražene pahuljice', 'opis' => 'Žitarice, zitarice, sjemenke, pahuljice', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/razene_pahuljice.png', 'korak' => 1.0],
+        ['naziv' => 'Quinoa', 'opis' => 'Žitarice, zitarice, sjemenke', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/quinoa.png', 'korak' => 1.0],
+        ['naziv' => 'Chia sjemenke', 'opis' => 'Žitarice, zitarice, sjemenke', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/chia_sjemenke.png', 'korak' => 1.0],
+        ['naziv' => 'Šunka', 'opis' => 'Naresci, narezak, salama', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/sunka.png', 'korak' => 0.1],
+        ['naziv' => 'Pršut', 'opis' => 'Naresci, narezak, salama', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/prsut.png', 'korak' => 0.1],
+        ['naziv' => 'Kulen', 'opis' => 'Naresci, narezak, salama', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/kulen.png', 'korak' => 0.1],
+        ['naziv' => 'Mortadela', 'opis' => 'Naresci, narezak, salama', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/mortadela.png', 'korak' => 0.1],
+        ['naziv' => 'Salama', 'opis' => 'Naresci, narezak, salama', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/salama.png', 'korak' => 0.1],
+        ['naziv' => 'Buđola', 'opis' => 'Naresci, narezak, salama', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/budola.png', 'korak' => 0.1],
+        ['naziv' => 'Jabuke', 'opis' => 'Voće i Povrće, voce i povrce', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/jabuke.png', 'korak' => 0.1],
+        ['naziv' => 'Banane', 'opis' => 'Voće i Povrće, voce i povrce', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/banane.png', 'korak' => 0.1],
+        ['naziv' => 'Naranče', 'opis' => 'Voće i Povrće, voce i povrce', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/narance.png', 'korak' => 0.1],
+        ['naziv' => 'Mandarine', 'opis' => 'Voće i Povrće, voce i povrce', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/mandarine.png', 'korak' => 0.1],
+        ['naziv' => 'Jagode', 'opis' => 'Voće i Povrće, voce i povrce', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/jagode.png', 'korak' => 0.1],
+        ['naziv' => 'Grožđe', 'opis' => 'Voće i Povrće, voce i povrce', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/grozde.png', 'korak' => 0.1],
+        ['naziv' => 'Lubenica', 'opis' => 'Voće i Povrće, voce i povrce', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/lubenica.png', 'korak' => 0.1],
+        ['naziv' => 'Kivi', 'opis' => 'Voće i Povrće, voce i povrce', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/kivi.png', 'korak' => 0.1],
+        ['naziv' => 'Rajčice', 'opis' => 'Voće i Povrće, voce i povrce', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/rajcice.png', 'korak' => 0.1],
+        ['naziv' => 'Krastavci', 'opis' => 'Voće i Povrće, voce i povrce', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/krastavci.png', 'korak' => 0.1],
+        ['naziv' => 'Paprike', 'opis' => 'Voće i Povrće, voce i povrce', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/paprike.png', 'korak' => 0.1],
+        ['naziv' => 'Luk', 'opis' => 'Voće i Povrće, voce i povrce', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/luk.png', 'korak' => 0.1],
+        ['naziv' => 'Krumpir', 'opis' => 'Voće i Povrće, voce i povrce', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/krumpir.png', 'korak' => 0.1],
+        ['naziv' => 'Mrkva', 'opis' => 'Voće i Povrće, voce i povrce', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/mrkva.png', 'korak' => 0.1],
+        ['naziv' => 'Salata', 'opis' => 'Voće i Povrće, voce i povrce', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/salata.png', 'korak' => 1.0],
+        ['naziv' => 'Brokula', 'opis' => 'Voće i Povrće, voce i povrce', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/brokula.png', 'korak' => 0.1],
+        ['naziv' => 'Bomboni', 'opis' => 'Grickalice, slatkiši, slatkisi, cokolada, čokolada', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/bomboni.png', 'korak' => 1.0],
+        ['naziv' => 'Keksi', 'opis' => 'Grickalice, slatkiši, slatkisi, cokolada, čokolada', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/keksi.png', 'korak' => 1.0],
+        ['naziv' => 'Medenjaci', 'opis' => 'Grickalice, slatkiši, slatkisi, cokolada, čokolada', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/medenjaci.png', 'korak' => 1.0],
+        ['naziv' => 'Krafne', 'opis' => 'Grickalice, slatkiši, slatkisi, cokolada, čokolada', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/krafne.png', 'korak' => 1.0],
+        ['naziv' => 'Kolači', 'opis' => 'Grickalice, slatkiši, slatkisi, cokolada, čokolada', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/kolaci.png', 'korak' => 1.0],
+        ['naziv' => 'Pita', 'opis' => 'Grickalice, slatkiši, slatkisi, cokolada, čokolada', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/pita.png', 'korak' => 1.0],
+        ['naziv' => 'Čips', 'opis' => 'Grickalice, slatkiši, slatkisi, cokolada, čokolada', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/cips.png', 'korak' => 1.0],
+        ['naziv' => 'Kokice', 'opis' => 'Grickalice, slatkiši, slatkisi, cokolada, čokolada', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/kokice.png', 'korak' => 1.0],
+        ['naziv' => 'Kikiriki', 'opis' => 'Grickalice, slatkiši, slatkisi, cokolada, čokolada', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/kikiriki.png', 'korak' => 1.0],
+        ['naziv' => 'Slani štapići', 'opis' => 'Grickalice, slatkiši, slatkisi, cokolada, čokolada', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/slani_stapici.png', 'korak' => 1.0],
+        ['naziv' => 'Krekeri', 'opis' => 'Grickalice, slatkiši, slatkisi, cokolada, čokolada', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/krekeri.png', 'korak' => 1.0],
+        ['naziv' => 'Mliječna čokolada', 'opis' => 'Grickalice, slatkiši, slatkisi, cokolada, čokolada', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/mlijecna_cokolada.png', 'korak' => 1.0],
+        ['naziv' => 'Tamna čokolada', 'opis' => 'Grickalice, slatkiši, slatkisi, cokolada, čokolada', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/tamna_cokolada.png', 'korak' => 1.0],
+        ['naziv' => 'Bijela čokolada', 'opis' => 'Grickalice, slatkiši, slatkisi, cokolada, čokolada', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/bijela_cokolada.png', 'korak' => 1.0],
+        ['naziv' => 'Čokolada s lješnjacima', 'opis' => 'Grickalice, slatkiši, slatkisi, cokolada, čokolada', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/cokolada_s_ljesnjacima.png', 'korak' => 1.0],
+        ['naziv' => 'Čokolada s rižom', 'opis' => 'Grickalice, slatkiši, slatkisi, cokolada, čokolada', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/cokolada_s_rizom.png', 'korak' => 1.0],
+        ['naziv' => 'Čokolada s narančom', 'opis' => 'Grickalice, slatkiši, slatkisi, cokolada, čokolada', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/cokolada_s_narancom.png', 'korak' => 1.0],
+        ['naziv' => 'Čokolada s keksom', 'opis' => 'Grickalice, slatkiši, slatkisi, cokolada, čokolada', 'link' => 'https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/slike/proizvodi/cokolada_s_keksom.png', 'korak' => 1.0],
     ];
 
     foreach ($products as $product) {
@@ -194,31 +254,56 @@ echo "Ubacio u tablicu projekt_Proizvodi.<br />";
 try {
     $st = $db->prepare('INSERT INTO projekt_Ponude (ID_Proizvod, ID_Ducan, Cijena, Akcija) VALUES (:id_proizvod, :id_ducan, :cijena, :akcija)');
 
-    $products = range(1, 22);  // 22 proizvoda
-    $stores = range(1, 6);     // 6 dućana
+    $normalna_cijena = [1.50, 0.70, 0.90, 3.00, 2.50,
+                        2.00, 5.50, 18.04, 2.50, 4.00,
+                        1.50, 2.00, 2.30, 1.59, 2.49,
+                        0.30, 0.70, 7.30, 5.31, 6.70,
+                        7.10, 13.00, 11.49, 12.00, 3.50,
+                        3.50, 1.70, 1.95, 1.95, 3.00,
+                        3.00, 2.59, 2.00, 2.20, 1.00,
+                        3.50, 2.10, 2.50, 1.70, 4.00,
+                        1.50, 9.00, 30.00, 25.00, 8.00,
+                        3.00, 17.00, 1.40, 1.44, 1.30,
+                        1.59, 5.00, 3.00, 1.20, 4.00,
+                        2.50, 2.96, 3.50, 1.10, 1.10,
+                        0.90, 0.69, 3.00, 2.45, 2.65,
+                        3.00, 0.69, 1.20, 4.00, 1.75,
+                        1.40, 2.70, 0.85, 0.99, 3.50,
+                        3.90, 3.60, 3.50, 2.80, 3.90, 
+                        3.90
+                        ];
+
     $offers = [];
+    for( $id_proizvod = 1 ; $id_proizvod < 82 ; $id_proizvod++ ){
+        for( $id_ducan = 1 ; $id_ducan < 7 ; $id_ducan++){
 
-    for ($i = 0; $i < 100; $i++) {
-        $id_proizvod = $products[array_rand($products)];
-        $id_ducan = $stores[array_rand($stores)];
-        $cijena = round(rand(100, 2000) / 100, 2); // Random cijena između 1.00 i 20.00
+            // ~5% šanse da proizvoda nema u nekom ducanu
+            if( rand(1, 100) < 6 ){
+                continue;
+            }
 
-        // Oko 75% ponuda ima akciju kao NULL
-        if (rand(1, 100) <= 75) {
+            // Varijacija u cijeni među dućanima
+            $cijena = round( $normalna_cijena[ $id_proizvod - 1 ] * rand(70, 130) / 100 , 2 );
+            
+            // ~12% šansa da je proizvod na akciji
             $akcija = NULL;
-        } else {
-            // Akcija mora biti strogo manja od cijene
-            $akcija = round($cijena * (rand(50, 99) / 100), 2); // Akcija između 50% i 99% od cijene
-        }
+            if( rand(1,100) < 13){
+                // 10-50% akcija
+                $akcija = round($cijena * rand(50,90) / 100, 2 );
+            }
 
-        $offers[] = [
-            'id_proizvod' => $id_proizvod,
-            'id_ducan' => $id_ducan,
-            'cijena' => $cijena,
-            'akcija' => $akcija,
-        ];
+            // Punimo offers
+            $offers[] = [
+                'id_proizvod' => $id_proizvod,
+                'id_ducan' => $id_ducan,
+                'cijena' => $cijena,
+                'akcija' => $akcija,
+            ];
+
+        }
     }
 
+    // Punimo DB
     foreach ($offers as $offer) {
         $st->execute($offer);
     }

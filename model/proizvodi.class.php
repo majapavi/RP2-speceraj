@@ -1,12 +1,13 @@
 <?php
 class Proizvod
 {
-    protected $ID, $Naziv, $Link, $Korak;
+    protected $ID, $Naziv, $Opis, $Link, $Korak;
 
-    function __construct( $ID, $Naziv, $Link, $Korak )
+    function __construct( $ID, $Naziv, $Opis, $Link, $Korak )
     {
         $this->ID = $ID;
         $this->Naziv = $Naziv;
+        $this->Opis = $Opis;
         $this->Link = $Link;
         $this->Korak = $Korak;
     }
