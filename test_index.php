@@ -24,7 +24,7 @@
 <?php
 
 if(false){  // Ovaj if je samo da se pseudokod ne pokusava izvrsavat
-    
+
     // Pseudokod ove web stranice
     $pretrazivanje = '';
     $sortiranje = '';
@@ -76,10 +76,10 @@ if(false){  // Ovaj if je samo da se pseudokod ne pokusava izvrsavat
         /////////////////////////////////////////////////////////////////////////////////////////////////////
 
         // Pseudokod / napomene za stranicu s akcijama
-        
+
         // Slicno ko i gore, ali dodamo uvijet WHERE akcija != NULL u SQL query
         // Dodamo opcijeza sortiranje po cijeni
-        
+
         // Prilagodimo javascript funkciju da generira manji objekt (samo s jednom ponudom, ne s cijelom karticom proizvoda)
     }
 ?>
@@ -90,9 +90,9 @@ if(false){  // Ovaj if je samo da se pseudokod ne pokusava izvrsavat
 
     <?php
         $ss = new SpecerajService();
-    
-        for ($i=1; $i < 82; $i++) { 
-            $kartica = $ss->getKarticaByIdProizvoda( $i );
+
+        $kartice = $ss->getAllKartice();
+        foreach( $kartice as $kartica ) {
             $json_kartica = json_encode($kartica);
             ?>
             kartica = <?php echo $json_kartica; ?>;
@@ -163,3 +163,15 @@ if(false){  // Ovaj if je samo da se pseudokod ne pokusava izvrsavat
 
 
 <?php require_once __DIR__ . '/view/_footer.php'; ?>
+
+
+
+
+<!-- for ($i=1; $i < 82; $i++) {
+    $kartica = $ss->getKarticaByIdProizvoda( $i );
+    $json_kartica = json_encode($kartica);
+    ?>
+    kartica = < ?php echo $json_kartica; ?>;
+    ubaci_objekt(kartica);
+    < ?php
+} -->

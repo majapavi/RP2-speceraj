@@ -94,7 +94,7 @@ class SpecerajService
     function getProizvodById( $id_proizvod )
     {
         $db = DB::getConnection();
-        $st = $db->prepare( 'SELECT * FROM `projekt_Proizvodi` WHERE `id` = :id' );
+        $st = $db->prepare( 'SELECT * FROM `projekt_Proizvodi` WHERE `ID` = :id' );
         $st->bindParam(':id', $id_proizvod, PDO::PARAM_INT);
         $st->execute();
 
@@ -108,7 +108,7 @@ class SpecerajService
     function getDucanById( $id_ducan )
     {
         $db = DB::getConnection();
-        $st = $db->prepare( 'SELECT * FROM `projekt_Ducani` WHERE `id` = :id' );
+        $st = $db->prepare( 'SELECT * FROM `projekt_Ducani` WHERE `ID` = :id' );
         $st->bindParam(':id', $id_ducan, PDO::PARAM_INT);
         $st->execute();
 
@@ -119,28 +119,80 @@ class SpecerajService
         }
     }
 
+    function getPonudeByIdProizvod( $id_proizvod )
+    {
+        $db = DB::getConnection();
+        $st = $db->prepare( 'SELECT * FROM `projekt_Ponude` WHERE `ID_Proizvod` = :id' );
+        $st->bindParam(':id', $id_proizvod, PDO::PARAM_INT);
+        $st->execute();
+
+        $ponude = [];
+        while( $row = $st->fetch() )
+        {
+            $ponuda = new Ponuda( $row['ID'], $row['ID_Proizvod'], $row['ID_Ducan'], $row['Cijena'], $row['Akcija'] );
+            $ponude[] = $ponuda;
+        }
+
+        return $ponude;
+    }
+
     function getKarticaByIdProizvoda( $id_proizvod )
     {
-        $ponude = $this->getAllPonude();
+        $ponude = $this->getPonudeByIdProizvod( $id_proizvod );
         $proizvod = $this->getProizvodById( $id_proizvod );
 
         $ducani = [];
         foreach( $ponude as $ponuda ) {
-            if( (int)$ponuda->ID_Proizvod === $id_proizvod ) {
-                $ducan = $this->getDucanById( $ponuda->ID_Ducan );
-                if( $ponuda->Akcija === NULL ) {
-                    $ducan2 = new Ducan2( $ducan->Naziv, $ducan->Link, $ponuda->Cijena, "NE" );
-                    $ducani[] = $ducan2;
-                }
-                else {
-                    $ducan2 = new Ducan2( $ducan->Naziv, $ducan->Link  , $ponuda->Akcija, "DA" );
-                    $ducani[] = $ducan2;
-                }
+            $ducan = $this->getDucanById( $ponuda->ID_Ducan );
+            if( $ponuda->Akcija === NULL ) {
+                $ducan2 = new Ducan2( $ducan->Naziv, $ducan->Link, $ponuda->Cijena, "NE" );
+                $ducani[] = $ducan2;
+            }
+            else {
+                $ducan2 = new Ducan2( $ducan->Naziv, $ducan->Link, $ponuda->Akcija, "DA" );
+                $ducani[] = $ducan2;
             }
         }
         $kartica = new Kartica( $proizvod->ID, $proizvod->Naziv, $proizvod->Link, $proizvod->Korak, $ducani );
 
         return $kartica;
+    }
+
+    function getAllKartice( $search = '', $sort = '' )
+    {
+        $db = DB::getConnection();
+        $st = null;
+        $query = 'SELECT `ID` FROM `projekt_Proizvodi`';
+
+        if ($search !== '' && $sort !== '') {
+            $query .= ' WHERE `Naziv` LIKE :nesto ORDER BY ' . $sort;
+        } else if ($search !== '') {
+            $query .= ' WHERE `Naziv` LIKE :nesto';
+        } else if ($sort !== '') {
+            $query .= ' ORDER BY ' . $sort;
+        }
+
+        $st = $db->prepare($query);
+
+        if ($search !== '') {
+            $search = '%' . $search . '%';
+            $st->bindParam(':nesto', $search, PDO::PARAM_STR);
+        }
+
+        $st->execute();
+
+        $indexi = [];
+        while ($row = $st->fetch()) {
+            $indexi[] = (int) $row['ID'];
+        }
+
+        $sve_kartice = [];
+        foreach ($indexi as $i) {
+            $kartica = $this->getKarticaByIdProizvoda( $i );
+            $sve_kartice[] = $kartica;
+        }
+
+        return $sve_kartice;
     }
 }
 
