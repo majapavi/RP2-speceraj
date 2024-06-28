@@ -10,6 +10,7 @@ class DucaniController
         $ss = new SpecerajService();
         $title = 'Popis svih dućana';
         $ducaniList = $ss->getAllDucani();
+        $loginUser = $_SESSION['ime'] . ' ' . $_SESSION['prezime'];
 
         require_once __DIR__ . '/../view/ducani_index.php';
     }

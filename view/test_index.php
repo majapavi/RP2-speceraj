@@ -1,9 +1,6 @@
-<!-- Treba prebaciti ovu stranicu u view ( i prilagoditi require-ove i linkove u headeru da radi ) -->
-
 <?php
-    $title = "Ponuda";
-    require_once __DIR__ . '/model/specerajservice.class.php';
-    require_once __DIR__ . '/view/_header.php';
+    require_once __DIR__ . '/../model/specerajservice.class.php';
+    require_once __DIR__ . '/_header.php';
 ?>
 
 <div id="forma_za_search_i_sort">
@@ -89,9 +86,6 @@ if(false){  // Ovaj if je samo da se pseudokod ne pokusava izvrsavat
     let kartica;
 
     <?php
-        $ss = new SpecerajService();
-
-        $kartice = $ss->getAllKartice();
         foreach( $kartice as $kartica ) {
             $json_kartica = json_encode($kartica);
             ?>
@@ -162,7 +156,7 @@ if(false){  // Ovaj if je samo da se pseudokod ne pokusava izvrsavat
 </script>
 
 
-<?php require_once __DIR__ . '/view/_footer.php'; ?>
+<?php require_once __DIR__ . '/_footer.php'; ?>
 
 
 

@@ -10,6 +10,7 @@ class KupciController
         $ss = new SpecerajService();
         $title = 'Popis svih kupaca';
         $kupciList = $ss->getAllKupci();
+        $loginUser = $_SESSION['ime'] . ' ' . $_SESSION['prezime'];
 
         require_once __DIR__ . '/../view/kupci_index.php';
     }

@@ -10,6 +10,7 @@ class RecenzijeController
         $ss = new SpecerajService();
         $title = 'Popis svih recenzija';
         $recenzijeList = $ss->getAllRecenzije();
+        $loginUser = $_SESSION['ime'] . ' ' . $_SESSION['prezime'];
 
         require_once __DIR__ . '/../view/recenzije_index.php';
     }

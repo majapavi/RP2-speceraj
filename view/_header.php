@@ -15,16 +15,22 @@
     <div class="wrap">
     <header>
         <h1>Špeceraj</h1>
-
+        <div class="user-info">
+            <span>Hello, <?php echo $loginUser ?>!</span>
+            <br>
+            <form action="index.php" method="post">
+                <input type="submit" value="Logout" name="btn_logout">
+            </form>
+        </div>
         <ul class="navbar">
             <li><a href="index.php?rt=kupci/index">Popis svih kupaca</a></li>
             <li><a href="index.php?rt=ducani/index">Popis svih dućana</a></li>
             <li><a href="index.php?rt=proizvodi/index">Popis svih proizvoda</a></li>
             <li><a href="index.php?rt=ponude/index">Popis svih ponuda</a></li>
             <li><a href="index.php?rt=recenzije/index">Popis svih recenzija</a></li>
-            
+
             <!-- Za maknut kasnije -->
-            <li><a href="test_index.php">TEST</a></li>
+            <li><a href="index.php?rt=ponude/test">TEST</a></li>
             <!-- .. -->
         </ul>
     </header>

@@ -177,3 +177,21 @@ input[type="submit"]{
     float: right;
     cursor: pointer;
 }
+
+
+/* logout button i info user */
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-info span {
+    margin-right: 10px;
+    font-size: 1.2em;
+}
+
+.user-info .logout {
+    color: white;
+    text-decoration: none;
+    font-size: 1em;
+}

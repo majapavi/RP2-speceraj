@@ -1,8 +1,9 @@
 <?php
+session_start();
 
 if( !isset( $_GET['rt'] ) )
 {
-    $con = 'kupci';
+    $con = 'login';
     $action = 'index';
 }
 else
