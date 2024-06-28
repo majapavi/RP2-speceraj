@@ -4,7 +4,7 @@ require_once __DIR__ . '/../model/specerajservice.class.php';
 
 class LoginController
 {
-    function index()
+    function index( $poruka = '' )
     {
         require_once __DIR__ . '/../view/login_index.php';
     }

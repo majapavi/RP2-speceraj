@@ -1,62 +1,15 @@
 <?php
 
 require_once __DIR__ . '/../app/database/db.class.php';
-require_once __DIR__ . '/../controller/kupciController.class.php';
+require_once __DIR__ . '/../controller/loginController.class.php';
 
-if( isset( $_POST['btn_register'] ) )
+if( isset( $_POST['btn_registracija'] ) )
 {
-    registriraj_se();
+    registrirajSe();
 }
 else
 {
-    if( isset( $_POST['btn_logout'] ) )
-    {
-        session_unset();
-        session_destroy();
-        logiranje();
-    }
-    else
-    {
-        if( isset( $_POST['btn_login'] ) )
-        {
-            $ime = $_POST['ime'];
-            $prezime = $_POST['prezime'];
-            $password = $_POST['password'];
-
-            $db = DB::getConnection();
-            $st = $db->prepare( 'SELECT * FROM `projekt_Kupci` WHERE `Ime` = :ime AND `Prezime` = :prezime' );
-            $st->bindParam(':ime', $ime, PDO::PARAM_STR);
-            $st->bindParam(':prezime', $prezime, PDO::PARAM_STR);
-            $st->execute();
-
-            if( $st->rowCount() === 0 )
-            {
-                $msg = 'Korisnik ' . $ime . ' ' . $prezime . ' ne postoji!';
-                logiranje( $msg );
-            }
-            else
-            {
-                $row = $st->fetch();
-                $password_hash = $row['Password_Hash'];
-
-                if( password_verify( $password, $password_hash ) )
-                {
-                    $_SESSION['ime'] = $ime;
-                    $_SESSION['prezime'] = $prezime;
-                    otvori_aplikaciju();
-                }
-                else
-                {
-                    $msg = 'Neispravan password';
-                    logiranje( $msg );
-                }
-            }
-        }
-        else
-        {
-            logiranje();
-        }
-    }
+    registracija();
 }
 
 
@@ -70,10 +23,10 @@ function registracija( $msg = '' )
 
     <h3>Registriraj se</h3>
     <br>
-    <?php echo '<strong>' . $msg . '!</strong>'; ?>
+    <?php echo '<strong>' . $msg . '</strong>'; ?>
     <br>
     <br><br>
-    <form action="view/registration_index.php" method="post">
+    <form action="index.php" method="post">
         Ime:
         <input type="text" name="ime">
         <br>
@@ -83,8 +36,10 @@ function registracija( $msg = '' )
         Password:
         <input type="password" name="password">
         <br>
-        <input type="submit" value="Ulogiraj se" name="btn_login">
-        <input type="submit" value="Registriraj se" name="btn_register">
+        Potvrdi password:
+        <input type="password" name="potvrdi_password">
+        <br>
+        <input type="submit" value="Registriraj se" name="btn_registracija">
     </form>
 
     <?php
@@ -95,7 +50,50 @@ function registracija( $msg = '' )
 function ulogiraj_se()
 {
     $tst = new LoginController();
-    $tst->index();
+    $tst->index( 'Korisnički račun uspješno kreiran! Molimo Vas ulogirajte se kako biste mogli koristiti aplikaciju.' );
+}
+
+function registrirajSe()
+{
+    $ime = $_POST['ime'];
+    $prezime = $_POST['prezime'];
+    $password = $_POST['password'];
+    $potvrdi_password = $_POST['potvrdi_password'];
+
+    if( $password !== $potvrdi_password )
+    {
+        $msg = 'Password i potvrda passworda nisu bili isti, molim Vas pokušajte ponovo!';
+        registracija( $msg );
+    }
+    else
+    {
+        $ss = new SpecerajService();
+        $korisnici = $ss->getAllKupci();
+
+        $postoji = false;
+        foreach($korisnici as $korisnik )
+        {
+            if( $ime === $korisnik->Ime && $prezime === $korisnik->Prezime )
+            {
+                $postoji = true;
+                break;
+            }
+        }
+
+        if( $postoji )
+        {
+            $msg = 'Korisnik s imenom ' . $ime . ' ' . $prezime . ' već postoji!<br>Vratite se na stranicu za ulogiravanje.';
+            registracija( $msg );
+        }
+        else
+        {
+            $db = DB::getConnection();
+            $st = $db->prepare('INSERT INTO projekt_Kupci (Ime, Prezime, Password_Hash) VALUES (:ime, :prez, :pass)');
+            $st->execute(array('ime' => $ime, 'prez' => $prezime, 'pass' => password_hash($password, PASSWORD_DEFAULT)));
+
+            ulogiraj_se();
+        }
+    }
 }
 
 ?>

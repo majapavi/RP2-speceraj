@@ -2,8 +2,9 @@
 
 require_once __DIR__ . '/../app/database/db.class.php';
 require_once __DIR__ . '/../controller/kupciController.class.php';
+require_once __DIR__ . '/../controller/loginController.class.php';
 
-if( false && isset( $_POST['btn_register'] ) )
+if( isset( $_POST['btn_register'] ) )
 {
     registriraj_se();
 }
@@ -47,14 +48,14 @@ else
                 }
                 else
                 {
-                    $msg = 'Neispravan password';
+                    $msg = 'Neispravan password!';
                     logiranje( $msg );
                 }
             }
         }
         else
         {
-            logiranje();
+            logiranje( $poruka );
         }
     }
 }
@@ -70,7 +71,7 @@ function logiranje( $msg = '' )
 
     <h3>Ulogiraj se ili registriraj</h3>
     <br>
-    <?php echo '<strong>' . $msg . '!</strong>'; ?>
+    <?php echo '<strong>' . $msg . '</strong>'; ?>
     <br>
     <br><br>
     <form action="index.php" method="post">
@@ -84,7 +85,7 @@ function logiranje( $msg = '' )
         <input type="password" name="password">
         <br>
         <input type="submit" value="Ulogiraj se" name="btn_login">
-        <!--<input type="submit" value="Registriraj se" name="btn_register">-->
+        <input type="submit" value="Registriraj se" name="btn_register">
     </form>
 
     <?php
