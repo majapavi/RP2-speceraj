@@ -4,7 +4,7 @@ require_once __DIR__ . '/../app/database/db.class.php';
 require_once __DIR__ . '/../controller/kupciController.class.php';
 require_once __DIR__ . '/../controller/loginController.class.php';
 
-if( isset( $_POST['btn_register'] ) )
+if( isset( $_POST['btn_register'] ) || isset( $_POST['btn_registracija'] ) )
 {
     registriraj_se();
 }

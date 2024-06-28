@@ -9,7 +9,7 @@ class LoginController
         require_once __DIR__ . '/../view/login_index.php';
     }
 
-    function registriracija()
+    function registracija()
     {
         require_once __DIR__ . '/../view/registration_index.php';
     }
