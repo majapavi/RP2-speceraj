@@ -73,17 +73,14 @@ function logiranje( $msg = '' )
         <h3>Ulogiraj se ili registriraj</h3>
         <br>
         <?php echo '<strong>' . $msg . '</strong>'; ?>
-        <br><br>
+        <br>
         <form action="index.php?rt=login/index" method="post">
             <label for="ime">Ime:</label>
             <input type="text" id="ime" name="ime">
-            <br>
             <label for="prezime">Prezime:</label>
             <input type="text" id="prezime" name="prezime">
-            <br>
             <label for="password">Password:</label>
             <input type="password" id="password" name="password">
-            <br>
             <div class="button-container">
                 <input type="submit" value="Ulogiraj se" name="btn_login">
                 <input type="submit" value="Odi na registraciju" name="btn_register_page">

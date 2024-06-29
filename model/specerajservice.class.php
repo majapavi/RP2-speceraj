@@ -165,11 +165,11 @@ class SpecerajService
         $st = null;
         $query = 'SELECT `ID` FROM `projekt_Proizvodi`';
 
-        if ($search !== '' && $sort !== '') {
-            $query .= ' WHERE `Naziv` LIKE :nesto ORDER BY ' . $sort;
-        } else if ($search !== '') {
+        if ($search !== '') {
             $query .= ' WHERE `Naziv` LIKE :nesto';
-        } else if ($sort !== '') {
+            $query .= ' OR `Opis` LIKE :nesto';
+        }
+        if ($sort !== '') {
             $query .= ' ORDER BY ' . $sort;
         }
 

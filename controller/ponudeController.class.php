@@ -19,8 +19,17 @@ class PonudeController
     {
         $ss = new SpecerajService();
         $title = "Ponuda";
-        $kartice = $ss->getAllKartice();
-        $akcije = $ss->getAllAkcije( 'mli', 'Naziv ASC');
+
+        $pretrazivanje = '';
+        if( isset($_POST['pretrazivanje']) ){
+            $pretrazivanje = $_POST['pretrazivanje'];
+        }
+        $sortiranje = '';
+        if( isset($_POST['sortiranje']) ){
+            $sortiranje = $_POST['sortiranje'];
+        }
+
+        $kartice = $ss->getAllKartice( $pretrazivanje, $sortiranje );
         $loginUser = $_SESSION['ime'] . ' ' . $_SESSION['prezime'];
 
         require_once __DIR__ . '/../view/test_index.php';

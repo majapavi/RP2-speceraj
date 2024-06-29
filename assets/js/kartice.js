@@ -35,7 +35,7 @@ function stvori_karticu_proizvoda( input ){
         const ducani = $('<div></div>').addClass('ducani');
 
         $.each(input.Ducani, function(index, info) {
-            console.log("INFO: ", info);
+            // console.log("INFO: ", info);
             const ovaj_ducan = $('<div></div>').addClass('jedan_ducan');
 
             const logo = $('<img>').attr('src', info.Logo);

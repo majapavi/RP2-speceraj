@@ -28,20 +28,16 @@ function registracija( $msg = '' )
         <h3>Registriraj se</h3>
         <br>
         <?php echo '<strong>' . $msg . '</strong>'; ?>
-        <br><br>
+        <br>
         <form action="index.php?rt=login/registracija" method="post">
             <label for="ime">Ime:</label>
             <input type="text" id="ime" name="ime">
-            <br>
             <label for="prezime">Prezime:</label>
             <input type="text" id="prezime" name="prezime">
-            <br>
             <label for="password">Password:</label>
             <input type="password" id="password" name="password">
-            <br>
             <label for="potvrdi_password">Potvrdi password:</label>
             <input type="password" id="potvrdi_password" name="potvrdi_password">
-            <br>
             <div class="button-container">
                 <input type="submit" value="Registriraj se!" name="btn_registracija">
                 <input type="submit" value="Povratak na login" name="btn_login_page">
