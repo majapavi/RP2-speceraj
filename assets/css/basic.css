@@ -1,0 +1,95 @@
+/*  CSS file sadrži
+    -   body
+    -   header
+    -   main
+    -   footer
+    -   .navbar klasu
+
+/* basic */
+table, th, td {
+    border: solid 1px #2C3E50;
+    border-collapse: collapse;
+}
+
+/* header i footer */
+body {
+    margin: 0;
+    font-family: cursive;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    background-color: #2C3E50;
+    color: #ECF0F1;
+}
+
+.user-info{
+    margin-left: auto;
+    text-align: right;
+    padding-right: 20px;
+}
+
+.user-info .logout {
+    background-color: #ECF0F1;
+    border-radius: 5px;
+    padding: 5px;
+    height: 40px;
+    width: 60px;
+    margin-top: 5px;
+    margin-left: 5px;
+    float: right;
+    cursor: pointer;
+}
+
+header h1{
+    padding: 20px;
+}
+
+main {
+    flex: 1;
+    padding: 1rem;
+}
+
+footer {
+    background-color: #2C3E50;
+    color: #ECF0F1;
+    padding: 0.5rem;
+    margin-top: auto;
+}
+
+/* Navbar */
+.navbar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #2C3E50;
+    display: flex;
+    justify-content: flex-start;
+}
+
+/* Stilovi za svaki <li> element u navbaru */
+.navbar li {
+    float: left;
+}
+
+/* Stilovi za linkove u navbaru */
+.navbar li a {
+    display: block;
+    color: #ECF0F1;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* Stilovi za hover efekt */
+.navbar li a:hover {
+    background-color: #95A5A6;
+}
+
+/* Zadnji element neka ide prema desno */
+.navbar li:last-child {
+    margin-left: auto;
+}

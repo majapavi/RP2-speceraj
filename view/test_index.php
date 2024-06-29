@@ -3,14 +3,14 @@
     require_once __DIR__ . '/_header.php';
 ?>
 
-<div id="forma_za_search_i_sort">
+<div class="forma_za_search_i_sort">
     <form>
-        <input type="text" id="pretrazivanje" name="pretrazivanje" placeholder="Pretraži proizvode...">
+        <input type="text" class="pretrazivanje" name="pretrazivanje" placeholder="Pretraži proizvode...">
         <label for="sortiranje">Sortiraj po: </label>
-        <select name="sortiranje" id="sortiranje">
-            <option value="bez_opcije">Zadano</option>
-            <option value="naziv_uzlazno">Nazivu (A->Z)</option>
-            <option value="naziv_silazno">Nazivu (Z->A)</option>
+        <select name="sortiranje" class="sortiranje">
+            <option value="">Zadano</option>
+            <option value="Naziv ASC">Nazivu (A->Z)</option>
+            <option value="Naziv DESC">Nazivu (Z->A)</option>
         </select>
         <input type="submit" value="Pretraži">
     </form>
@@ -84,13 +84,14 @@ if(false){  // Ovaj if je samo da se pseudokod ne pokusava izvrsavat
 <script>
 
     let kartica;
+    let za_ubaciti;
 
     <?php
         foreach( $kartice as $kartica ) {
             $json_kartica = json_encode($kartica);
             ?>
             kartica = <?php echo $json_kartica; ?>;
-            ubaci_objekt(kartica);
+            $('#sve_ponude').append( stvori_karticu_proizvoda(kartica) );
             <?php
         }
     ?>

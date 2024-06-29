@@ -1,0 +1,118 @@
+/* CSS file s definiranim izgledom kartica:
+    -   search i sort bar
+    -   kartica_proizvoda
+
+/* općenito na karticama */
+#sve_ponude{
+    margin-left: 20px;
+}
+h3{
+    padding: 20px;
+    margin: 20px;
+}
+/* -------------------------------------- */
+
+/* forma za search i sort */
+.forma_za_search_i_sort{
+    margin-left: 20px;
+    padding-left: 20px;
+    width: 800px;
+}
+.pretrazivanje{
+    background-color: #ECF0F1;
+    border-radius: 5px;
+    width: 500px;
+    height: 40px;
+    padding: 5px;
+    box-sizing: border-box;
+}
+.sortiranje{
+    background-color: #ECF0F1;
+    border-radius: 5px;
+    height: 40px;
+    padding: 5px;
+}
+.forma_za_search_i_sort input[type="submit"]{
+    background-color: #ECF0F1;
+    border-radius: 5px;
+    padding: 5px;
+    float: right;
+    cursor: pointer;
+    height: 40px;
+}
+/* -------------------------------------- */
+
+/* Kartica proizvoda */
+.kartica_proizvoda{
+    display: flex;
+    background-color: #95A5A6;
+    border: 5px solid #2C3E50;
+    border-radius: 15px;
+    padding: 10px;
+    width: 1000px;
+    height: 250px;
+    margin: 10px;
+    align-items: center;
+    /* justify-content: center; */
+}
+/* Opis je slika i ime proizvoda */
+.kartica_proizvoda .opis{
+    height: 100%;
+    width: 150px;
+    float: left;
+    padding: 10px;
+}
+.kartica_proizvoda img {
+    border-radius: 15px;
+    padding: 10px;
+    width: 100px;
+    height: 100px;
+    margin: 10px;
+}
+.kartica_proizvoda h4 {
+    text-align: center;
+    font-size: 20px;
+}
+/* Ducani su svi ducani koji imaju taj proizvod (logo, cijena, gumb) */
+.kartica_proizvoda .ducani{
+    height: 100%;
+    float: right;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+.kartica_proizvoda .ducani .jedan_ducan{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-right: 11px;
+}
+/* logo ducana */
+.kartica_proizvoda .ducani img {
+    border-radius: 15px;
+    padding: 10px;
+    width: 70px;
+    height: 70px;
+    margin: 10px;
+}
+.kartica_proizvoda .ducani button{
+    background-color: #ECF0F1;
+    border-radius: 5px;
+    margin: 0px;
+    width: 70px;
+}
+.kartica_proizvoda .akcija{
+    color: #2C3E50;
+    background-color: #8caccb;
+    border-radius: 10px;
+    border: 0px solid #2C3E50;
+}
+.kartica_proizvoda .kolicina{
+    background-color: #ECF0F1;
+    border-radius: 5px;
+    width: 100px;
+    padding: 5px;
+}
+/* -------------------------------------- */

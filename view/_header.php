@@ -8,18 +8,20 @@
     <meta developer="Bruno Polančec">
     <title>Špeceraj</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
-    <link rel="stylesheet" href="https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/view/stil.css">
+    <script src="assets/js/kartice.js"></script>
+    <!-- <link rel="stylesheet" href="https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/view/stil.css"> -->
+    <link rel="stylesheet" href="assets/css/kartice.css">
+    <link rel="stylesheet" href="assets/css/basic.css">
 
 </head>
 <body>
-    <div class="wrap">
     <header>
         <h1>Špeceraj</h1>
         <div class="user-info">
             <span>Hello, <?php echo $loginUser ?>!</span>
             <br>
             <form action="index.php" method="post">
-                <input type="submit" value="Logout" name="btn_logout">
+                <input type="submit" value="Logout" name="btn_logout" class="logout">
             </form>
         </div>
         <ul class="navbar">
@@ -34,4 +36,5 @@
             <!-- .. -->
         </ul>
     </header>
+    <main>
     <h3> <?php echo $title; ?> </h3>
