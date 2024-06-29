@@ -61,7 +61,8 @@
 
         // foreach( $akcije as $akcija ) {
         //     ?>
-        //     akcija = <?php echo $akcija; ?>;
+        //     akcija = <?php 
+        // echo $akcija; ?>;
         //     console.log( akcija );
         //     <?php
         // }
