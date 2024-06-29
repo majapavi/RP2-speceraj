@@ -1,0 +1,68 @@
+/* Stil za form container */
+.login-container, .registration-container {
+    margin: 20px; /* Odmak od rubova */
+    padding: 20px; /* Unutarnji padding */
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 100%; /* Maksimalna širina kontejnera */
+    width: 80%; /* Prilagodljiva širina kontejnera */
+    margin: auto; /* Centriranje kontejnera */
+}
+
+/* Stil za naslov */
+.login-container h3, .registration-container h3 {
+    margin-bottom: 20px;
+}
+
+/* Stil za formu */
+.login-container form, .registration-container form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Stil za labele */
+.login-container label, .registration-container label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Stil za input elemente */
+.login-container input[type="text"],
+.login-container input[type="password"],
+.registration-container input[type="text"],
+.registration-container input[type="password"] {
+    width: calc(100% - 20px); /* Širina input polja, s odmakom od 10px s obje strane */
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Stil za kontejner s gumbima */
+.login-container .button-container, .registration-container .button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Stil za gumb */
+.login-container input[type="submit"], .registration-container input[type="submit"] {
+    width: 100%; /* Širina gumba */
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    max-width: calc(100% + 20px); /* Maksimalna širina gumba */
+    box-sizing: border-box; /* Da padding ne utječe na širinu */
+}
+
+/* Stil za hover efekt na gumbu */
+.login-container input[type="submit"]:hover, .registration-container input[type="submit"]:hover {
+    background-color: #0056b3;
+}

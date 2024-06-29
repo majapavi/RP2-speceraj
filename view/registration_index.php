@@ -7,6 +7,9 @@ if( isset( $_POST['btn_registracija'] ) )
 {
     registrirajSe();
 }
+elseif ( isset( $_POST['btn_login_page'] ) ) {
+    odiNaLogin();
+}
 else
 {
     registracija();
@@ -21,36 +24,34 @@ function registracija( $msg = '' )
 
     ?>
 
-    <h3>Registriraj se</h3>
-    <br>
-    <?php echo '<strong>' . $msg . '</strong>'; ?>
-    <br>
-    <br><br>
-    <form action="index.php" method="post">
-        Ime:
-        <input type="text" name="ime">
+    <div class="registration-container">
+        <h3>Registriraj se</h3>
         <br>
-        Prezime:
-        <input type="text" name="prezime">
-        <br>
-        Password:
-        <input type="password" name="password">
-        <br>
-        Potvrdi password:
-        <input type="password" name="potvrdi_password">
-        <br>
-        <input type="submit" value="Registriraj se" name="btn_registracija">
-    </form>
+        <?php echo '<strong>' . $msg . '</strong>'; ?>
+        <br><br>
+        <form action="index.php?rt=login/registracija" method="post">
+            <label for="ime">Ime:</label>
+            <input type="text" id="ime" name="ime">
+            <br>
+            <label for="prezime">Prezime:</label>
+            <input type="text" id="prezime" name="prezime">
+            <br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password">
+            <br>
+            <label for="potvrdi_password">Potvrdi password:</label>
+            <input type="password" id="potvrdi_password" name="potvrdi_password">
+            <br>
+            <div class="button-container">
+                <input type="submit" value="Registriraj se!" name="btn_registracija">
+                <input type="submit" value="Povratak na login" name="btn_login_page">
+            </div>
+        </form>
+    </div>
 
     <?php
 
     require_once __DIR__ . '/_footer.php';
-}
-
-function ulogiraj_se()
-{
-    $tst = new LoginController();
-    $tst->index( 'Korisnički račun uspješno kreiran! Molimo Vas ulogirajte se kako biste mogli koristiti aplikaciju.' );
 }
 
 function registrirajSe()
@@ -91,9 +92,16 @@ function registrirajSe()
             $st = $db->prepare('INSERT INTO projekt_Kupci (Ime, Prezime, Password_Hash) VALUES (:ime, :prez, :pass)');
             $st->execute(array('ime' => $ime, 'prez' => $prezime, 'pass' => password_hash($password, PASSWORD_DEFAULT)));
 
-            ulogiraj_se();
+            $msg = 'Korisnički račun uspješno kreiran!<br>Molimo Vas ulogirajte se kako biste mogli koristiti aplikaciju.';
+            registracija( $msg );
         }
     }
+}
+
+function odiNaLogin()
+{
+    $tst = new LoginController();
+    $tst->index();
 }
 
 ?>

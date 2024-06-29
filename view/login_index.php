@@ -4,7 +4,7 @@ require_once __DIR__ . '/../app/database/db.class.php';
 require_once __DIR__ . '/../controller/kupciController.class.php';
 require_once __DIR__ . '/../controller/loginController.class.php';
 
-if( isset( $_POST['btn_register'] ) || isset( $_POST['btn_registracija'] ) )
+if( isset( $_POST['btn_register_page'] ) || isset( $_POST['btn_registracija'] ) )
 {
     registriraj_se();
 }
@@ -25,7 +25,7 @@ else
             $password = $_POST['password'];
 
             $db = DB::getConnection();
-            $st = $db->prepare( 'SELECT * FROM `projekt_Kupci` WHERE `Ime` = :ime AND `Prezime` = :prezime' );
+            $st = $db->prepare( 'SELECT * FROM projekt_Kupci WHERE Ime = :ime AND Prezime = :prezime' );
             $st->bindParam(':ime', $ime, PDO::PARAM_STR);
             $st->bindParam(':prezime', $prezime, PDO::PARAM_STR);
             $st->execute();
@@ -69,24 +69,27 @@ function logiranje( $msg = '' )
 
     ?>
 
-    <h3>Ulogiraj se ili registriraj</h3>
-    <br>
-    <?php echo '<strong>' . $msg . '</strong>'; ?>
-    <br>
-    <br><br>
-    <form action="index.php" method="post">
-        Ime:
-        <input type="text" name="ime">
+    <div class="login-container">
+        <h3>Ulogiraj se ili registriraj</h3>
         <br>
-        Prezime:
-        <input type="text" name="prezime">
-        <br>
-        Password:
-        <input type="password" name="password">
-        <br>
-        <input type="submit" value="Ulogiraj se" name="btn_login">
-        <input type="submit" value="Registriraj se" name="btn_register">
-    </form>
+        <?php echo '<strong>' . $msg . '</strong>'; ?>
+        <br><br>
+        <form action="index.php?rt=login/index" method="post">
+            <label for="ime">Ime:</label>
+            <input type="text" id="ime" name="ime">
+            <br>
+            <label for="prezime">Prezime:</label>
+            <input type="text" id="prezime" name="prezime">
+            <br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password">
+            <br>
+            <div class="button-container">
+                <input type="submit" value="Ulogiraj se" name="btn_login">
+                <input type="submit" value="Odi na registraciju" name="btn_register_page">
+            </div>
+        </form>
+    </div>
 
     <?php
 
