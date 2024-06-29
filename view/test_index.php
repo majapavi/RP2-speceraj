@@ -85,6 +85,7 @@ if(false){  // Ovaj if je samo da se pseudokod ne pokusava izvrsavat
 
     let kartica;
     let za_ubaciti;
+    let akcija;
 
     <?php
         foreach( $kartice as $kartica ) {
@@ -92,6 +93,13 @@ if(false){  // Ovaj if je samo da se pseudokod ne pokusava izvrsavat
             ?>
             kartica = <?php echo $json_kartica; ?>;
             $('#sve_ponude').append( stvori_karticu_proizvoda(kartica) );
+            <?php
+        }
+
+        foreach( $akcije as $akcija ) {
+            ?>
+            akcija = <?php echo $akcija; ?>;
+            console.log( akcija );
             <?php
         }
     ?>

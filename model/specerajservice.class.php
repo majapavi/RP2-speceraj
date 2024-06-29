@@ -8,6 +8,7 @@ require_once __DIR__ . '/ponude.class.php';
 require_once __DIR__ . '/recenzije.class.php';
 require_once __DIR__ . '/kartica.class.php';
 require_once __DIR__ . '/ducani2.class.php';
+require_once __DIR__ . '/akcija.class.php';
 
 class SpecerajService
 {
@@ -193,6 +194,53 @@ class SpecerajService
         }
 
         return $sve_kartice;
+    }
+
+    function getAllAkcije( $search = '', $sort = '' )
+    {
+        $db = DB::getConnection();
+        $st = null;
+        $query = 'SELECT p.ID, p.ID_Proizvod, p.ID_Ducan, p.Cijena, p.Akcija
+                  FROM projekt_Ponude p
+                  JOIN projekt_Proizvodi pr ON p.ID_Proizvod = pr.ID
+                  JOIN projekt_Ducani d ON p.ID_Ducan = d.ID
+                  WHERE p.Akcija IS NOT NULL';
+
+        if ($search !== '') {
+            $query .= ' AND (pr.Naziv LIKE :search OR pr.Opis LIKE :search)';
+        }
+
+        if ($sort !== '') {
+            if (strpos($sort, 'A') === 0) {
+                $query .= ' ORDER BY ' . $sort;
+            } elseif (strpos($sort, 'N') === 0) {
+                $query .= ' ORDER BY pr.' . $sort;
+            } else {
+                // Default sort order if invalid sort is provided
+                $query .= ' ORDER BY p.ID ASC';
+            }
+        }
+
+        $st = $db->prepare($query);
+
+        if ($search !== '') {
+            $searchParam = '%' . $search . '%';
+            $st->bindParam(':search', $searchParam, PDO::PARAM_STR);
+        }
+
+        $st->execute();
+
+        $akcije = [];
+        while( $row = $st->fetch() ) {
+            $proizvod = $this->getProizvodById($row['ID_Proizvod']);
+            $ducan = $this->getDucanById($row['ID_Ducan']);
+
+            $akcija = new Akcija( $row['ID'], $proizvod->Naziv, $proizvod->Link, $ducan->Naziv, $ducan->Link, $row['Cijena'], $row['Akcija'] );
+
+            $akcije[] = json_encode( $akcija );
+        }
+
+        return $akcije;
     }
 }
 

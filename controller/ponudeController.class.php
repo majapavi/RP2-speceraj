@@ -20,6 +20,7 @@ class PonudeController
         $ss = new SpecerajService();
         $title = "Ponuda";
         $kartice = $ss->getAllKartice();
+        $akcije = $ss->getAllAkcije( 'mli', 'Naziv ASC');
         $loginUser = $_SESSION['ime'] . ' ' . $_SESSION['prezime'];
 
         require_once __DIR__ . '/../view/test_index.php';
