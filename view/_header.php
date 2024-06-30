@@ -12,7 +12,7 @@
     <!-- <link rel="stylesheet" href="https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/view/stil.css"> -->
     <link rel="stylesheet" href="assets/css/kartice.css">
     <link rel="stylesheet" href="assets/css/basic.css">
-
+    <link rel="stylesheet" href="assets/css/recenzije.css">
 </head>
 <body>
     <header>

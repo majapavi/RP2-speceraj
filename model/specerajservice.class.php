@@ -242,6 +242,35 @@ class SpecerajService
 
         return $akcije;
     }
+
+    function unesiRecenziju( $user_id, $store_id, $review, $rating )
+    {
+        $db = DB::getConnection();
+        $st = $db->prepare( 'SELECT `ID` FROM `projekt_Recenzije` WHERE `ID_Ducan` = :id_ducan AND `ID_User` = :id_user' );
+        $st->bindParam( ':id_ducan', $store_id, PDO::PARAM_INT );
+        $st->bindParam( ':id_user', $user_id, PDO::PARAM_INT );
+        $st->execute();
+
+        $msg = '';
+
+        if( $row = $st->fetch() ) {
+            $st = $db->prepare( 'UPDATE `projekt_Recenzije` SET `Ocjena` = :ocjena, `Tekst` = :tekst WHERE `ID` = :id' );
+            $st->bindParam( ':ocjena', $rating, PDO::PARAM_INT );
+            $st->bindParam( ':tekst', $review, PDO::PARAM_STR );
+            $st->bindParam( ':id', $row['ID'], PDO::PARAM_INT );
+            $st->execute();
+
+            $msg = 'Vaša recenzija je uspješno ažurirana!';
+        }
+        else {
+            $st = $db->prepare( 'INSERT INTO `projekt_Recenzije` (ID_Ducan, ID_User, Ocjena, Tekst) VALUES (:id_ducan, :id_user, :ocjena, :tekst)' );
+            $st->execute(array('id_ducan' => $store_id, 'id_user' => $user_id, 'ocjena' => $rating, 'tekst' => $review));
+
+            $msg = 'Vaša recenzija je uspješno postavljena!';
+        }
+
+        return $msg;
+    }
 }
 
 ?>

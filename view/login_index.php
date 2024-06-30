@@ -44,6 +44,7 @@ else
                 {
                     $_SESSION['ime'] = $ime;
                     $_SESSION['prezime'] = $prezime;
+                    $_SESSION['ID'] = $row['ID'];
                     otvori_aplikaciju();
                 }
                 else

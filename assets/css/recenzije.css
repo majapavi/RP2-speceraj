@@ -1,0 +1,35 @@
+.star {
+    font-size: 30px;
+    color: gray;
+    cursor: pointer;
+}
+.star.selected {
+    color: gold;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    height: 60vh; /* Visina cijelog viewporta za testiranje */
+}
+.left-box {
+    padding: 20px;
+    border: 1px solid black;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    height: 100%; /* Visina cijelog kontejnera */
+}
+.right-container {
+    display: grid;
+    gap: 10px;
+    height: 100%; /* Visina cijelog kontejnera */
+}
+.right-box {
+    padding: 20px;
+    border: 1px solid black;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
