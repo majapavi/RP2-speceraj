@@ -5,7 +5,17 @@
 
 <div class="forma_za_search_i_sort">
     <form action="index.php?rt=akcije/index" method="POST">
-        <input type="text" class="pretrazivanje" name="pretrazivanje" placeholder="Pretraži proizvode...">
+        Odaberite dućane koje želite pretražiti:
+        <?php
+            foreach ($ducani as $ducan) {
+                echo "<label>";
+                echo "<input type='checkbox' name='ducani[]' value = '$ducan->ID'>";
+                echo $ducan->Naziv;
+                echo "</label>";
+            }
+        ?>
+        <br><br>
+        <input type="search" class="pretrazivanje" name="pretrazivanje" placeholder="Pretraži proizvode...">
         <label for="sortiranje">Sortiraj po: </label>
         <select name="sortiranje" class="sortiranje">
             <option value="">Zadano</option>
@@ -42,6 +52,20 @@
     if(zadnjiSort){
         $(`option[value='${zadnjiSort}']`).prop('selected', true);
     }
+
+    // Zadrzi zadnje izabrane checkbox opcije
+    let id;
+    <?php 
+        $zadnjiCheck = isset($_POST['ducani']) ? $_POST['ducani'] : [];
+        foreach ($zadnjiCheck as $key => $value) {
+            ?>
+            id = <?php echo $value ?>
+            // console.log(id);
+            $(`input[type='checkbox'][value='${id}']`).prop('checked', true);    
+            <?php
+        }
+    ?>
+    
     <?php
 
         if( count($akcije) == 0 ){
@@ -62,5 +86,10 @@
     ?>
 </script>
 
+
+
+<?php
+print_r($_POST);
+?>
 
 <?php require_once __DIR__ . '/_footer.php'; ?>
