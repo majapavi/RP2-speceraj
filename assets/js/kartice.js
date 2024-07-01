@@ -73,36 +73,23 @@ function stvori_karticu_akcije( input ){
     // Slike i naziv
     const opis = $('<div></div>').addClass('opis');
     
+    const proizvod = $('<img>').attr('src', input.Slika);
+    opis.append(proizvod);
+    
+    const desno = $('<div></div>').addClass('right')
+
     const ime = $('<h4></h4>');
     ime.append(`${input.Naziv}`);
-    opis.append(ime);
+    desno.append(ime);
 
-    const slike = $('<div></div>').addClass('bot')
-    const proizvod = $('<img>').attr('src', input.Slika);
-    slike.append(proizvod);
-    
     const ducan = $('<img>').attr('src', input.DucanSlika);
-    slike.append(ducan);
-    opis.append(slike);
+    desno.append(ducan);
+    opis.append(desno);
 
     objekt.append(opis);
 
-    // Ducan (logo i ime)
-    // const ducan = $('<div></div>').addClass('opis_ducana');
-
-    // // const logo = $('<img>').attr('src', input.DucanSlika);
-    // // ducan.append(logo);
-    // // ducan.append($('<br>'));
-
-    // const ime_ducana = $('<h4></h4>');
-    // ime_ducana.append(`${input.Ducan}`);
-    // // ducan.append(ime_ducana);
-
-    // objekt.append(ducan);
-
-
     // Količina
-    const kolicina = $('<p></p>').append('Količina: ');
+    const kolicina = $('<p></p>').append('Količina: ').css('margin-right', '10px');
     
     let korak = input.Korak;
     if( korak == 1 ){
@@ -116,12 +103,12 @@ function stvori_karticu_akcije( input ){
     objekt.append(kolicina);
     
     // Stara cijena
-    const cijena = $('<p></p>').html(`Cijena: ${input.Cijena}`);
+    const cijena = $('<p></p>').html(`Cijena: ${input.Cijena}`).css('margin-right', '10px');
     cijena.css('text-decoration', 'line-through');
     objekt.append(cijena);
 
     // Akcija
-    const akcija = $('<p></p>').append("<label style='padding:0; margin:0; color:red;'>AKCIJA: </label>");
+    const akcija = $('<p></p>').append("<label style='padding:0; margin:0; color:red;'>AKCIJA: </label>").css('margin-right', '10px');
     akcija.addClass('akcija')
     akcija.append(input.Akcija);
     if(input.Korak == 0.1){
@@ -134,7 +121,7 @@ function stvori_karticu_akcije( input ){
     }
     objekt.append(akcija);
 
-    const gumb = $('<button></button>').html('Dodaj u košaricu');
+    const gumb = $('<button></button>').html('Dodaj u košaricu').css('margin-left', 'auto');
     objekt.append(gumb);
 
     return objekt;

@@ -197,15 +197,17 @@ class SpecerajService
         return $sve_kartice;
     }
 
-    function getAllAkcije( $search = '', $sort = '' )
+    function getAllAkcije( $search = '', $sort = '', $ducani = [1,2,3,4,5,6] )
     {
         $db = DB::getConnection();
         $st = null;
-        $query = 'SELECT p.ID, p.ID_Proizvod, p.ID_Ducan, p.Cijena, p.Akcija
+        $ids_str = implode(",", $ducani);
+        $query = "SELECT p.ID, p.ID_Proizvod, p.ID_Ducan, p.Cijena, p.Akcija
                   FROM projekt_Ponude p
                   JOIN projekt_Proizvodi pr ON p.ID_Proizvod = pr.ID
                   JOIN projekt_Ducani d ON p.ID_Ducan = d.ID
-                  WHERE p.Akcija IS NOT NULL';
+                  WHERE p.Akcija IS NOT NULL
+                  AND d.ID IN ($ids_str)";
 
         if ($search !== '') {
             $query .= ' AND (pr.Naziv LIKE :search OR pr.Opis LIKE :search)';
