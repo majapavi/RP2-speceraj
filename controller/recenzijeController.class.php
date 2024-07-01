@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../model/specerajservice.class.php';
 require_once __DIR__ . '/../model/recenzije.class.php';
+require_once __DIR__ . '/../model/recenzije2.class.php';
 
 class RecenzijeController
 {
@@ -12,7 +13,7 @@ class RecenzijeController
         $msg = '';
 
         $title = 'Popis svih recenzija';
-        $recenzijeList = $ss->getAllRecenzije();
+        $recenzije = $ss->getRecenzijeForView();
         $ducani = $ss->getAllDucani();
         $loginUser = $_SESSION['ime'] . ' ' . $_SESSION['prezime'];
 
@@ -36,7 +37,7 @@ class RecenzijeController
         }
 
         $title = 'Popis recenzija';
-        $recenzijeList = $ss->getAllRecenzije();
+        $recenzije = $ss->getRecenzijeForView();
         $ducani = $ss->getAllDucani();
         $loginUser = $_SESSION['ime'] . ' ' . $_SESSION['prezime'];
 

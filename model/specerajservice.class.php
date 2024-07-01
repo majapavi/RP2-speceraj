@@ -9,6 +9,7 @@ require_once __DIR__ . '/recenzije.class.php';
 require_once __DIR__ . '/kartica.class.php';
 require_once __DIR__ . '/ducani2.class.php';
 require_once __DIR__ . '/akcija.class.php';
+require_once __DIR__ . '/recenzije2.class.php';
 
 class SpecerajService
 {
@@ -260,16 +261,74 @@ class SpecerajService
             $st->bindParam( ':id', $row['ID'], PDO::PARAM_INT );
             $st->execute();
 
-            $msg = 'Vaša recenzija je uspješno ažurirana!';
+            if( $this->azurirajProsjek( $store_id ) === true ) {
+                $msg = 'Vaša recenzija je uspješno ažurirana!';
+            }
+            else {
+                $msg = 'Prosjek nije ažuriran';
+            }
         }
         else {
             $st = $db->prepare( 'INSERT INTO `projekt_Recenzije` (ID_Ducan, ID_User, Ocjena, Tekst) VALUES (:id_ducan, :id_user, :ocjena, :tekst)' );
             $st->execute(array('id_ducan' => $store_id, 'id_user' => $user_id, 'ocjena' => $rating, 'tekst' => $review));
 
-            $msg = 'Vaša recenzija je uspješno postavljena!';
+            if( $this->azurirajProsjek( $store_id ) === true ) {
+                $msg = 'Vaša recenzija je uspješno postavljena!';
+            }
+            else {
+                $msg = 'Prosjek nije ažuriran';
+            }
         }
 
         return $msg;
+    }
+
+    function azurirajProsjek( $id_ducan )
+    {
+        $db = DB::getConnection();
+
+        // Select prosjeka ocjena
+        $st = $db->prepare('SELECT ROUND(AVG(`Ocjena`), 1) AS ProsjekOcjena FROM `projekt_Recenzije` WHERE ID_Ducan = :id_ducan');
+        $st->bindParam(':id_ducan', $id_ducan, PDO::PARAM_INT);
+        $st->execute();
+
+        // Dobivanje prosjeka ocjena
+        if ($row = $st->fetch()) {
+            $prosjekOcjena = $row['ProsjekOcjena'];
+
+            // Update prosjeka u tablici `projekt_Ducani`
+            $stUpdate = $db->prepare('UPDATE `projekt_Ducani` SET `Prosjek` = :prosjekOcjena WHERE ID = :id_ducan');
+            $stUpdate->bindParam(':prosjekOcjena', $prosjekOcjena, PDO::PARAM_STR);
+            $stUpdate->bindParam(':id_ducan', $id_ducan, PDO::PARAM_INT);
+            $stUpdate->execute();
+
+            // Vraćanje uspješnosti ažuriranja (opcionalno)
+            return true; // ili neki drugi indikator uspješnosti
+        }
+
+        return false; // Ako nije pronađen prosjek ocjena ili je došlo do greške
+    }
+
+    function getRecenzijeForView()
+    {
+        $db = DB::getConnection();
+        $st = $db->prepare( 'SELECT k.Ime AS Ime_Kupca, k.Prezime AS Prezime_Kupca,
+                                    d.ID AS ID_Ducana, d.Naziv AS Naziv_Ducana, d.Link_na_logo AS Link_na_logo_Ducana,
+                                    r.Ocjena AS Ocjena_Recenzije, r.Tekst AS Tekst_Recenzije
+                             FROM projekt_Recenzije r
+                             JOIN projekt_Kupci k ON r.ID_User = k.ID
+                             JOIN projekt_Ducani d ON r.ID_Ducan = d.ID' );
+
+        $st->execute();
+
+        $recenzije = [];
+        while( $row = $st->fetch() ) {
+            $recenzija = new Recenzija2( $row['Ime_Kupca'] . ' ' . $row['Prezime_Kupca'], $row['ID_Ducana'], $row['Naziv_Ducana'], $row['Link_na_logo_Ducana'], $row['Ocjena_Recenzije'], $row['Tekst_Recenzije'] );
+
+            $recenzije[] = $recenzija;
+        }
+
+        return $recenzije;
     }
 }
 

@@ -13,7 +13,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
-    height: 60vh; /* Visina cijelog viewporta za testiranje */
+    height: 60vh; /* Ovdje možete prilagoditi visinu containera po potrebi */
 }
 .left-box {
     padding: 20px;
@@ -21,12 +21,13 @@
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
-    height: 100%; /* Visina cijelog kontejnera */
+    height: 100%;
 }
 .right-container {
     display: grid;
     gap: 10px;
-    height: 100%; /* Visina cijelog kontejnera */
+    overflow-y: auto; /* Omogućuje vertikalni scroll ako ima više recenzija */
+    max-height: 100%;
 }
 .right-box {
     padding: 20px;
@@ -34,4 +35,26 @@
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    width: 80%; /* Prilagodite širinu boxa prema potrebi */
+    height: 29vh;
+    margin: 1vh auto; /* Centrira box unutar .right-container */
+}
+.right-box img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+.right-box .stars {
+    color: yellow;
+    font-size: 20px;
+}
+.hidden {
+    display: none;
 }

@@ -9,7 +9,8 @@
             <select id="store" name="store" required>
                 <?php
                     foreach( $ducani as $ducan ) {
-                        echo '<option value="' . $ducan->ID . '">' . $ducan->Naziv . '</option>';
+                        $selected = ($zadnjiDucan == $ducan->ID) ? 'selected' : '';
+                        echo '<option value="' . $ducan->ID . '" ' . $selected . '>' . htmlspecialchars($ducan->Naziv, ENT_QUOTES, 'UTF-8') . '</option>';
                     }
                 ?>
             </select>
@@ -35,77 +36,40 @@
     </div>
 
     <div class="right-container">
-        <div class="right-box" style="background-color: lightgreen;">
-            <table>
-                <tr>
-                    <th>ID</th>
-                    <th>ID_Ducan</th>
-                    <th>ID_User</th>
-                    <th>Ocjena</th>
-                    <th>Tekst</th>
-                </tr>
-                <?php
-                    foreach( $recenzijeList as $recenzija )
-                    {
-                        echo '<tr>';
-                        echo '<td>' . $recenzija->ID . '</td>';
-                        echo '<td>' . $recenzija->ID_Ducan . '</td>';
-                        echo '<td>' . $recenzija->ID_User . '</td>';
-                        echo '<td>' . $recenzija->Ocjena . '</td>';
-                        echo '<td>' . $recenzija->Tekst . '</td>';
-                        echo '</tr>';
-                    }
-                ?>
-            </table>
-        </div>
-        <div class="right-box" style="background-color: lightcoral;">
-            <table>
-                <tr>
-                    <th>ID</th>
-                    <th>ID_Ducan</th>
-                    <th>ID_User</th>
-                    <th>Ocjena</th>
-                    <th>Tekst</th>
-                </tr>
-                <?php
-                    foreach( $recenzijeList as $recenzija )
-                    {
-                        echo '<tr>';
-                        echo '<td>' . $recenzija->ID . '</td>';
-                        echo '<td>' . $recenzija->ID_Ducan . '</td>';
-                        echo '<td>' . $recenzija->ID_User . '</td>';
-                        echo '<td>' . $recenzija->Ocjena . '</td>';
-                        echo '<td>' . $recenzija->Tekst . '</td>';
-                        echo '</tr>';
-                    }
-                ?>
-            </table>
-        </div>
-        <!-- <div class="right-box" style="background-color: lightgoldenrodyellow;">
-            <table>
-                <tr>
-                    <th>ID</th>
-                    <th>ID_Ducan</th>
-                    <th>ID_User</th>
-                    <th>Ocjena</th>
-                    <th>Tekst</th>
-                </tr>
-                < ?php
-                    foreach( $recenzijeList as $recenzija )
-                    {
-                        echo '<tr>';
-                        echo '<td>' . $recenzija->ID . '</td>';
-                        echo '<td>' . $recenzija->ID_Ducan . '</td>';
-                        echo '<td>' . $recenzija->ID_User . '</td>';
-                        echo '<td>' . $recenzija->Ocjena . '</td>';
-                        echo '<td>' . $recenzija->Tekst . '</td>';
-                        echo '</tr>';
-                    }
-                ? >
-            </table>
-        </div> -->
+        <?php
+            foreach ($ducani as $ducan) {
+                echo '<div class="reviews hidden" id="reviews-' . $ducan->ID . '">';
+
+                $count = 0;
+                foreach ($recenzije as $recenzija) {
+                    if ($recenzija->ID_Ducan !== $ducan->ID) continue;
+                    $count++;
+
+                    echo '<div class="right-box">';
+                    echo '<div><strong>' . htmlspecialchars($recenzija->User, ENT_QUOTES, 'UTF-8') . '</strong></div>';
+                    echo '<div><img src="' . htmlspecialchars($recenzija->Ducan_Logo, ENT_QUOTES, 'UTF-8') . '" alt="Logo dućana"></div>';
+                    echo '<div class="stars">' . str_repeat('&#9733;', (int)$recenzija->Ocjena) . '</div>';
+                    echo '<div>' . htmlspecialchars($recenzija->Tekst, ENT_QUOTES, 'UTF-8') . '</div>';
+                    echo '</div>';
+                }
+                if($count === 0) {
+                    echo '<div class="right-box"><p>Nema recenzija za ovaj dućan.</p></div>';
+                }
+                echo '</div>';
+            }
+        ?>
     </div>
 </div>
+
+<script>
+    // Zadrži zadnje izabrani dućan
+    <?php $zadnjiDucan = isset($_POST['store']) ? $_POST['store'] : ''; ?>;
+    const selectedStore = "<?php echo $zadnjiDucan; ?>";
+    console.log("selectedStore: ", selectedStore);
+    if (selectedStore) {
+        document.querySelector(`select[name='store'] option[value='${selectedStore}']`).selected = true;
+    }
+</script>
 
 <script>
     const stars = document.querySelectorAll('.star');
@@ -137,6 +101,22 @@
     function updateStars() {
         highlightStars(selectedRating);
     }
+
+    // Promjena odabranog dućana
+    document.getElementById('store').addEventListener('change', function() {
+        var selectedStore = this.value;
+        var reviewsContainers = document.querySelectorAll('.reviews');
+        reviewsContainers.forEach(function(container) {
+            container.classList.add('hidden');
+        });
+        var activeContainer = document.getElementById('reviews-' + selectedStore);
+        if (activeContainer) {
+            activeContainer.classList.remove('hidden');
+        }
+    });
+
+    // Pokreni promjenu odabranog dućana prilikom učitavanja stranice
+    document.getElementById('store').dispatchEvent(new Event('change'));
 </script>
 
 <?php require_once __DIR__ . '/_footer.php'; ?>
