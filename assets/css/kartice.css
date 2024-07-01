@@ -1,9 +1,11 @@
+/* Palett: https://coolors.co/palette/ecf0f1-95a5a6-2c3e50-8caccb */
+
 /* CSS file s definiranim izgledom kartica:
     -   search i sort bar
     -   kartica_proizvoda
 
 /* općenito na karticama */
-#sve_ponude{
+#sve_ponude, #sve_akcije{
     margin-left: 20px;
 }
 h3{
@@ -16,7 +18,7 @@ h3{
 .forma_za_search_i_sort{
     margin-left: 20px;
     padding-left: 20px;
-    width: 1000px;
+    width: 1200px;
     display: flex;
 }
 .pretrazivanje{
@@ -41,7 +43,7 @@ h3{
     float: right;
     cursor: pointer;
     height: 40px;
-    margin-right: 20px;
+    margin-right: 70px;
 }
 /* -------------------------------------- */
 
@@ -113,6 +115,74 @@ h3{
     border: 0px solid #2C3E50;
 }
 .kartica_proizvoda .kolicina{
+    background-color: #ECF0F1;
+    border-radius: 5px;
+    width: 100px;
+    padding: 5px;
+}
+/* -------------------------------------- */
+
+/* Kartica akcije */
+.kartica_akcije{
+    display: flex;
+    flex-direction: row;
+    background-color: #95A5A6;
+    border: 5px solid #2C3E50;
+    border-radius: 15px;
+    padding: 10px;
+    width: 850px;
+    height: 130px;
+    margin: 10px;
+    align-items: center;
+    justify-content: center;
+}
+.kartica_akcije *{
+    margin-right: 10px;
+}
+/* Opis je slika i ime proizvoda */
+.kartica_akcije .opis{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 200px;
+    float: left;
+    padding: 10px;
+    align-items: center;
+    text-align: center;
+    margin: 10px;
+}
+.kartica_akcije .opis .bot{
+    display: flex;
+    flex-direction: row;
+    padding-left: 20px;
+    padding-bottom: 5px;
+}
+.kartica_akcije img {
+    border-radius: 15px;
+    padding: 10px;
+    width: 70px;
+    height: 70px;
+    margin: 10px;
+}
+.kartica_akcije h4 {
+    text-align: center;
+    font-size: 15px;
+    width: 200px;
+    margin: 5px;
+}
+.kartica_akcije button{
+    background-color: #ECF0F1;
+    border-radius: 5px;
+    margin: 0px;
+    width: 70px;
+}
+.kartica_akcije .akcija{
+    color: #2C3E50;
+    background-color: #8caccb;
+    border-radius: 10px;
+    border: 0px solid #2C3E50;
+}
+.kartica_akcije .kolicina{
     background-color: #ECF0F1;
     border-radius: 5px;
     width: 100px;

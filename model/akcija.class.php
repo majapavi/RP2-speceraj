@@ -1,13 +1,14 @@
 <?php
 class Akcija
 {
-    public $ID, $Naziv, $Slika, $Ducan, $DucanSlika, $Cijena, $Akcija;
+    public $ID, $Naziv, $Slika, $Korak, $Ducan, $DucanSlika, $Cijena, $Akcija;
 
-    function __construct( $ID, $Naziv, $Slika, $Ducan, $DucanSlika, $Cijena, $Akcija )
+    function __construct( $ID, $Naziv, $Slika, $Korak, $Ducan, $DucanSlika, $Cijena, $Akcija )
     {
         $this->ID = $ID;
         $this->Naziv = $Naziv;
         $this->Slika = $Slika;
+        $this->Korak = $Korak;
         $this->Ducan = $Ducan;
         $this->DucanSlika = $DucanSlika;
         $this->Cijena = $Cijena;

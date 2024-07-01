@@ -235,7 +235,7 @@ class SpecerajService
             $proizvod = $this->getProizvodById($row['ID_Proizvod']);
             $ducan = $this->getDucanById($row['ID_Ducan']);
 
-            $akcija = new Akcija( $row['ID'], $proizvod->Naziv, $proizvod->Link, $ducan->Naziv, $ducan->Link, $row['Cijena'], $row['Akcija'] );
+            $akcija = new Akcija( $row['ID'], $proizvod->Naziv, $proizvod->Link, $proizvod->Korak, $ducan->Naziv, $ducan->Link, $row['Cijena'], $row['Akcija'] );
 
             $akcije[] = json_encode( $akcija );
         }

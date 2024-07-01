@@ -4,26 +4,28 @@
 ?>
 
 <div class="forma_za_search_i_sort">
-    <form action="index.php?rt=ponude/test" method="POST">
+    <form action="index.php?rt=akcije/index" method="POST">
         <input type="text" class="pretrazivanje" name="pretrazivanje" placeholder="Pretraži proizvode...">
         <label for="sortiranje">Sortiraj po: </label>
         <select name="sortiranje" class="sortiranje">
             <option value="">Zadano</option>
             <option value="Naziv ASC">Nazivu (A->Z)</option>
             <option value="Naziv DESC">Nazivu (Z->A)</option>
+            <option value="Akcija ASC">Cijena (prvo najjeftinije)</option>
+            <option value="Akcija DESC">Cijena (prvo najskuplje)</option>
         </select>
         <input type="submit" value="Pretraži i sortiraj">
     </form>
-    <form action="index.php?rt=ponude/test" method="POST">
-        <input type="submit" value="Prikaži sve ponude">
+    <form action="index.php?rt=akcije/index" method="POST">
+        <input type="submit" value="Prikaži sve akcije">
     </form>
 </div>
 
-<div id="sve_ponude"></div>
+<div id="sve_akcije"></div>
 
 <script>
 
-    let kartica;
+    let akcija;
 
     <?php $zadnjePretrazivanje = isset($_POST['pretrazivanje']) ? $_POST['pretrazivanje'] : ''; ?>;
     
@@ -42,30 +44,20 @@
     }
     <?php
 
-        if( count($kartice) == 0 ){
+        if( count($akcije) == 0 ){
             ?>
-            $('#sve_ponude').append(`<p>Nema rezultata za pretraživanje: <strong>${zadnjePretrazivanje}</strong></p>`)
+            $('#sve_akcije').append(`<p>Nema rezultata za pretraživanje: <strong>${zadnjePretrazivanje}</strong></p>`)
             <?php
         }
         else{
-            foreach( $kartice as $kartica ) {
-                $json_kartica = json_encode($kartica);
+            foreach( $akcije as $akcija ) {
                 ?>
-                kartica = <?php echo $json_kartica; ?>;
-                $('#sve_ponude').append( stvori_karticu_proizvoda(kartica) );
+                akcija = <?php echo $akcija; ?>;
+                // console.log(akcija);
+                $('#sve_akcije').append( stvori_karticu_akcije(akcija) );
                 <?php
             }
         }
-
-        
-
-        // foreach( $akcije as $akcija ) {
-        //     ?>
-        //     akcija = <?php 
-        // echo $akcija; ?>;
-        //     console.log( akcija );
-        //     <?php
-        // }
 
     ?>
 </script>
