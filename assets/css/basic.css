@@ -90,8 +90,3 @@ footer {
 .navbar li a:hover {
     background-color: #95A5A6;
 }
-
-/* Zadnji element neka ide prema desno */
-.navbar li:last-child {
-    margin-left: auto;
-}

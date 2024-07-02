@@ -107,6 +107,8 @@ class SpecerajService
         }
     }
 
+    
+
     function getDucanById( $id_ducan )
     {
         $db = DB::getConnection();
