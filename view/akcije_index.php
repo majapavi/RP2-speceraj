@@ -3,6 +3,7 @@
     require_once __DIR__ . '/_header.php';
 ?>
 
+<!-- This section contains a form for searching and sorting actions -->
 <div class="forma_za_search_i_sort">
     <form action="index.php?rt=akcije/index" method="POST" class="filter">
         <div class="check_forma">
