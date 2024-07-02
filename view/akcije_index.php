@@ -88,4 +88,8 @@
     ?>
 </script>
 
+<?php
+print_r($_POST);
+?>
+
 <?php require_once __DIR__ . '/_footer.php'; ?>
