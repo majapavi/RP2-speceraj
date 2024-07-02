@@ -108,7 +108,8 @@ function stvori_karticu_akcije( input ){
     objekt.append(cijena);
 
     // Akcija
-    const akcija = $('<p></p>').append("<label style='padding:0; margin:0; color:red;'>AKCIJA: </label>").css('margin-right', '10px');
+    const akcija = $('<p></p>').append("<label style='padding:0; margin:0; color:red;'>AKCIJA: </label>");
+    akcija.css('margin', 'auto').css('padding','5px');
     akcija.addClass('akcija')
     akcija.append(input.Akcija);
     if(input.Korak == 0.1){
