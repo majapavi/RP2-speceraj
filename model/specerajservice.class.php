@@ -93,6 +93,23 @@ class SpecerajService
         return $recenzije;
     }
 
+    function postojiLiUser( $ime, $prezime )
+    {
+        $db = DB::getConnection();
+        $st = $db->prepare( 'SELECT * FROM `projekt_Kupci` WHERE `Ime` = :ime AND `Prezime` = :prezime' );
+        $st->bindParam(':ime', $ime, PDO::PARAM_STR);
+        $st->bindParam(':prezime', $prezime, PDO::PARAM_STR);
+        $st->execute();
+
+        if( $st->rowCount() === 0 ) {
+            return 0;
+        }
+        else {
+            $row = $st->fetch();
+            return $row;
+        }
+    }
+
     function getProizvodById( $id_proizvod )
     {
         $db = DB::getConnection();
@@ -107,7 +124,7 @@ class SpecerajService
         }
     }
 
-    
+
 
     function getDucanById( $id_ducan )
     {
@@ -290,24 +307,19 @@ class SpecerajService
     function azurirajProsjek( $id_ducan )
     {
         $db = DB::getConnection();
-
-        // Select prosjeka ocjena
         $st = $db->prepare('SELECT ROUND(AVG(`Ocjena`), 1) AS ProsjekOcjena FROM `projekt_Recenzije` WHERE ID_Ducan = :id_ducan');
         $st->bindParam(':id_ducan', $id_ducan, PDO::PARAM_INT);
         $st->execute();
 
-        // Dobivanje prosjeka ocjena
         if ($row = $st->fetch()) {
             $prosjekOcjena = $row['ProsjekOcjena'];
 
-            // Update prosjeka u tablici `projekt_Ducani`
             $stUpdate = $db->prepare('UPDATE `projekt_Ducani` SET `Prosjek` = :prosjekOcjena WHERE ID = :id_ducan');
             $stUpdate->bindParam(':prosjekOcjena', $prosjekOcjena, PDO::PARAM_STR);
             $stUpdate->bindParam(':id_ducan', $id_ducan, PDO::PARAM_INT);
             $stUpdate->execute();
 
-            // Vraćanje uspješnosti ažuriranja (opcionalno)
-            return true; // ili neki drugi indikator uspješnosti
+            return true;
         }
 
         return false; // Ako nije pronađen prosjek ocjena ili je došlo do greške

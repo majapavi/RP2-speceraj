@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta developer="Maja Pavičić">
     <meta developer="Josip Plazanić">
     <meta developer="Bruno Polančec">
     <title>Špeceraj</title>
@@ -16,20 +17,29 @@
 </head>
 <body>
     <header>
-        <h1>Špeceraj</h1>
-        <div class="user-info">
-            <span>Hello, <?php echo $loginUser ?>!</span>
-            <br>
-            <form action="index.php" method="post">
-                <input type="submit" value="Logout" name="btn_logout" class="logout">
-            </form>
+        <div class="header-row">
+            <h1 class="left-title">Špeceraj</h1>
+            <div class="right-title-2">
+                <div class="user-info">
+                    <?php $loginUser = $_SESSION['ime'] . ' ' . $_SESSION['prezime']; ?>
+                    <div class="user-greeting">
+                        <span>Bok, <?php echo $loginUser ?>!</span>
+                    </div>
+                    <form action="index.php" method="post">
+                        <input type="submit" value="Odjavite se" name="btn_logout" class="logout">
+                    </form>
+                </div>
+            </div>
         </div>
         <ul class="navbar">
             <li><a href="index.php?rt=ponude/index">Ponude</a></li>
             <li><a href="index.php?rt=akcije/index">Akcije</a></li>
-            <li><a href="index.php?rt=recenzije/index">Popis svih recenzija</a></li>
+            <li><a href="index.php?rt=recenzije/index">Recenzije</a></li>
             <li><a href="index.php?rt=kosarica/index">Moja košarica</a></li>
         </ul>
     </header>
     <main>
-    <h3> <?php echo $title; ?> </h3>
+    <div class="header-row">
+        <h3 class="left-title"><?php echo $title; ?></h3>
+        <h3 class="right-title"><?php if(isset($title2)) echo $title2; ?></h3>
+    </div>

@@ -1,66 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../app/database/db.class.php';
-require_once __DIR__ . '/../controller/kupciController.class.php';
-require_once __DIR__ . '/../controller/loginController.class.php';
-
-if( isset( $_POST['btn_register_page'] ) || isset( $_POST['btn_registracija'] ) )
-{
-    registriraj_se();
-}
-else
-{
-    if( isset( $_POST['btn_logout'] ) )
-    {
-        session_unset();
-        session_destroy();
-        logiranje();
-    }
-    else
-    {
-        if( isset( $_POST['btn_login'] ) )
-        {
-            $ime = $_POST['ime'];
-            $prezime = $_POST['prezime'];
-            $password = $_POST['password'];
-
-            $db = DB::getConnection();
-            $st = $db->prepare( 'SELECT * FROM projekt_Kupci WHERE Ime = :ime AND Prezime = :prezime' );
-            $st->bindParam(':ime', $ime, PDO::PARAM_STR);
-            $st->bindParam(':prezime', $prezime, PDO::PARAM_STR);
-            $st->execute();
-
-            if( $st->rowCount() === 0 )
-            {
-                $msg = 'Korisnik ' . $ime . ' ' . $prezime . ' ne postoji!';
-                logiranje( $msg );
-            }
-            else
-            {
-                $row = $st->fetch();
-                $password_hash = $row['Password_Hash'];
-
-                if( password_verify( $password, $password_hash ) )
-                {
-                    $_SESSION['ime'] = $ime;
-                    $_SESSION['prezime'] = $prezime;
-                    $_SESSION['ID'] = $row['ID'];
-                    otvori_aplikaciju();
-                }
-                else
-                {
-                    $msg = 'Neispravan password!';
-                    logiranje( $msg );
-                }
-            }
-        }
-        else
-        {
-            logiranje( $poruka );
-        }
-    }
-}
-
+logiranje( $msg );
 
 //--------------------------------------------------------------------------------------------
 
@@ -92,18 +32,6 @@ function logiranje( $msg = '' )
     <?php
 
     require_once __DIR__ . '/_footer.php';
-}
-
-function otvori_aplikaciju()
-{
-    $tst = new KupciController();
-    $tst->index();
-}
-
-function registriraj_se()
-{
-    $tst = new LoginController();
-    $tst->registracija();
 }
 
 ?>

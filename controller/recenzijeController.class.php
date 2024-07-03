@@ -12,7 +12,8 @@ class RecenzijeController
 
         $msg = '';
 
-        $title = 'Popis svih recenzija';
+        $title = 'Ostavite recenziju';
+        $title2 = 'Popis recenzija:';
         $recenzije = $ss->getRecenzijeForView();
         $ducani = $ss->getAllDucani();
 
@@ -35,7 +36,8 @@ class RecenzijeController
             $msg = $ss->unesiRecenziju( $user_id, $store_id, $review, $rating );
         }
 
-        $title = 'Popis recenzija';
+        $title = 'Ostavite recenziju';
+        $title2 = 'Popis recenzija:';
         $recenzije = $ss->getRecenzijeForView();
         $ducani = $ss->getAllDucani();
 

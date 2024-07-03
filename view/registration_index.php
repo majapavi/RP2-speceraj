@@ -1,6 +1,5 @@
 <?php
 
-require_once __DIR__ . '/../app/database/db.class.php';
 require_once __DIR__ . '/../controller/loginController.class.php';
 
 $tst = new LoginController();
@@ -15,6 +14,8 @@ else
 {
     registracija();
 }
+
+//--------------------------------------------------------------------------------------------
 
 function registracija( $msg = '' )
 {
