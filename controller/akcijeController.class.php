@@ -24,7 +24,6 @@ class AkcijeController
         }
 
         $akcije = $ss->getAllAkcije( $pretrazivanje, $sortiranje, $izbor_ducana );
-        $loginUser = $_SESSION['ime'] . ' ' . $_SESSION['prezime'];
 
         $ducani = $ss->getAllDucani();
 

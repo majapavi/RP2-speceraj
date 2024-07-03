@@ -10,7 +10,6 @@ class ProizvodiController
         $ss = new SpecerajService();
         $title = 'Popis svih proizvoda';
         $proizvodiList = $ss->getAllProizvodi();
-        $loginUser = $_SESSION['ime'] . ' ' . $_SESSION['prezime'];
 
         require_once __DIR__ . '/../view/proizvodi_index.php';
     }

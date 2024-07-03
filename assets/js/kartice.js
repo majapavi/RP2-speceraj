@@ -19,7 +19,6 @@ function stvori_karticu_proizvoda( input ){
 
     objekt.append(opis);
 
-
     // Količina
     const kolicina = $('<p></p>').append('Količina:<br>');
     
@@ -27,8 +26,10 @@ function stvori_karticu_proizvoda( input ){
     if( korak == 1 ){
         korak = parseInt(korak);
     }
-        
+    const item = new Item();
     unos = $(`<input class="kolicina" type="number" min="${input.Proizvod_Korak}" step="${input.Proizvod_Korak}">`).attr('placeholder', 'Unesi količinu');
+    var zatrazenaKolicina = $('.kolicina').val();
+
     unos.val(korak);
 
     kolicina.append(unos);
@@ -56,6 +57,11 @@ function stvori_karticu_proizvoda( input ){
             cijena.append("<br>")
         }
         const gumb = $('<button></button>').html('Dodaj u košaricu');
+        gumb.on('click', function() {
+            const ducanId = index.DucanId;
+            const inputDucanId = input.Proizvod_ID;
+            kosaricaController.dodajPonudu(ducanId, inputDucanId);
+        });
 
         ovaj_ducan.append(logo).append(cijena).append(gumb);
         ducani.append(ovaj_ducan);

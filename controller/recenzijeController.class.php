@@ -15,7 +15,6 @@ class RecenzijeController
         $title = 'Popis svih recenzija';
         $recenzije = $ss->getRecenzijeForView();
         $ducani = $ss->getAllDucani();
-        $loginUser = $_SESSION['ime'] . ' ' . $_SESSION['prezime'];
 
         require_once __DIR__ . '/../view/recenzije_index.php';
     }
@@ -39,7 +38,6 @@ class RecenzijeController
         $title = 'Popis recenzija';
         $recenzije = $ss->getRecenzijeForView();
         $ducani = $ss->getAllDucani();
-        $loginUser = $_SESSION['ime'] . ' ' . $_SESSION['prezime'];
 
         require_once __DIR__ . '/../view/recenzije_index.php';
     }
