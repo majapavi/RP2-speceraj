@@ -5,7 +5,8 @@
 
 <!-- This section contains a form for searching and sorting actions -->
 <div class="forma_za_search_i_sort">
-    <form action="index.php?rt=akcije/index" method="POST">
+    <form action="index.php?rt=akcije/index" method="POST" class="filter">
+        <div class="check_forma">
         Odaberite dućane koje želite pretražiti:
         <?php
             foreach ($ducani as $ducan) {
@@ -15,7 +16,7 @@
                 echo "</label>";
             }
         ?>
-        <br><br>
+        </div>
         <input type="search" class="pretrazivanje" name="pretrazivanje" placeholder="Pretraži proizvode...">
         <label for="sortiranje">Sortiraj po: </label>
         <select name="sortiranje" class="sortiranje">
@@ -25,10 +26,10 @@
             <option value="Akcija ASC">Cijena (prvo najjeftinije)</option>
             <option value="Akcija DESC">Cijena (prvo najskuplje)</option>
         </select>
-        <input type="submit" value="Pretraži i sortiraj">
+        <input type="submit" value="Primjeni filter">
     </form>
-    <form action="index.php?rt=akcije/index" method="POST">
-        <input type="submit" value="Prikaži sve akcije">
+    <form action="index.php?rt=akcije/index" method="POST" class="reset">
+        <input type="submit" value="Očisti filter">
     </form>
 </div>
 
@@ -86,9 +87,5 @@
 
     ?>
 </script>
-
-<?php
-print_r($_POST);
-?>
 
 <?php require_once __DIR__ . '/_footer.php'; ?>

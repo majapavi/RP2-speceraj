@@ -16,10 +16,11 @@ table, th, td {
 /* header i footer */
 body {
     margin: 0;
-    font-family: cursive;
+    font-family: 'Comic Sans MS', 'Comic Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    background-color: #ECF0F1;
 }
 
 header {

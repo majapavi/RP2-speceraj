@@ -4,8 +4,8 @@
 ?>
 
 <div class="forma_za_search_i_sort">
-    <form action="index.php?rt=ponude/index" method="POST">
-        <input type="text" class="pretrazivanje" name="pretrazivanje" placeholder="Pretraži proizvode...">
+    <form action="index.php?rt=ponude/index" method="POST" class="filter">
+        <input type="search" class="pretrazivanje" name="pretrazivanje" placeholder="Pretraži proizvode...">
         <label for="sortiranje">Sortiraj po: </label>
         <select name="sortiranje" class="sortiranje">
             <option value="">Zadano</option>
@@ -14,7 +14,7 @@
         </select>
         <input type="submit" value="Pretraži i sortiraj">
     </form>
-    <form action="index.php?rt=ponude/index" method="POST">
+    <form action="index.php?rt=ponude/index" method="POST" class="reset">
         <input type="submit" value="Prikaži sve ponude">
     </form>
 </div>

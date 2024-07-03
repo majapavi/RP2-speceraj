@@ -4,7 +4,7 @@
         Projektni zadatak iz predmeta Računarski praktikum 2
         <br>
         <br>
-        Izradili: Josip Plazanić i Bruno Polančec
+        Izradili: Josip Plazanić, Bruno Polančec i Maja Pavičić
     </p>
 </footer>
 
