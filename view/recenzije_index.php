@@ -16,22 +16,26 @@
             </select>
             <br><br>
 
-            <label for="review">Recenzija:</label>
-            <textarea id="review" name="review" required></textarea>
-            <br><br>
+            <label for="review">Recenzija:</label><br>
+            <textarea class="review" name="review" required></textarea>
+            <br>
 
-            <label>Ocjena:</label>
-            <div id="stars">
-                <span class="star" data-value="1">&#9733;</span>
-                <span class="star" data-value="2">&#9733;</span>
-                <span class="star" data-value="3">&#9733;</span>
-                <span class="star" data-value="4">&#9733;</span>
-                <span class="star" data-value="5">&#9733;</span>
+            <div class="rating-container">
+                <label>Ocjena:</label>
+                <div id="stars">
+                    <span class="star" data-value="1">&#9733;</span>
+                    <span class="star" data-value="2">&#9733;</span>
+                    <span class="star" data-value="3">&#9733;</span>
+                    <span class="star" data-value="4">&#9733;</span>
+                    <span class="star" data-value="5">&#9733;</span>
+                </div>
             </div>
             <input type="hidden" id="rating" name="rating" required>
-            <br><br>
+            <br>
 
-            <button type="submit">Pošalji recenziju</button>
+            <div class="submit-container">
+                <button type="submit">Pošalji recenziju</button>
+            </div>
         </form>
     </div>
 

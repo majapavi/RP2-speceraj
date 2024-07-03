@@ -16,12 +16,62 @@
     height: 60vh; /* Ovdje možete prilagoditi visinu containera po potrebi */
 }
 .left-box {
+    background-color: #95A5A6;
     padding: 20px;
-    border: 1px solid black;
+    margin: 1px;
+    border: 5px solid #2C3E50;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+}
+.review {
+    width: 90%;
+    height: 20vh;
+    resize: none;
+    margin-top: 10px;
+    border-radius: 15px;
+    border: 2px solid #2C3E50;
+    background-color: #ECF0F1;
+}
+textarea:focus {
+    box-shadow: none;
+    outline: none;
+}
+.rating-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+.rating-container label {
+    margin-right: 10px;
+}
+#stars {
+    display: flex;
+}
+#store {
+    width: 10vw;
+    margin: 0 auto;
+    border-radius: 5px;
+    border: 2px solid #2C3E50;
+    background-color: #ECF0F1;
+}
+.submit-container {
+    display: flex;
+    justify-content: center;
+    margin-top: auto;
+}
+.submit-container button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 2px solid #2C3E50;
+    background-color: #ECF0F1;
 }
 .right-container {
     display: grid;
@@ -30,8 +80,9 @@
     max-height: 100%;
 }
 .right-box {
+    background-color: #8CACCB;
     padding: 20px;
-    border: 1px solid black;
+    border: 5px solid #2C3E50;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
@@ -40,9 +91,9 @@
     align-items: center;
     justify-content: center;
     margin-bottom: 10px;
-    width: 80%; /* Prilagodite širinu boxa prema potrebi */
+    width: 80%;
     height: 29vh;
-    margin: 1vh auto; /* Centrira box unutar .right-container */
+    margin: 1vh auto;
 }
 .right-box img {
     width: 50px;
@@ -52,7 +103,7 @@
     margin-bottom: 10px;
 }
 .right-box .stars {
-    color: yellow;
+    color: gold;
     font-size: 20px;
 }
 .hidden {
