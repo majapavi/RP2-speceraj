@@ -27,12 +27,8 @@
         <ul class="navbar">
             <li><a href="index.php?rt=ponude/index">Ponude</a></li>
             <li><a href="index.php?rt=akcije/index">Akcije</a></li>
-            <li><a href="index.php?rt=kupci/index">Popis svih kupaca</a></li>
-            <li><a href="index.php?rt=ducani/index">Popis svih dućana</a></li>
-            <li><a href="index.php?rt=proizvodi/index">Popis svih proizvoda</a></li>
-            <li><a href="index.php?rt=ponude/index2">Popis svih ponuda</a></li>
             <li><a href="index.php?rt=recenzije/index">Popis svih recenzija</a></li>
-            <li><a href="index.php?rt=kosarica/index">Kosarica</a></li>
+            <li><a href="index.php?rt=kosarica/index">Moja košarica</a></li>
         </ul>
     </header>
     <main>

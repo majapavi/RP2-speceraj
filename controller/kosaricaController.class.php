@@ -5,7 +5,8 @@ class KosaricaController
 {
     function index()
     {
-        $kosarica = $_COOKIE['kosarica'][1];
+        $kosarica = isset($_COOKIE['kosarica'][1]) ? $_COOKIE['kosarica'][1] : array();
+        $title = 'Moja košarica';
         require_once __DIR__ . '/../view/kosarica_index.php';
     }
 

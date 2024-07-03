@@ -10,7 +10,6 @@ class PonudeController
         $ss = new SpecerajService();
         $title = 'Popis svih ponuda';
         $ponudeList = $ss->getAllPonude();
-        $loginUser = $_SESSION['ime'] . ' ' . $_SESSION['prezime'];
 
         require_once __DIR__ . '/../view/ponude_index2.php';
     }
@@ -30,7 +29,6 @@ class PonudeController
         }
 
         $kartice = $ss->getAllKartice( $pretrazivanje, $sortiranje );
-        $loginUser = $_SESSION['ime'] . ' ' . $_SESSION['prezime'];
 
         require_once __DIR__ . '/../view/ponude_index.php';
     }

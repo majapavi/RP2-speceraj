@@ -56,7 +56,7 @@ class LoginController
 
                 # Kreiranje nove košarice za novog usera
                 $kc = new KosaricaController();
-                $kc.stvoriNovuKosaricu($ID_novogKupca);
+                $kc->stvoriNovuKosaricu($ID_novogKupca);
     
                 $msg = 'Korisnički račun uspješno kreiran!<br>Molimo Vas ulogirajte se kako biste mogli koristiti aplikaciju.';
                 registracija( $msg );
