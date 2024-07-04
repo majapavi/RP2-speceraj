@@ -14,6 +14,7 @@
                     }
                 ?>
             </select>
+            <strong class="ocjena_ducana"></strong>
             <br><br>
 
             <label for="review">Recenzija:</label><br>
@@ -67,7 +68,7 @@
 
 <script>
     // Zadrži zadnje izabrani dućan
-    <?php $zadnjiDucan = isset($_POST['store']) ? $_POST['store'] : ''; ?>;
+    <?php $zadnjiDucan = isset($_POST['store']) ? $_POST['store'] : '1'; ?>;
     const selectedStore = "<?php echo $zadnjiDucan; ?>";
     console.log("selectedStore: ", selectedStore);
     if (selectedStore) {
@@ -78,6 +79,19 @@
 <script>
     const stars = document.querySelectorAll('.star');
     let selectedRating = 0;
+    let prosjek;
+    
+    // Mappiranje prosjeka (koristi se za ažuriranje ocjene pokraj selecta)
+    <?php
+        $prosjekValues = array_map(function($ducan) {
+            return $ducan->Prosjek;
+        }, $ducani);
+        
+        // Encode the "Prosjek" values to JSON
+        $prosjekJson = json_encode($prosjekValues);
+    ?>
+    var prosjeci = <?php echo $prosjekJson; ?>;
+    console.log(prosjeci);
 
     stars.forEach(star => {
         star.addEventListener('click', () => {
@@ -117,6 +131,26 @@
         if (activeContainer) {
             activeContainer.classList.remove('hidden');
         }
+
+        // Ispis ocjene
+        const ocj = $('.ocjena_ducana');
+        ocj.empty();
+        // zlatno.empty();
+        // sivo.empty();
+        prosjek = prosjeci[selectedStore-1];
+        ocj.append(" ",prosjek," ");
+        let zlatno = $('<span style="color:gold;"></span>');
+        let sivo = $('<span style="color:gray;"></span>');
+        for (let index = 0.5; index < 5; index += 1) {
+            console.log(index, prosjek);
+            if(index <= prosjek){
+                zlatno.append('&#9733;');
+            }
+            else{
+                sivo.append('&#9733;');
+            }
+        }
+        ocj.append(zlatno).append(sivo);
     });
 
     // Pokreni promjenu odabranog dućana prilikom učitavanja stranice
