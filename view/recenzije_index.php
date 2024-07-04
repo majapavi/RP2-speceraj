@@ -14,7 +14,7 @@
                     }
                 ?>
             </select>
-            <strong class="ocjena_ducana"></strong>
+            
             <br><br>
 
             <label for="review">Recenzija:</label><br>
@@ -84,7 +84,10 @@
     // Mappiranje prosjeka (koristi se za ažuriranje ocjene pokraj selecta)
     <?php
         $prosjekValues = array_map(function($ducan) {
-            return $ducan->Prosjek;
+            return [
+                "Prosjek" => $ducan->Prosjek,
+                "Naziv" => $ducan->Naziv,
+            ];
         }, $ducani);
         
         // Encode the "Prosjek" values to JSON
@@ -137,8 +140,9 @@
         ocj.empty();
         // zlatno.empty();
         // sivo.empty();
-        prosjek = prosjeci[selectedStore-1];
-        ocj.append(" ",prosjek," ");
+        prosjek = prosjeci[selectedStore-1]["Prosjek"];
+        naziv = prosjeci[selectedStore-1]["Naziv"];
+        ocj.append(" za ", naziv, " ");
         let zlatno = $('<span style="color:gold;"></span>');
         let sivo = $('<span style="color:gray;"></span>');
         for (let index = 0.5; index < 5; index += 1) {
@@ -151,6 +155,7 @@
             }
         }
         ocj.append(zlatno).append(sivo);
+        ocj.append(" ", prosjek);
     });
 
     // Pokreni promjenu odabranog dućana prilikom učitavanja stranice

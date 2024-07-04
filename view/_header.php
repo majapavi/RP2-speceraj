@@ -41,5 +41,5 @@
     <main>
     <div class="header-row">
         <h3 class="left-title"><?php echo $title; ?></h3>
-        <h3 class="right-title"><?php if(isset($title2)) echo $title2; ?></h3>
+        <h3 class="right-title"><?php if(isset($title2)) {echo $title2; echo "<strong class='ocjena_ducana'></strong> :";} ?></h3>
     </div>

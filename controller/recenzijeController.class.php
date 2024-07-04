@@ -13,7 +13,7 @@ class RecenzijeController
         $msg = '';
 
         $title = 'Ostavite recenziju';
-        $title2 = 'Popis recenzija:';
+        $title2 = 'Popis recenzija';
         $recenzije = $ss->getRecenzijeForView();
         $ducani = $ss->getAllDucani();
 
@@ -37,7 +37,7 @@ class RecenzijeController
         }
 
         $title = 'Ostavite recenziju';
-        $title2 = 'Popis recenzija:';
+        $title2 = 'Popis recenzija';
         $recenzije = $ss->getRecenzijeForView();
         $ducani = $ss->getAllDucani();
 
