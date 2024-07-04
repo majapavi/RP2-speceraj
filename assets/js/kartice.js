@@ -26,9 +26,8 @@ function stvori_karticu_proizvoda( input ){
     if( korak == 1 ){
         korak = parseInt(korak);
     }
-    const item = new Item();
+    
     unos = $(`<input class="kolicina" type="number" min="${input.Proizvod_Korak}" step="${input.Proizvod_Korak}">`).attr('placeholder', 'Unesi količinu');
-    var zatrazenaKolicina = $('.kolicina').val();
 
     unos.val(korak);
 
