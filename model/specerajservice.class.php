@@ -166,11 +166,11 @@ class SpecerajService
         foreach( $ponude as $ponuda ) {
             $ducan = $this->getDucanById( $ponuda->ID_Ducan );
             if( $ponuda->Akcija === NULL ) {
-                $ducan2 = new Ducan2( $ducan->Naziv, $ducan->Link, $ponuda->Cijena, "NE" );
+                $ducan2 = new Ducan2( $ducan->Naziv, $ducan->Link, $ponuda->Cijena, "NE", $ponuda->ID );
                 $ducani[] = $ducan2;
             }
             else {
-                $ducan2 = new Ducan2( $ducan->Naziv, $ducan->Link, $ponuda->Akcija, "DA" );
+                $ducan2 = new Ducan2( $ducan->Naziv, $ducan->Link, $ponuda->Akcija, "DA", $ponuda->ID );
                 $ducani[] = $ducan2;
             }
         }

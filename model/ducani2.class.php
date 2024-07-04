@@ -1,14 +1,15 @@
 <?php
 class Ducan2
 {
-    public $Naziv, $Logo, $Cijena, $Akcija;
+    public $Naziv, $Logo, $Cijena, $Akcija, $ID_Ponuda;
 
-    function __construct( $Naziv, $Logo, $Cijena, $Akcija )
+    function __construct( $Naziv, $Logo, $Cijena, $Akcija, $ID_Ponuda )
     {
         $this->Naziv = $Naziv;
         $this->Logo = $Logo;
         $this->Cijena = $Cijena;
         $this->Akcija = $Akcija;
+        $this->ID_Ponuda = $ID_Ponuda;
     }
 
     function __get( $property )
