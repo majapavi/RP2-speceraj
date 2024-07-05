@@ -26,7 +26,6 @@ function stvori_karticu_proizvoda( input ){
     if( korak == 1 ){
         korak = parseInt(korak);
     }
-    
     unos = $(`<input class="kolicina" type="number" min="${input.Proizvod_Korak}" step="${input.Proizvod_Korak}">`).attr('placeholder', 'Unesi količinu');
 
     unos.val(korak);
@@ -57,9 +56,8 @@ function stvori_karticu_proizvoda( input ){
         }
         const gumb = $('<button></button>').html('Dodaj u košaricu');
         gumb.on('click', function() {
-            const ducanId = index.DucanId;
-            const inputDucanId = input.Proizvod_ID;
-            kosaricaController.dodajPonudu(ducanId, inputDucanId);
+            //id ponude ce bit u info
+            kosaricaController.dodajPonudu(input.ID, $('kolicina').val());
         });
 
         ovaj_ducan.append(logo).append(cijena).append(gumb);
@@ -128,7 +126,53 @@ function stvori_karticu_akcije( input ){
     objekt.append(akcija);
 
     const gumb = $('<button></button>').html('Dodaj u košaricu').css('margin-left', 'auto');
-    objekt.append(gumb);
+    gumb.on('click', function() {
+        kosaricaController.dodajArtikl(input.ID, $('kolicina').val());
+    });
+objekt.append(gumb);
 
     return objekt;
 }
+
+// artikl = {ArtiklID, ArtiklSlika, ArtiklaNaziv, DucanSlika, Kolicina, Cijena, Akcija}
+function stvori_karticu_artikla( artiklZaView )
+{
+    // ArtiklID, ArtiklSlika, ArtiklaNaziv, DucanSlika, Kolicina, Cijena, Akcija
+    // u json format 
+    
+        //daj ujednaci ove nazive
+        const sadrzaj = $('<div></div>').addClass('kartica_artikla');
+    
+        const slika_proizvoda = $('<img>').attr('src', artiklZaView.ArtiklSlika);
+        sadrzaj.append(slika_proizvoda);
+        
+        const ime_proizvoda = $('<h4></h4>');
+        ime_proizvoda.append(`${artiklZaView.ArtiklaNaziv}`);
+        sadrzaj.append(ime_proizvoda);
+    
+        const slika_ducana = $('<img>').attr('src', artiklZaView.DucanSlika);
+        sadrzaj.append(slika_ducana);
+        //sadrzaj.append(desno);
+    
+        // Količina
+        const kolicina = $('<div></div>').append("Kolicina: " + `${artiklZaView.Kolicina}`)
+        //KOLICINA SE SALJE KO STRING, ZAJEDNO SA MJERNOM JEDINICOM
+        sadrzaj.append(kolicina);
+        
+        // Cijena
+        const cijena = $('<div></div>').append("Cijena: " + `${artiklZaView.Cijena}`)
+        sadrzaj.append(cijena);
+    
+        const gumb = $('<button></button>').addClass('removeBtn').html('Ukloni iz košarice').css('margin-left', 'auto');
+        sadrzaj.append(gumb);
+        gumb.on('click', function() {
+            kosaricaController.dodajArtikl(artiklZaView.ArtiklID);
+        });
+    
+        return sadrzaj;
+    }
+    
+    function nadi_najjeftiniju_ponudu_artikla( )
+    {
+    
+    }

@@ -1,5 +1,5 @@
 <?php
-class Kartica
+class Kartica   #za view ponude
 {
     public $Proizvod_ID, $Proizvod_Naziv, $Proizvod_Link, $Proizvod_Korak, $Ducani;
 

@@ -5,7 +5,7 @@ class Akcija
 
     function __construct( $ID, $Naziv, $Slika, $Korak, $Ducan, $DucanSlika, $Cijena, $Akcija )
     {
-        $this->ID = $ID;
+        $this->ID = $ID;        #ID ponude
         $this->Naziv = $Naziv;
         $this->Slika = $Slika;
         $this->Korak = $Korak;

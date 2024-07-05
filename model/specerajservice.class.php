@@ -124,8 +124,6 @@ class SpecerajService
         }
     }
 
-
-
     function getDucanById( $id_ducan )
     {
         $db = DB::getConnection();
@@ -155,6 +153,28 @@ class SpecerajService
         }
 
         return $ponude;
+    }
+
+    function getKosaricaArtiklInfo( $id_ponuda, $kolicina )
+    {
+        $ponuda = $this->getPonudaById( $id_ponuda );
+        $proizvod = $this->getProizvodById( $ponuda->ID_Proizvod );
+        $ducan = $this->getDucanById( $ponuda->ID_Ducan );
+
+        $artikl = new Artikl( $proizvod->Link, $proizvod->Naziv, $ducan->DucanSlika, $kolicina, $ponuda->Cijena, $ponuda->Akcija );
+
+        return $artikl;
+    }
+
+    function getAllArtikliInfo( $kosarica )
+    {
+        $artikli = [];
+        foreach( $kosarica as $id_ponuda => $kolicina ) {
+            $artikl = $this->getKosaricaArtiklInfo( $id_ponuda, $kolicina );
+            $artikli[] = $artikl;
+        }
+
+        return $artikli;
     }
 
     function getKarticaByIdProizvoda( $id_proizvod )
@@ -257,6 +277,7 @@ class SpecerajService
             $proizvod = $this->getProizvodById($row['ID_Proizvod']);
             $ducan = $this->getDucanById($row['ID_Ducan']);
 
+            # ID se odnosi na ponudu
             $akcija = new Akcija( $row['ID'], $proizvod->Naziv, $proizvod->Link, $proizvod->Korak, $ducan->Naziv, $ducan->Link, $row['Cijena'], $row['Akcija'] );
 
             $akcije[] = json_encode( $akcija );
