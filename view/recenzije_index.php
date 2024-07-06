@@ -70,7 +70,7 @@
     // Zadrži zadnje izabrani dućan
     <?php $zadnjiDucan = isset($_POST['store']) ? $_POST['store'] : '1'; ?>;
     const selectedStore = "<?php echo $zadnjiDucan; ?>";
-    console.log("selectedStore: ", selectedStore);
+    //console.log("selectedStore: ", selectedStore);
     if (selectedStore) {
         document.querySelector(`select[name='store'] option[value='${selectedStore}']`).selected = true;
     }
@@ -94,7 +94,7 @@
         $prosjekJson = json_encode($prosjekValues);
     ?>
     var prosjeci = <?php echo $prosjekJson; ?>;
-    console.log(prosjeci);
+    //console.log(prosjeci);
 
     stars.forEach(star => {
         star.addEventListener('click', () => {
@@ -146,7 +146,7 @@
         let zlatno = $('<span style="color:gold;"></span>');
         let sivo = $('<span style="color:gray;"></span>');
         for (let index = 0.5; index < 5; index += 1) {
-            console.log(index, prosjek);
+            //console.log(index, prosjek);
             if(index <= prosjek){
                 zlatno.append('&#9733;');
             }

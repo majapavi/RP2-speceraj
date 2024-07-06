@@ -161,7 +161,7 @@ class SpecerajService
         $proizvod = $this->getProizvodById( $ponuda->ID_Proizvod );
         $ducan = $this->getDucanById( $ponuda->ID_Ducan );
 
-        $artikl = new Artikl( $proizvod->Link, $proizvod->Naziv, $ducan->DucanSlika, $kolicina, $ponuda->Cijena, $ponuda->Akcija );
+        $artikl = new Artikl( $proizvod->Link, $proizvod->Naziv, $ducan->DucanSlika, $kolicina, $ponuda->Cijena, $ponuda->Akcija, $id_ponuda);
 
         return $artikl;
     }

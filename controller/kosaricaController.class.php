@@ -7,11 +7,8 @@ class KosaricaController
     {
         $kosarica = isset($_COOKIE['kosarica'][1]) ? $_COOKIE['kosarica'][1] : array();
 
-        $kosaricaZaView = array();
-        foreach ($kosarica as $ponuda_id => $kolicina) {
-            $artikl = SpecerajService::getKosaricaArtiklInfo($ponuda_id, $kolicina);
-            $kosaricaZaView[] = $artikl;
-        }
+        $specerajService = new SpecerajService();
+        $kosaricaZaView = $specerajService->getAllArtikliInfo($kosarica);
 
         // Print for debugging
         echo "<pre>";
