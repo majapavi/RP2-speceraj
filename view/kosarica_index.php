@@ -7,11 +7,23 @@
 
     if( kosaricaZaView.length == 0 ){
         $('#kosarica').append(`<p>Vaša košarica je prazna.</p>`)
+<<<<<<< HEAD
     }
     else{
         kosaricaZaView.forEach( artiklZaView => {
             $('#kosarica').append( stvori_karticu_artikla(artiklZaView) );
         });
+=======
+        <?php
+    }
+    else{
+        foreach( $kosaricaZaView as $artiklZaView ) {
+            ?>
+            console.log(stvori_karticu_artikla($artiklZaView));
+            $('#kosarica').append( stvori_karticu_artikla($artiklZaView) );
+            <?php
+        }
+>>>>>>> 82a0067389ff1f0046cb1a121c60e1bfbfda389c
     }
 
     // artikl = {ArtiklID, ArtiklSlika, ArtiklaNaziv, DucanSlika, Kolicina, Cijena, Akcija}

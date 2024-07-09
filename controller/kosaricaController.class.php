@@ -18,6 +18,7 @@ class KosaricaController
         require_once __DIR__ . '/../view/kosarica_index.php';
     }
 
+/*
     function stvoriNovuKosaricu($ID_kupca)
     {
         $_COOKIE['kosarica'][$_SESSION["ID"]] = array();
