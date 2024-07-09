@@ -6,14 +6,13 @@ class KosaricaController
     function index()
     {
         $kosarica = isset($_COOKIE['kosarica'][1]) ? $_COOKIE['kosarica'][1] : array();
+        //$kosarica = array(6 => 2, 9 => 3, 3 => 1);
 
         $specerajService = new SpecerajService();
         $kosaricaZaView = $specerajService->getAllArtikliInfo($kosarica);
-
-        // Print for debugging
-        echo "<pre>";
-        print_r($kosaricaZaView);
-        echo "</pre>";
+        foreach ($kosaricaZaView as $proizvod) {
+            echo $proizvod->id . '<br>';
+        }
 
         $title = 'Moja košarica';
         require_once __DIR__ . '/../view/kosarica_index.php';
@@ -26,6 +25,8 @@ class KosaricaController
         require_once __DIR__ . '/../view/kosarica_index.php';
     }
 
+/*  ne koristi se, implementirano u javascriptu
+
     function dodajArtikl($ponudaId, $kolicina)
     {
         $_COOKIE['kosarica'][$_SESSION["ID"]][$ponudaId] = $kolicina;
@@ -37,10 +38,8 @@ class KosaricaController
         unset($_COOKIE['kosarica'][$_SESSION["ID"]][$ponudaId]);
         require_once __DIR__ . '/../view/kosarica_index.php';
     }
+ */    
 
-    
-
-    /*
     function najjeftinijaPonuda()
     {
         $ss = new SpecerajService();
@@ -60,7 +59,6 @@ class KosaricaController
 
         require_once __DIR__ . '/../view/kosarica_index.php';
     }
-    */
 }
 
 ?>
