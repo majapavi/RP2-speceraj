@@ -10,6 +10,8 @@ require_once __DIR__ . '/kartica.class.php';
 require_once __DIR__ . '/ducani2.class.php';
 require_once __DIR__ . '/akcija.class.php';
 require_once __DIR__ . '/recenzije2.class.php';
+require_once __DIR__ . '/artikl.class.php';
+
 
 class SpecerajService
 {
@@ -135,6 +137,20 @@ class SpecerajService
             $ducan = new Ducan( $row['ID'], $row['Naziv'], $row['Prosjek'], $row['Link_na_logo'] );
 
             return $ducan;
+        }
+    }
+
+    function getPonudaById( $id_ponuda )
+    {
+        $db = DB::getConnection();
+        $st = $db->prepare( 'SELECT * FROM `projekt_Ponude` WHERE `ID` = :id' );
+        $st->bindParam(':id', $id_ponuda, PDO::PARAM_INT);
+        $st->execute();
+
+        if( $row = $st->fetch() ) {
+            $ponuda = new Ponuda( $row['ID'], $row['ID_Proizvod'], $row['ID_Ducan'], $row['Cijena'], $row['Akcija'] );
+
+            return $ponuda;
         }
     }
 

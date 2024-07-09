@@ -187,7 +187,7 @@
 
         // Assuming you want to update the UI after adding the item to "cart"
         // Replace with actual UI update logic as per your application
-        updateCartUI();
+        //updateCartUI();
 
         // Example: Reload or navigate to the cart view (assuming it's a separate HTML page or view)
         window.location.href = '/../view/kosarica_index.php';
