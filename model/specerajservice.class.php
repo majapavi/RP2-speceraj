@@ -176,6 +176,7 @@ class SpecerajService
         $ponuda = $this->getPonudaById( $id_ponuda );
         $proizvod = $this->getProizvodById( $ponuda->ID_Proizvod );
         $ducan = $this->getDucanById( $ponuda->ID_Ducan );
+        echo "ID ponude: $proizvod->ID, Količina: $kolicina, Naziv: $proizvod->Naziv" . "<br>";
 
         $artikl = new Artikl( $proizvod->Link, $proizvod->Naziv, $ducan->DucanSlika, $kolicina, $ponuda->Cijena, $ponuda->Akcija, $id_ponuda);
 
@@ -191,6 +192,20 @@ class SpecerajService
         }
 
         return $artikli;
+    }
+
+    function pronadiNajjeftinijuVarijantuArtikla( $id_ponuda )
+    {
+        $db = DB::getConnection();
+        getPonudeByIdProizvod( $id_proizvod );
+        $st = $db->prepare( 'SELECT * FROM `projekt_Ponude` WHERE `Cijena` = (SELECT MIN(`Cijena`) FROM `projekt_Ponude`)' );
+        $st->execute();
+
+        if( $row = $st->fetch() ) {
+            $ponuda = new Ponuda( $row['ID'], $row['ID_Proizvod'], $row['ID_Ducan'], $row['Cijena'], $row['Akcija'] );
+
+            return $ponuda;
+        }
     }
 
     function getKarticaByIdProizvoda( $id_proizvod )
