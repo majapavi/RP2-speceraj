@@ -9,7 +9,7 @@
     prepareView() funkcije:     getKosaricaArtiklInfo( $id_ponuda, $kolicina ), getAllArtikliInfo( $kosarica ), getKarticaByIdProizvoda( $id_proizvod ),
                                 getAllKartice( $search = '', $sort = '' ), getAllAkcije( $search = '', $sort = '', $ducani_ids = [1,2,3,4,5,6] ), getRecenzijeForView()
 
-    funkcije za Kosaricu:       getNajjeftinijaPonudaProizvoda( $id_proizvod )
+    funkcije za Kosaricu:       getNajjeftinijaPonudaProizvoda( $id_proizvod ), getProizvodiFromPonude($ponudeUKosarici), izracunajPotrosnjuUDucanu($ducan_id, $proizvodiUKosarici)
 
     funkcije za Recenzije:      unesiRecenziju( $user_id, $store_id, $review, $rating ), azurirajProsjek( $id_ducan )
 
