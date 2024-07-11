@@ -1,8 +1,26 @@
+<!-- 
+ Ovaj servis sadrzi sljedece funkcionalnosti:
+
+    getAll() funkcije:          getAllKupci(), getAllDucani(), getAllProizvodi(), getAllPonude(), getAllRecenzije()
+
+    getById() funkcije:         getProizvodById( $id_proizvod ), getDucanById( $id_ducan ), getPonudaById( $id_ponuda ),
+                                getPonudeByIdProizvod( $id_proizvod ) -> PO IDu DRUGE KLASE
+
+    prepareView() funkcije:     getKosaricaArtiklInfo( $id_ponuda, $kolicina ), getAllArtikliInfo( $kosarica ), getKarticaByIdProizvoda( $id_proizvod ),
+                                getAllKartice( $search = '', $sort = '' ), getAllAkcije( $search = '', $sort = '', $ducani_ids = [1,2,3,4,5,6] ), getRecenzijeForView()
+
+    funkcije za Kosaricu:       getNajjeftinijaPonudaProizvoda( $id_proizvod )
+
+    funkcije za Recenzije:      unesiRecenziju( $user_id, $store_id, $review, $rating ), azurirajProsjek( $id_ducan )
+
+    ostale pomocne funkcije:    postojiLiUser( $ime, $prezime ),  getAllDucaniIds()
+-->
+
 <?php
 
 require_once __DIR__ . '/../app/database/db.class.php';
 require_once __DIR__ . '/kupci.class.php';
-require_once __DIR__ . '/ducani.class.php';
+require_once __DIR__ . '/ducani_ids$ducani_ids.class.php';
 require_once __DIR__ . '/proizvodi.class.php';
 require_once __DIR__ . '/ponude.class.php';
 require_once __DIR__ . '/recenzije.class.php';
@@ -15,6 +33,9 @@ require_once __DIR__ . '/artikl.class.php';
 
 class SpecerajService
 {
+    //-------------------------------------------------------------------------------------------------------------------------
+    // getAll() funkcije
+    //-------------------------------------------------------------------------------------------------------------------------
     function getAllKupci()
     {
         $db = DB::getConnection();
@@ -37,14 +58,14 @@ class SpecerajService
         $st = $db->prepare( 'SELECT * FROM `projekt_Ducani`' );
         $st->execute();
 
-        $ducani = [];
+        $ducani_ids = [];
         while( $row = $st->fetch() )
         {
             $ducan = new Ducan( $row['ID'], $row['Naziv'], $row['Prosjek'], $row['Link_na_logo'] );
-            $ducani[] = $ducan;
+            $ducani_ids[] = $ducan;
         }
 
-        return $ducani;
+        return $ducani_ids;
     }
 
     function getAllProizvodi()
@@ -95,22 +116,9 @@ class SpecerajService
         return $recenzije;
     }
 
-    function postojiLiUser( $ime, $prezime )
-    {
-        $db = DB::getConnection();
-        $st = $db->prepare( 'SELECT * FROM `projekt_Kupci` WHERE `Ime` = :ime AND `Prezime` = :prezime' );
-        $st->bindParam(':ime', $ime, PDO::PARAM_STR);
-        $st->bindParam(':prezime', $prezime, PDO::PARAM_STR);
-        $st->execute();
-
-        if( $st->rowCount() === 0 ) {
-            return 0;
-        }
-        else {
-            $row = $st->fetch();
-            return $row;
-        }
-    }
+    //-------------------------------------------------------------------------------------------------------------------------
+    // getById() funkcije
+    //-------------------------------------------------------------------------------------------------------------------------
 
     function getProizvodById( $id_proizvod )
     {
@@ -171,25 +179,9 @@ class SpecerajService
         return $ponude;
     }
 
-    function getNajjeftinijaPonudaProizvoda( $id_proizvod )
-    {
-        $db = DB::getConnection();
-        $st = $db->prepare( 'SELECT * FROM `projekt_Ponude`
-                            WHERE `ID_Proizvod` = :id
-                            AND `Cijena` = 
-                                (SELECT MIN(`Cijena`)
-                                FROM `projekt_Ponude`
-                                WHERE `ID_Proizvod` = :id)'
-                            );
-        $st->bindParam(':id', $id_proizvod, PDO::PARAM_INT);
-        $st->execute();
-
-        if( $row = $st->fetch() ) {
-            $ponuda = new Ponuda( $row['ID'], $row['ID_Proizvod'], $row['ID_Ducan'], $row['Cijena'], $row['Akcija'] );
-
-            return $ponuda;
-        }
-    }
+    //-------------------------------------------------------------------------------------------------------------------------
+    // prepareView() funkcije
+    //-------------------------------------------------------------------------------------------------------------------------
 
     function getKosaricaArtiklInfo( $id_ponuda, $kolicina )
     {
@@ -212,23 +204,8 @@ class SpecerajService
             $artikli[] = $artikl;
         }
 
-        print_r($artikli); echo '<br>';
+        //print_r($artikli); echo '<br>';
         return $artikli;
-    }
-
-    //mogu poslat ili id proizvoda ili id ponude
-    function pronadiNajjeftinijuVarijantuArtikla( $id_ponuda )
-    {
-        $db = DB::getConnection();
-        getPonudeByIdProizvod( $id_proizvod );
-        $st = $db->prepare( 'SELECT * FROM `projekt_Ponude` WHERE `Cijena` = (SELECT MIN(`Cijena`) FROM `projekt_Ponude`)' );
-        $st->execute();
-
-        if( $row = $st->fetch() ) {
-            $ponuda = new Ponuda( $row['ID'], $row['ID_Proizvod'], $row['ID_Ducan'], $row['Cijena'], $row['Akcija'] );
-
-            return $ponuda;
-        }
     }
 
     function getKarticaByIdProizvoda( $id_proizvod )
@@ -236,19 +213,19 @@ class SpecerajService
         $ponude = $this->getPonudeByIdProizvod( $id_proizvod );
         $proizvod = $this->getProizvodById( $id_proizvod );
 
-        $ducani = [];
+        $ducani_ids = [];
         foreach( $ponude as $ponuda ) {
             $ducan = $this->getDucanById( $ponuda->ID_Ducan );
             if( $ponuda->Akcija === NULL ) {
                 $ducan2 = new Ducan2( $ducan->Naziv, $ducan->Link, $ponuda->Cijena, "NE", $ponuda->ID );
-                $ducani[] = $ducan2;
+                $ducani_ids[] = $ducan2;
             }
             else {
                 $ducan2 = new Ducan2( $ducan->Naziv, $ducan->Link, $ponuda->Akcija, "DA", $ponuda->ID );
-                $ducani[] = $ducan2;
+                $ducani_ids[] = $ducan2;
             }
         }
-        $kartica = new Kartica( $proizvod->ID, $proizvod->Naziv, $proizvod->Link, $proizvod->Korak, $ducani );
+        $kartica = new Kartica( $proizvod->ID, $proizvod->Naziv, $proizvod->Link, $proizvod->Korak, $ducani_ids );
 
         return $kartica;
     }
@@ -290,11 +267,11 @@ class SpecerajService
         return $sve_kartice;
     }
 
-    function getAllAkcije( $search = '', $sort = '', $ducani = [1,2,3,4,5,6] )
+    function getAllAkcije( $search = '', $sort = '', $ducani_ids = [1,2,3,4,5,6] )
     {
         $db = DB::getConnection();
         $st = null;
-        $ids_str = implode(",", $ducani);
+        $ids_str = implode(",", $ducani_ids);
         $query = "SELECT p.ID, p.ID_Proizvod, p.ID_Ducan, p.Cijena, p.Akcija
                   FROM projekt_Ponude p
                   JOIN projekt_Proizvodi pr ON p.ID_Proizvod = pr.ID
@@ -339,6 +316,130 @@ class SpecerajService
 
         return $akcije;
     }
+
+    function getRecenzijeForView()
+    {
+        $db = DB::getConnection();
+        $st = $db->prepare( 'SELECT k.Ime AS Ime_Kupca, k.Prezime AS Prezime_Kupca,
+                                    d.ID AS ID_Ducana, d.Naziv AS Naziv_Ducana, d.Link_na_logo AS Link_na_logo_Ducana,
+                                    r.Ocjena AS Ocjena_Recenzije, r.Tekst AS Tekst_Recenzije
+                             FROM projekt_Recenzije r
+                             JOIN projekt_Kupci k ON r.ID_User = k.ID
+                             JOIN projekt_Ducani d ON r.ID_Ducan = d.ID' );
+
+        $st->execute();
+
+        $recenzije = [];
+        while( $row = $st->fetch() ) {
+            $recenzija = new Recenzija2( $row['Ime_Kupca'] . ' ' . $row['Prezime_Kupca'], $row['ID_Ducana'], $row['Naziv_Ducana'], $row['Link_na_logo_Ducana'], $row['Ocjena_Recenzije'], $row['Tekst_Recenzije'] );
+
+            $recenzije[] = $recenzija;
+        }
+
+        return $recenzije;
+    }
+
+    //-------------------------------------------------------------------------------------------------------------------------
+    // ostale pomocne funkcije
+    //-------------------------------------------------------------------------------------------------------------------------
+
+    function getAllDucaniIds()
+    {
+        $db = DB::getConnection();
+        $st = $db->prepare( 'SELECT `ID` FROM `projekt_Ducani`' );
+        $st->execute();
+
+        $ducani_ids = [];
+        while( $row = $st->fetch() )
+        {
+            $ducani_ids[] = $row['ID'];
+        }
+
+        return $ducani_ids;
+    }
+
+    function postojiLiUser( $ime, $prezime )
+    {
+        $db = DB::getConnection();
+        $st = $db->prepare( 'SELECT * FROM `projekt_Kupci` WHERE `Ime` = :ime AND `Prezime` = :prezime' );
+        $st->bindParam(':ime', $ime, PDO::PARAM_STR);
+        $st->bindParam(':prezime', $prezime, PDO::PARAM_STR);
+        $st->execute();
+
+        if( $st->rowCount() === 0 ) {
+            return 0;
+        }
+        else {
+            $row = $st->fetch();
+            return $row;
+        }
+    }
+
+    //-------------------------------------------------------------------------------------------------------------------------
+    // funkcije za Kosaricu
+    //-------------------------------------------------------------------------------------------------------------------------
+
+    function getNajjeftinijaPonudaProizvoda( $id_proizvod )
+    {
+        $db = DB::getConnection();
+        $st = $db->prepare( 'SELECT * FROM `projekt_Ponude`
+                            WHERE `ID_Proizvod` = :id
+                            AND `Cijena` = 
+                                (SELECT MIN(`Cijena`)
+                                FROM `projekt_Ponude`
+                                WHERE `ID_Proizvod` = :id)'
+                            );
+        $st->bindParam(':id', $id_proizvod, PDO::PARAM_INT);
+        $st->execute();
+
+        if( $row = $st->fetch() ) {
+            $ponuda = new Ponuda( $row['ID'], $row['ID_Proizvod'], $row['ID_Ducan'], $row['Cijena'], $row['Akcija'] );
+
+            return $ponuda;
+        }
+    }
+
+    function getProizvodiFromPonude($ponudeUKosarici)
+    {
+        $db = DB::getConnection();
+        $st = $db->prepare('SELECT ID_Proizvod FROM projekt_Ponude WHERE ID IN (' . implode(',', $ponudeUKosarici) . ')');
+        $st->execute();
+
+        $proizvodiUKosarici = [];
+        while ($row = $st->fetch()) {
+            $proizvodiUKosarici[] = $row['ID_Proizvod'];
+        }
+
+        return $proizvodiUKosarici;
+    }
+
+    function izracunajPotrosnjuUDucanu($ducan_id, $proizvodiUKosarici)
+    {
+        $db = DB::getConnection();
+        $st = $db->prepare('SELECT SUM(p.Cijena) AS Potrosnja,
+                            p.ID AD NovaPonudaID
+                            FROM projekt_Ponude p
+                            WHERE p.ID_Ducan = :ducan_id
+                            AND p.ID_Proizvod IN (' . implode(',', $proizvodiUKosarici) . ')');
+        $st->bindParam(':ducan_id', $ducan_id, PDO::PARAM_INT);
+        $st->execute();
+
+        $novePonude = [];
+        while ($row = $st->fetch()) {
+            $novePonude[] = $row['NovaPonudaID'];
+        }
+
+        // NEDOVRSENO: TREBA SKUZITI KAKO IZVUCE LISTA S NOVIM PONUDA_IDevima I TO U PORETKU U KOJEM SU BILI I STARI PROIZVODI
+        // I TREBA VRATITI TO I SUMU POTROSNJE
+
+        if ($row = $st->fetch()) {
+            $potrosnja = $row['Potrosnja'];
+        }
+    }
+
+    //-------------------------------------------------------------------------------------------------------------------------
+    // funkcije za Recenzije
+    //-------------------------------------------------------------------------------------------------------------------------
 
     function unesiRecenziju( $user_id, $store_id, $review, $rating )
     {
@@ -399,28 +500,7 @@ class SpecerajService
 
         return false; // Ako nije pronađen prosjek ocjena ili je došlo do greške
     }
+    //-------------------------------------------------------------------------------------------------------------------------
 
-    function getRecenzijeForView()
-    {
-        $db = DB::getConnection();
-        $st = $db->prepare( 'SELECT k.Ime AS Ime_Kupca, k.Prezime AS Prezime_Kupca,
-                                    d.ID AS ID_Ducana, d.Naziv AS Naziv_Ducana, d.Link_na_logo AS Link_na_logo_Ducana,
-                                    r.Ocjena AS Ocjena_Recenzije, r.Tekst AS Tekst_Recenzije
-                             FROM projekt_Recenzije r
-                             JOIN projekt_Kupci k ON r.ID_User = k.ID
-                             JOIN projekt_Ducani d ON r.ID_Ducan = d.ID' );
-
-        $st->execute();
-
-        $recenzije = [];
-        while( $row = $st->fetch() ) {
-            $recenzija = new Recenzija2( $row['Ime_Kupca'] . ' ' . $row['Prezime_Kupca'], $row['ID_Ducana'], $row['Naziv_Ducana'], $row['Link_na_logo_Ducana'], $row['Ocjena_Recenzije'], $row['Tekst_Recenzije'] );
-
-            $recenzije[] = $recenzija;
-        }
-
-        return $recenzije;
-    }
-}
 
 ?>

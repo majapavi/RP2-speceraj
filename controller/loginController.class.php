@@ -47,6 +47,11 @@ class LoginController
                             $_SESSION['ime'] = $ime;
                             $_SESSION['prezime'] = $prezime;
                             $_SESSION['ID'] = $user['ID'];
+
+                            # Kreiranje nove košarice za novog usera
+                            if( !isset( $_COOKIE['kosarica'][$_SESSION["ID"]] ) )
+                                $_COOKIE['kosarica'][$_SESSION["ID"]] = array();
+
                             $this->otvori_aplikaciju();
                         }
                         else
@@ -120,9 +125,6 @@ class LoginController
                 $st = $db->prepare('INSERT INTO `projekt_Kupci` (Ime, Prezime, Password_Hash) VALUES (:ime, :prez, :pass)');
                 $st->execute(array('ime' => $ime, 'prez' => $prezime, 'pass' => password_hash($password, PASSWORD_DEFAULT)));
                 $ID_novogKupca = $db->lastInsertId();
-
-                # Kreiranje nove košarice za novog usera
-                //$_COOKIE['kosarica'][$_SESSION["ID"]] = array();
 
                 $msg = 'Korisnički račun uspješno kreiran!<br>Molimo Vas ulogirajte se kako biste mogli koristiti aplikaciju.';
                 registracija( $msg );
