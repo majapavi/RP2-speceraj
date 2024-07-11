@@ -5,9 +5,14 @@ class KosaricaController
 {
     function index()
     {
-        $kosarica = isset($_COOKIE['kosarica'][$_SESSION["ID"]]) ? $_COOKIE['kosarica'][$_SESSION["ID"]] : array();
-        $kosarica = array(6 => 2, 9 => 3, 3 => 1);
-        //print_r($kosarica); echo '<br>';
+        if (isset($_SESSION["ID"])) {
+            $_COOKIE['kosarica'][$_SESSION["ID"]] = array(6 => 2, 9 => 3, 3 => 1);
+            $kosarica = isset($_COOKIE['kosarica'][$_SESSION["ID"]]) ? $_COOKIE['kosarica'][$_SESSION["ID"]] : array();
+        } else {
+            throw new Exception("User session not set.");
+        }
+        //$kosarica = array(6 => 2, 9 => 3, 3 => 1);
+        print_r($_COOKIE['kosarica']); echo '<br>';
 
         $specerajService = new SpecerajService();
         $kosaricaZaView = $specerajService->getAllArtikliInfo($kosarica);
@@ -22,24 +27,11 @@ class KosaricaController
         $_COOKIE['kosarica'][$_SESSION["ID"]] = array();
     }
 
-/*  ne koristi se, implementirano u javascriptu
-
-    function dodajArtikl($ponudaId, $kolicina)
-    {
-        $_COOKIE['kosarica'][$_SESSION["ID"]][$ponudaId] = $kolicina;
-        require_once __DIR__ . '/../view/kosarica_index.php';
-    }
-
-    function obrisiArtikl($ponuda_id)
-    {
-        unset($_COOKIE['kosarica'][$_SESSION["ID"]][$ponudaId]);
-        require_once __DIR__ . '/../view/kosarica_index.php';
-    }
-*/    
-
     function maxGlobalnaUsteda()
     {
+        // zove getNajjeftinijaPonudaProizvoda iz specerajservice
         $ss = new SpecerajService();
+        print_r($_COOKIE['kosarica'][$_SESSION["ID"]]);
         foreach ($_COOKIE['kosarica'][$_SESSION["ID"]] as $ponudaId => $kolicina)
         {
             $ponuda = $ss->getPonudaById($ponudaId);
@@ -59,16 +51,23 @@ class KosaricaController
         require_once __DIR__ . '/../view/kosarica_index.php';
     }
 
-    function najjeftinijaPonuda()
+    function ustedaUJednomDucanu()
     {
         $ss = new SpecerajService();
-        $ponuda_id = $_POST['ponuda_id'];
+        $ducani_ids = $ss->getAllDucaniIds();
+        $ponudeUKosarici = array_keys($_COOKIE['kosarica'][$_SESSION["ID"]]);
+        $proizvodiUKosarici = $ss->getProizvodiFromPonude($ponudeUKosarici);
 
-        $msg = $ss->obrisiProizvodIzKosarice( $ponuda_id );
-        $proizvodiList = $ss->getProizvodiFromKosarica();
+        // Jos treba dodati da se zapamti najjeftinije potrosnja po ducanu i da se nove ponude spreme u cookie
+        foreach( $ducani_ids as $ducan_id ){
+            $ss->izracunajPotrosnjuUDucanu($ducan_id, $proizvodiUKosarici);
+        }
 
+        $kosaricaZaView = $ss->getAllArtikliInfo($_COOKIE['kosarica'][$_SESSION["ID"]]);
+        $title = 'Moja košarica';
         require_once __DIR__ . '/../view/kosarica_index.php';
     }
+
 };
 
 ?>
