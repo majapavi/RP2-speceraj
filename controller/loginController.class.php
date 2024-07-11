@@ -122,8 +122,7 @@ class LoginController
                 $ID_novogKupca = $db->lastInsertId();
 
                 # Kreiranje nove košarice za novog usera
-                $kc = new KosaricaController();
-                $kc->stvoriNovuKosaricu($ID_novogKupca);
+                //$_COOKIE['kosarica'][$_SESSION["ID"]] = array();
 
                 $msg = 'Korisnički račun uspješno kreiran!<br>Molimo Vas ulogirajte se kako biste mogli koristiti aplikaciju.';
                 registracija( $msg );

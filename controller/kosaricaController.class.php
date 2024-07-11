@@ -5,25 +5,21 @@ class KosaricaController
 {
     function index()
     {
-        $kosarica = isset($_COOKIE['kosarica'][1]) ? $_COOKIE['kosarica'][1] : array();
-        //$kosarica = array(6 => 2, 9 => 3, 3 => 1);
+        $kosarica = isset($_COOKIE['kosarica'][$_SESSION["ID"]]) ? $_COOKIE['kosarica'][$_SESSION["ID"]] : array();
+        $kosarica = array(6 => 2, 9 => 3, 3 => 1);
+        //print_r($kosarica); echo '<br>';
 
         $specerajService = new SpecerajService();
         $kosaricaZaView = $specerajService->getAllArtikliInfo($kosarica);
-        foreach ($kosaricaZaView as $proizvod) {
-            echo $proizvod->id . '<br>';
-        }
+        //print_r($kosaricaZaView); echo '<br>';
 
         $title = 'Moja košarica';
         require_once __DIR__ . '/../view/kosarica_index.php';
     }
 
-/*
-    function stvoriNovuKosaricu($ID_kupca)
+    function stvoriNovuKosaricu()
     {
         $_COOKIE['kosarica'][$_SESSION["ID"]] = array();
-
-        require_once __DIR__ . '/../view/kosarica_index.php';
     }
 
 /*  ne koristi se, implementirano u javascriptu
@@ -39,7 +35,29 @@ class KosaricaController
         unset($_COOKIE['kosarica'][$_SESSION["ID"]][$ponudaId]);
         require_once __DIR__ . '/../view/kosarica_index.php';
     }
- */    
+*/    
+
+    function maxGlobalnaUsteda()
+    {
+        $ss = new SpecerajService();
+        foreach ($_COOKIE['kosarica'][$_SESSION["ID"]] as $ponudaId => $kolicina)
+        {
+            $ponuda = $ss->getPonudaById($ponudaId);
+
+            $proizvod_id = $ponuda->ID_Proizvod;
+            $najjeftinijaPonuda = $ss->getNajjeftinijaPonudaProizvoda($proizvod_id);
+
+            if ($najjeftinijaPonuda != $ponuda)
+            {
+                unset($_COOKIE['kosarica'][$_SESSION["ID"]][$ponudaId]);
+                $_COOKIE['kosarica'][$_SESSION["ID"]][$najjeftinijaPonuda->ID] = $kolicina;
+            }
+        }
+
+        $kosaricaZaView = $ss->getAllArtikliInfo($_COOKIE['kosarica'][$_SESSION["ID"]]);
+        $title = 'Moja košarica';
+        require_once __DIR__ . '/../view/kosarica_index.php';
+    }
 
     function najjeftinijaPonuda()
     {
@@ -51,15 +69,6 @@ class KosaricaController
 
         require_once __DIR__ . '/../view/kosarica_index.php';
     }
-
-    function naruci()
-    {
-        $ss = new SpecerajService();
-        $msg = $ss->naruciProizvode();
-        $proizvodiList = $ss->getProizvodiFromKosarica();
-
-        require_once __DIR__ . '/../view/kosarica_index.php';
-    }
-}
+};
 
 ?>

@@ -171,14 +171,35 @@ class SpecerajService
         return $ponude;
     }
 
+    function getNajjeftinijaPonudaProizvoda( $id_proizvod )
+    {
+        $db = DB::getConnection();
+        $st = $db->prepare( 'SELECT * FROM `projekt_Ponude`
+                            WHERE `ID_Proizvod` = :id
+                            AND `Cijena` = 
+                                (SELECT MIN(`Cijena`)
+                                FROM `projekt_Ponude`
+                                WHERE `ID_Proizvod` = :id)'
+                            );
+        $st->bindParam(':id', $id_proizvod, PDO::PARAM_INT);
+        $st->execute();
+
+        if( $row = $st->fetch() ) {
+            $ponuda = new Ponuda( $row['ID'], $row['ID_Proizvod'], $row['ID_Ducan'], $row['Cijena'], $row['Akcija'] );
+
+            return $ponuda;
+        }
+    }
+
     function getKosaricaArtiklInfo( $id_ponuda, $kolicina )
     {
         $ponuda = $this->getPonudaById( $id_ponuda );
         $proizvod = $this->getProizvodById( $ponuda->ID_Proizvod );
         $ducan = $this->getDucanById( $ponuda->ID_Ducan );
-        echo "ID ponude: $proizvod->ID, Količina: $kolicina, Naziv: $proizvod->Naziv" . "<br>";
+        //echo "ID ponude: $proizvod->ID, Količina: $kolicina, Naziv: $proizvod->Naziv" . "<br>";
 
         $artikl = new Artikl( $proizvod->Link, $proizvod->Naziv, $ducan->DucanSlika, $kolicina, $ponuda->Cijena, $ponuda->Akcija, $id_ponuda);
+        //print_r($artikl); echo '<br>';
 
         return $artikl;
     }
@@ -191,9 +212,11 @@ class SpecerajService
             $artikli[] = $artikl;
         }
 
+        print_r($artikli); echo '<br>';
         return $artikli;
     }
 
+    //mogu poslat ili id proizvoda ili id ponude
     function pronadiNajjeftinijuVarijantuArtikla( $id_ponuda )
     {
         $db = DB::getConnection();
