@@ -6,13 +6,14 @@ class KosaricaController
     function index()
     {
         if (isset($_SESSION["ID"])) {
-            $_COOKIE['kosarica'][$_SESSION["ID"]] = array(6 => 2, 9 => 3, 3 => 1);
-            $kosarica = isset($_COOKIE['kosarica'][$_SESSION["ID"]]) ? $_COOKIE['kosarica'][$_SESSION["ID"]] : array();
+            // $_COOKIE['kosarica' . $_SESSION["ID"]] = array(6 => 2, 9 => 3, 3 => 1);
+            $kosarica = isset($_COOKIE['kosarica' . $_SESSION["ID"]]) ? json_decode($_COOKIE['kosarica' . $_SESSION["ID"]]) : array();
         } else {
             throw new Exception("User session not set.");
         }
         //$kosarica = array(6 => 2, 9 => 3, 3 => 1);
-        print_r($_COOKIE['kosarica']); echo '<br>';
+        // print_r($_COOKIE['kosarica' . $_SESSION["ID"]]); echo '<hr>';
+        print("Kosarica za userID = $_SESSION[ID]:  "); print_r($kosarica); echo '<br>';
 
         $specerajService = new SpecerajService();
         $kosaricaZaView = $specerajService->getAllArtikliInfo($kosarica);

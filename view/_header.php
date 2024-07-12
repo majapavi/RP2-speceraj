@@ -9,6 +9,7 @@
     <meta developer="Bruno Polančec">
     <title>Špeceraj</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <script src="assets/js/cookies.js"></script>
     <script src="assets/js/kartice.js"></script>
     <!-- <link rel="stylesheet" href="https://rp2.studenti.math.hr/~brunpola/projekt-speceraj/view/stil.css"> -->
     <link rel="stylesheet" href="assets/css/kartice.css">

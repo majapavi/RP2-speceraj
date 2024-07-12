@@ -20,7 +20,7 @@
 
 require_once __DIR__ . '/../app/database/db.class.php';
 require_once __DIR__ . '/kupci.class.php';
-require_once __DIR__ . '/ducani_ids$ducani_ids.class.php';
+require_once __DIR__ . '/ducani.class.php';
 require_once __DIR__ . '/proizvodi.class.php';
 require_once __DIR__ . '/ponude.class.php';
 require_once __DIR__ . '/recenzije.class.php';
@@ -190,7 +190,7 @@ class SpecerajService
         $ducan = $this->getDucanById( $ponuda->ID_Ducan );
         //echo "ID ponude: $proizvod->ID, Količina: $kolicina, Naziv: $proizvod->Naziv" . "<br>";
 
-        $artikl = new Artikl( $proizvod->Link, $proizvod->Naziv, $ducan->DucanSlika, $kolicina, $ponuda->Cijena, $ponuda->Akcija, $id_ponuda);
+        $artikl = new Artikl( $proizvod->Link, $proizvod->Naziv, $ducan->Link, $kolicina, $ponuda->Cijena, $ponuda->Akcija, $id_ponuda);
         //print_r($artikl); echo '<br>';
 
         return $artikl;
@@ -200,6 +200,7 @@ class SpecerajService
     {
         $artikli = [];
         foreach( $kosarica as $id_ponuda => $kolicina ) {
+            // print("$id_ponuda => $kolicina");
             $artikl = $this->getKosaricaArtiklInfo( $id_ponuda, $kolicina );
             $artikli[] = $artikl;
         }
@@ -501,6 +502,6 @@ class SpecerajService
         return false; // Ako nije pronađen prosjek ocjena ili je došlo do greške
     }
     //-------------------------------------------------------------------------------------------------------------------------
-
+}
 
 ?>

@@ -1,7 +1,7 @@
 <?php
 class Ducan
 {
-    protected $ID, $Naziv, $Prosjek, $Link;
+    public $ID, $Naziv, $Prosjek, $Link;
 
     function __construct( $ID, $Naziv, $Prosjek, $Link )
     {

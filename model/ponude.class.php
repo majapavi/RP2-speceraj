@@ -1,7 +1,7 @@
 <?php
 class Ponuda
 {
-    protected $ID, $ID_Proizvod, $ID_Ducan, $Cijena, $Akcija;
+    public $ID, $ID_Proizvod, $ID_Ducan, $Cijena, $Akcija;
 
     function __construct( $ID, $ID_Proizvod, $ID_Ducan, $Cijena, $Akcija )
     {

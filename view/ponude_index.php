@@ -25,6 +25,8 @@
 <script>
 
     let kartica;
+    let userID = <?php echo $_SESSION["ID"]; ?>;
+    // console.log("userID: ", userID);
 
     <?php $zadnjePretrazivanje = isset($_POST['pretrazivanje']) ? $_POST['pretrazivanje'] : ''; ?>;
     
@@ -54,7 +56,7 @@
                 ?>
                 kartica = <?php echo $json_kartica; ?>;
                 //console.log(kartica);
-                $('#sve_ponude').append( stvori_karticu_proizvoda(kartica) );
+                $('#sve_ponude').append( stvori_karticu_proizvoda(kartica, userID) );
                 <?php
             }
         }

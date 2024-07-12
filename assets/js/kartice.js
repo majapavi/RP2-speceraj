@@ -3,174 +3,146 @@
 //     - funkciju za stvaranje kartice akcije (korištenu u akcije_index)
 //     - funkciju za stvaranje kartice artikla (korištenu u kosarica_index)
 
-function stvori_karticu_proizvoda(input)
-{
-    const objekt = document.createElement('div');
-    objekt.classList.add('kartica_proizvoda');
+function stvori_karticu_proizvoda( input, userID ){
+
+    const objekt = $('<div></div>').addClass('kartica_proizvoda');
 
     // Slika i ime
-    const opis = document.createElement('div');
-    opis.classList.add('opis');
+    const opis = $('<div></div>').addClass('opis');
 
-    const slika = document.createElement('img');
-    slika.src = input.Proizvod_Link;
-    opis.appendChild(slika);
-    opis.appendChild(document.createElement('br'));
+    const slika = $('<img>').attr('src', input.Proizvod_Link);
+    opis.append(slika);
+    opis.append($('<br>'));
 
-    const ime = document.createElement('h4');
-    ime.textContent = input.Proizvod_Naziv;
-    opis.appendChild(ime);
+    const ime = $('<h4></h4>');
+    ime.append(`${input['Proizvod_Naziv']}`);
+    opis.append(ime);
 
-    objekt.appendChild(opis);
+    objekt.append(opis);
 
     // Količina
-    const kolicina = document.createElement('p');
-    kolicina.innerHTML = 'Količina:<br>';
-
+    const kolicina = $('<p></p>').append('Količina:<br>');
+    
     let korak = input.Proizvod_Korak;
-    if (korak == 1) {
+    if( korak == 1 ){
         korak = parseInt(korak);
     }
-    const unos = document.createElement('input');
-    unos.classList.add('kolicina');
-    unos.type = 'number';
-    unos.min = input.Proizvod_Korak;
-    unos.step = input.Proizvod_Korak;
-    unos.placeholder = 'Unesi količinu';
-    unos.value = korak;
-
-    kolicina.appendChild(unos);
-    objekt.appendChild(kolicina);
+    
+    let unos = $(`<input class="kolicina" type="number" min="${input.Proizvod_Korak}" step="${input.Proizvod_Korak}">`).attr('placeholder', 'Unesi količinu');
+    unos.val(korak);
+    kolicina.append(unos);
+    
+    objekt.append(kolicina);
 
     // Dućani
-    const ducani = document.createElement('div');
-    ducani.classList.add('ducani');
+    const ducani = $('<div></div>').addClass('ducani');
 
-    input.Ducani.forEach(info => {
-        const ovaj_ducan = document.createElement('div');
-        ovaj_ducan.classList.add('jedan_ducan');
+    $.each(input.Ducani, function(index, info) {
+        // console.log("INFO: ", info);
+        const ovaj_ducan = $('<div></div>').addClass('jedan_ducan');
 
-        const logo = document.createElement('img');
-        logo.src = info.Logo;
-        ovaj_ducan.appendChild(logo);
-
-        const dodatno = input.Proizvod_Korak == 1 ? "kom" : "kg";
-        const cijena = document.createElement('p');
-        cijena.innerHTML = `<strong>${info.Naziv}</strong><br>${info.Cijena} €/${dodatno}<br>`;
-        if (info.Akcija === "DA") {
-            cijena.classList.add('akcija');
-            const akcijaLabel = document.createElement('p');
-            akcijaLabel.style.padding = '0';
-            akcijaLabel.style.margin = '0';
-            akcijaLabel.style.color = 'red';
-            akcijaLabel.textContent = 'AKCIJA';
-            cijena.appendChild(akcijaLabel);
-        } else {
-            cijena.appendChild(document.createElement('br'));
+        const logo = $('<img>').attr('src', info.Logo);
+        let dodatno = 'kg';
+        if( input.Proizvod_Korak == 1 ){
+            dodatno = "kom";
         }
-        ovaj_ducan.appendChild(cijena);
-
-        const gumb = document.createElement('button');
-        gumb.textContent = 'Dodaj u košaricu';
-/*      PREPRAVITI U JAVASCRIPT
-            gumb.addEventListener('click', function() {
-            <?php
-            $_COOKIE['kosarica'][$_SESSION["ID"]][$info.ID] = document.querySelector('.kolicina').value;
-            require_once __DIR__ . '/../view/kosarica_index.php';
-            ?>
+        const cijena = $('<p></p>').html(`<strong>${info.Naziv}</strong><br>${info.Cijena} €/${dodatno}<br>`);
+        if(info.Akcija == "DA"){
+            cijena.addClass('akcija');
+            cijena.append("<p style='padding:0; margin:0; color:red;'>AKCIJA</p>");
+        }
+        else{
+            cijena.append("<br>")
+        }
+        const gumb = $('<button></button>').html('Dodaj u košaricu');
+        
+        // Funkcionalnost gumba
+        gumb.on('click', function() {
+            let ponuda = info.ID_Ponuda;
+            spremi_artikl_u_kosaricu(userID, ponuda, unos.val());
         });
-*/
-        ovaj_ducan.appendChild(gumb);
-        ducani.appendChild(ovaj_ducan);
+
+        ovaj_ducan.append(logo).append(cijena).append(gumb);
+        ducani.append(ovaj_ducan);
     });
 
-    objekt.appendChild(ducani);
+    objekt.append(ducani);
 
     return objekt;
 }
 
+function stvori_karticu_akcije( input, userID){
 
-function stvori_karticu_akcije(input)
-{
-    const objekt = document.createElement('div');
-    objekt.classList.add('kartica_akcije');
+    const objekt = $('<div></div>').addClass('kartica_akcije');
 
-    const opis = document.createElement('div');
-    opis.classList.add('opis');
+    // Slike i naziv
+    const opis = $('<div></div>').addClass('opis');
+    
+    const proizvod = $('<img>').attr('src', input.Slika);
+    opis.append(proizvod);
+    
+    const desno = $('<div></div>').addClass('right')
 
-    const proizvod = document.createElement('img');
-    proizvod.src = input.Slika;
-    opis.appendChild(proizvod);
+    const ime = $('<h4></h4>');
+    ime.append(`${input.Naziv}`);
+    desno.append(ime);
 
-    const desno = document.createElement('div');
-    desno.classList.add('right');
+    const ducan = $('<img>').attr('src', input.DucanSlika);
+    desno.append(ducan);
+    opis.append(desno);
 
-    const ime = document.createElement('h4');
-    ime.textContent = input.Naziv;
-    desno.appendChild(ime);
+    objekt.append(opis);
 
-    const ducan = document.createElement('img');
-    ducan.src = input.DucanSlika;
-    desno.appendChild(ducan);
-    opis.appendChild(desno);
-
-    objekt.appendChild(opis);
-
-    const kolicina = document.createElement('p');
-    kolicina.textContent = 'Količina: ';
-    kolicina.style.marginRight = '10px';
-
+    // Količina
+    const kolicina = $('<p></p>').append('Količina: ').css('margin-right', '10px');
+    
     let korak = input.Korak;
-    if (korak == 1) {
+    if( korak == 1 ){
         korak = parseInt(korak);
     }
+        
+    let unos = $(`<input class="kolicina" type="number" min="${input.Korak}" step="${input.Korak}">`).attr('placeholder', 'Unesi količinu');
+    unos.val(korak);
 
-    const unos = document.createElement('input');
-    unos.classList.add('kolicina');
-    unos.type = 'number';
-    unos.min = input.Korak;
-    unos.step = input.Korak;
-    unos.placeholder = 'Unesi količinu';
-    unos.value = korak;
+    kolicina.append(unos);
+    objekt.append(kolicina);
+    
+    // Stara cijena
+    const cijena = $('<p></p>').html(`Cijena: ${input.Cijena}`).css('margin-right', '10px');
+    cijena.css('text-decoration', 'line-through');
+    objekt.append(cijena);
 
-    kolicina.appendChild(unos);
-    objekt.appendChild(kolicina);
-
-    const cijena = document.createElement('p');
-    cijena.innerHTML = `Cijena: ${input.Cijena}`;
-    cijena.style.marginRight = '10px';
-    cijena.style.textDecoration = 'line-through';
-    objekt.appendChild(cijena);
-
-    const akcijaElement = document.createElement('p');
-    akcijaElement.innerHTML = "<label style='padding:0; margin:0; color:red;'>AKCIJA: </label>";
-    akcijaElement.style.margin = 'auto';
-    akcijaElement.style.padding = '5px';
-    akcijaElement.classList.add('akcija');
-    akcijaElement.innerHTML += input.Akcija;
-    if (input.Korak == 0.1) {
-        akcijaElement.innerHTML += "€ / kg";
-        cijena.innerHTML += "€ / kg";
-    } else {
-        akcijaElement.innerHTML += "€ / kom";
-        cijena.innerHTML += "€ / kom";
+    // Akcija
+    const akcija = $('<p></p>').append("<label style='padding:0; margin:0; color:red;'>AKCIJA: </label>");
+    akcija.css('margin', 'auto').css('padding','5px');
+    akcija.addClass('akcija')
+    akcija.append(input.Akcija);
+    if(input.Korak == 0.1){
+        akcija.append("€ / kg");
+        cijena.append("€ / kg");
     }
-    objekt.appendChild(akcijaElement);
+    else{
+        akcija.append("€ / kom")
+        cijena.append("€ / kom")
+    }
+    objekt.append(akcija);
 
-    const gumb = document.createElement('button');
-    gumb.textContent = 'Dodaj u košaricu';
-    gumb.style.marginLeft = 'auto';
-    gumb.addEventListener('click', function() {
-        dodajArtikl(input.ID, unos.value);
+    const gumb = $('<button></button>').html('Dodaj u košaricu').css('margin-left', 'auto');
+    // Funkcionalnost gumba
+    gumb.on('click', function() {
+        let ponuda = input.ID;
+        spremi_artikl_u_kosaricu(userID, ponuda, unos.val());
+        // console.log(getCookie(`kosarica${userID}`))
     });
-    objekt.appendChild(gumb);
+    
+    objekt.append(gumb);
 
     return objekt;
 }
 
 
 // artikl = {ArtiklID, ArtiklSlika, ArtiklaNaziv, DucanSlika, Kolicina, Cijena, Akcija}
-function stvori_karticu_artikla(artiklZaView)
+function stvori_karticu_artikla(artiklZaView, userID)
 {
     const sadrzaj = document.createElement('div');
     sadrzaj.classList.add('kartica_artikla');
@@ -204,8 +176,9 @@ function stvori_karticu_artikla(artiklZaView)
     sadrzaj.appendChild(gumb);
 
     gumb.addEventListener('click', function() {
-        const kosaricaController = new KosaricaController();
-        kosaricaController.obrisiArtikl(artiklZaView.ponudaID, document.querySelector('.kolicina').value);
+        let ponuda = artiklZaView.ponudaID;
+        makni_artikl_iz_kosarice(userID, ponuda);
+        console.log(getCookie(`kosarica${userID}`));
     });
 
     return sadrzaj;

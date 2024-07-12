@@ -37,6 +37,7 @@
 
 <script>
     let akcija;
+    let userID = <?php echo $_SESSION["ID"]; ?>;
 
     <?php $zadnjePretrazivanje = isset($_POST['pretrazivanje']) ? $_POST['pretrazivanje'] : ''; ?>;
 
@@ -79,7 +80,7 @@
                 ?>
                 akcija = <?php echo $akcija; ?>;
                 // console.log(akcija);
-                $('#sve_akcije').append( stvori_karticu_akcije(akcija) );
+                $('#sve_akcije').append( stvori_karticu_akcije(akcija, userID) );
                 <?php
             }
         }
