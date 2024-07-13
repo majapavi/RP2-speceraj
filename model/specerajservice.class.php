@@ -398,18 +398,14 @@ class SpecerajService
         }
     }
 
-    function getProizvodiFromPonude($ponudeUKosarici)
+    function getProizvodiFromPonude( $keys )
     {
+        if(empty($keys)) {
+            return -1;
+        }
         $db = DB::getConnection();
-        $keys = [];
-        foreach ($ponudeUKosarici as $key => $value) {
-            $keys[] = $key;
-        }
-        if (empty($keys)) {
-            return [];
-        }
         $placeholders = implode(',', array_fill(0, count($keys), '?'));
-        $st = $db->prepare('SELECT * FROM projekt_Ponude WHERE ID IN (' . $placeholders . ')');
+        $st = $db->prepare('SELECT * FROM `projekt_Ponude` WHERE `ID` IN (' . $placeholders . ')');
         $st->execute($keys);
 
         $proizvodiUKosarici = [];
@@ -420,57 +416,48 @@ class SpecerajService
         return $proizvodiUKosarici;
     }
 
-
-function izracunajPotrosnjuUDucanu($ducan_id, $proizvodiUKosarici)
+    function izracunajPotrosnjuUDucanu($ducan_id, $ponudeUKosarici)
     {
         $db = DB::getConnection();
-        $values = array_values($proizvodiUKosarici);
+        $keys = []; $kolicina = [];
+        $koliko = 0;
+        foreach ($ponudeUKosarici as $key => $value) {
+            $keys[] = $key;
+            $kolicina[] = $value;
+            $koliko++;
+        }
+        $values = $this->getProizvodiFromPonude($keys);
 
-        if (empty($values)) {
-            return ['Potrosnja' => 0, 'NovePonude' => []];
+        if (empty($values) || $values === -1) {
+            return ['Potrosnja' => -1, 'NovePonude' => []];
         }
 
         // Prepare named parameter for ducan_id
-        $placeholders = implode(',', array_fill(0, count($values), '?'));
+        $placeholders = implode(',', $values);
 
-        $sql = 'SELECT p.ID, p.Cijena, p.Akcija
-                FROM projekt_Ponude p
-                WHERE p.ID_Ducan = :ducan_id
-                AND p.ID_Proizvod IN (' . $placeholders . ')';
+        $st = $db->prepare("SELECT p.ID, p.Cijena, p.Akcija
+                            FROM projekt_Ponude p
+                            WHERE p.ID_Ducan = :ducan_id
+                            AND p.ID_Proizvod IN ($placeholders)");
+        $st->bindParam(':ducan_id', $ducan_id, PDO::PARAM_INT);
 
-        print( $sql );
+        $st->execute();
 
-        try {
-            $st = $db->prepare($sql);
-            $st->bindParam(':ducan_id', $ducan_id, PDO::PARAM_INT);
+        $novePonude = [];
+        $potrosnja = 0;
+        $it = 0;
 
-
-            // // Bind positional parameters for IN condition
-            // foreach ($values as $key => $value) {
-            //     $param_index = $key; // Positional parameters start from 1
-            //     $st->bindParam($param_index, $value, PDO::PARAM_INT);
-            // }
-            //
-            // print( $sql );
-
-            $st->execute($values);
-
-            $novePonude = [];
-            $potrosnja = 0;
-
-            while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
-                $novePonude[] = $row['ID'];
-                $potrosnja += ($row['Akcija'] === NULL) ? $row['Cijena'] : $row['Akcija'];
-            }
-
-            return ['Potrosnja' => $potrosnja, 'NovePonude' => $novePonude];
-
-        } catch (PDOException $e) {
-            echo 'PDO Exception: ' . $e->getMessage();
-            return ['Potrosnja' => 0, 'NovePonude' => []];
+        while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
+            $novePonude[$row['ID']] = $kolicina[$it];
+            $potrosnja += ( ($row['Akcija'] === NULL) ? $row['Cijena'] : $row['Akcija'] ) * $kolicina[$it];
+            $it++;
         }
+
+        if($koliko === $it) return ['Potrosnja' => $potrosnja, 'NovePonude' => $novePonude];
+        else return ['Potrosnja' => -1, 'NovePonude' => []];
     }
 
+<<<<<<< HEAD
     function getStavka( $id_ponuda, $kolicina )
     {
         $ponuda = $this->getPonudaById( $id_ponuda );
@@ -492,6 +479,8 @@ function izracunajPotrosnjuUDucanu($ducan_id, $proizvodiUKosarici)
         print_r($stavke); echo '<br>';
         return $stavke;
     }
+=======
+>>>>>>> 874c4731e1d13745bcbeb5be88182c3c0e937a18
 
     //-------------------------------------------------------------------------------------------------------------------------
     // funkcije za Recenzije

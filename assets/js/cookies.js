@@ -34,7 +34,7 @@ function getCookie(name) {
 
 // Brisanje (Overwriteanje cookija i postavljanje da odma istekne)
 function eraseCookie(name) {
-    document.cookie = name + '=; Max-Age=-99999999;';
+    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 }
 
 function spremi_artikl_u_kosaricu(userID, ponudaID, kolicina){
@@ -57,16 +57,20 @@ function spremi_artikl_u_kosaricu(userID, ponudaID, kolicina){
 }
 
 function makni_artikl_iz_kosarice(userID, ponudaID){
-    
+   
     let kosarica = getCookie("kosarica"+userID)
     kosarica = kosarica ? JSON.parse(kosarica) : {};
 
     if(kosarica){
         delete kosarica[parseInt(ponudaID)];
     }
-    
-    // Set the updated cookie
-    setCookie("kosarica"+userID, JSON.stringify(kosarica));
+    if(kosarica.length == 0){
+        document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    }
+    else{
+        // Set the updated cookie
+        setCookie("kosarica"+userID, JSON.stringify(kosarica));
+    }
 }
 
 function kolicina_artikla(userID, ponudaID){
