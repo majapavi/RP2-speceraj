@@ -6,6 +6,10 @@
     <button type="submit">Maksimalna ušteda</button>
 </form>
 
+<form action="index.php?rt=kosarica/ispisiPopisZaKupnju" method="post">
+    <button type="submit">Ispiši popis za kupnju</button>
+</form>
+
 <script>
     let kosaricaZaView = <?php echo json_encode($kosaricaZaView); ?>;
     let userID = <?php echo $_SESSION["ID"]; ?>;

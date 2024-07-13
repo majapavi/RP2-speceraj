@@ -28,6 +28,7 @@ require_once __DIR__ . '/ducani2.class.php';
 require_once __DIR__ . '/akcija.class.php';
 require_once __DIR__ . '/recenzije2.class.php';
 require_once __DIR__ . '/artikl.class.php';
+require_once __DIR__ . '/stavka.class.php';
 
 
 class SpecerajService
@@ -469,6 +470,29 @@ function izracunajPotrosnjuUDucanu($ducan_id, $proizvodiUKosarici)
             return ['Potrosnja' => 0, 'NovePonude' => []];
         }
     }
+
+    function getStavka( $id_ponuda, $kolicina )
+    {
+        $ponuda = $this->getPonudaById( $id_ponuda );
+        $proizvod = $this->getProizvodById( $ponuda->ID_Proizvod );
+        $ducan = $this->getDucanById( $ponuda->ID_Ducan );
+
+        $stavka = new Stavka( $proizvod->Naziv, $ducan->Naziv, $kolicina, $ponuda->Cijena, $ponuda->Akcija);
+        return $stavka;
+    }
+
+    function getAllStavke( $kosarica )
+    {
+        $stavke = [];
+        foreach( $kosarica as $id_ponuda => $kolicina ) {
+            $stavka = $this->getStavka( $id_ponuda, $kolicina );
+            $stavke[] = array( $stavka->ArtiklaNaziv, $stavka->DucanNaziv, $stavka->Kolicina, $stavka->CijenaSAkcijom);
+        }
+
+        print_r($stavke); echo '<br>';
+        return $stavke;
+    }
+
     //-------------------------------------------------------------------------------------------------------------------------
     // funkcije za Recenzije
     //-------------------------------------------------------------------------------------------------------------------------
