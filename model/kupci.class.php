@@ -1,13 +1,12 @@
 <?php
 class Kupac
 {
-    protected $ID, $Ime, $Prezime, $Password_Hash;
+    protected $ID, $Username, $Password_Hash;
 
-    function __construct( $ID, $Ime, $Prezime, $Password_Hash )
+    function __construct( $ID, $Username, $Password_Hash )
     {
         $this->ID = $ID;
-        $this->Ime = $Ime;
-        $this->Prezime = $Prezime;
+        $this->Username = $Username;
         $this->Password_Hash = $Password_Hash;
     }
 

@@ -3,8 +3,7 @@
 <table>
     <tr>
         <th>ID</th>
-        <th>Ime</th>
-        <th>Prezime</th>
+        <th>Username</th>
         <th>Password_Hash</th>
     </tr>
     <?php
@@ -12,8 +11,7 @@
         {
             echo '<tr>';
             echo '<td>' . $kupac->ID . '</td>';
-            echo '<td>' . $kupac->Ime . '</td>';
-            echo '<td>' . $kupac->Prezime . '</td>';
+            echo '<td>' . $kupac->Username . '</td>';
             echo '<td>' . $kupac->Password_Hash . '</td>';
             echo '</tr>';
         }

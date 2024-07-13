@@ -23,11 +23,6 @@ class KosaricaController
         require_once __DIR__ . '/../view/kosarica_index.php';
     }
 
-    function stvoriNovuKosaricu()
-    {
-        $_COOKIE['kosarica'][$_SESSION["ID"]] = array();
-    }
-
     function maxGlobalnaUsteda()
     {
         // zove getNajjeftinijaPonudaProizvoda iz specerajservice

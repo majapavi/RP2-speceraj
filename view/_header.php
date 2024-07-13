@@ -22,7 +22,7 @@
             <h1 class="left-title">Špeceraj</h1>
             <div class="right-title-2">
                 <div class="user-info">
-                    <?php $loginUser = $_SESSION['ime'] . ' ' . $_SESSION['prezime']; ?>
+                    <?php $loginUser = $_SESSION['username']; ?>
                     <div class="user-greeting">
                         <span>Bok, <?php echo $loginUser ?>!</span>
                     </div>

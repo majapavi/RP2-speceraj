@@ -13,7 +13,7 @@
 
 //     funkcije za Recenzije:      unesiRecenziju( $user_id, $store_id, $review, $rating ), azurirajProsjek( $id_ducan )
 
-//     ostale pomocne funkcije:    postojiLiUser( $ime, $prezime ),  getAllDucaniIds()
+//     ostale pomocne funkcije:    postojiLiUser( $username ),  getAllDucaniIds()
 
 
 
@@ -44,7 +44,7 @@ class SpecerajService
         $kupci = [];
         while( $row = $st->fetch() )
         {
-            $kupac = new Kupac( $row['ID'], $row['Ime'], $row['Prezime'], $row['Password_Hash'] );
+            $kupac = new Kupac( $row['ID'], $row['Username'], $row['Password_Hash'] );
             $kupci[] = $kupac;
         }
 
@@ -320,8 +320,8 @@ class SpecerajService
     function getRecenzijeForView()
     {
         $db = DB::getConnection();
-        $st = $db->prepare( 'SELECT k.Ime AS Ime_Kupca, k.Prezime AS Prezime_Kupca,
-                                    d.ID AS ID_Ducana, d.Naziv AS Naziv_Ducana, d.Link_na_logo AS Link_na_logo_Ducana,
+        $st = $db->prepare( 'SELECT k.Username AS Username_Kupca, d.ID AS ID_Ducana,
+                                    d.Naziv AS Naziv_Ducana, d.Link_na_logo AS Link_na_logo_Ducana,
                                     r.Ocjena AS Ocjena_Recenzije, r.Tekst AS Tekst_Recenzije
                              FROM projekt_Recenzije r
                              JOIN projekt_Kupci k ON r.ID_User = k.ID
@@ -331,7 +331,7 @@ class SpecerajService
 
         $recenzije = [];
         while( $row = $st->fetch() ) {
-            $recenzija = new Recenzija2( $row['Ime_Kupca'] . ' ' . $row['Prezime_Kupca'], $row['ID_Ducana'], $row['Naziv_Ducana'], $row['Link_na_logo_Ducana'], $row['Ocjena_Recenzije'], $row['Tekst_Recenzije'] );
+            $recenzija = new Recenzija2( $row['Username_Kupca'], $row['ID_Ducana'], $row['Naziv_Ducana'], $row['Link_na_logo_Ducana'], $row['Ocjena_Recenzije'], $row['Tekst_Recenzije'] );
 
             $recenzije[] = $recenzija;
         }
@@ -358,12 +358,11 @@ class SpecerajService
         return $ducani_ids;
     }
 
-    function postojiLiUser( $ime, $prezime )
+    function postojiLiUser( $username )
     {
         $db = DB::getConnection();
-        $st = $db->prepare( 'SELECT * FROM `projekt_Kupci` WHERE `Ime` = :ime AND `Prezime` = :prezime' );
-        $st->bindParam(':ime', $ime, PDO::PARAM_STR);
-        $st->bindParam(':prezime', $prezime, PDO::PARAM_STR);
+        $st = $db->prepare( 'SELECT * FROM `projekt_Kupci` WHERE `Username` = :username' );
+        $st->bindParam(':username', $username, PDO::PARAM_STR);
         $st->execute();
 
         if( $st->rowCount() === 0 ) {
@@ -401,8 +400,16 @@ class SpecerajService
     function getProizvodiFromPonude($ponudeUKosarici)
     {
         $db = DB::getConnection();
-        $st = $db->prepare('SELECT ID_Proizvod FROM projekt_Ponude WHERE ID IN (' . implode(',', $ponudeUKosarici) . ')');
-        $st->execute();
+        $keys = [];
+        foreach ($ponudeUKosarici as $key => $value) {
+            $keys[] = $key;
+        }
+        if (empty($keys)) {
+            return [];
+        }
+        $placeholders = implode(',', array_fill(0, count($keys), '?'));
+        $st = $db->prepare('SELECT * FROM projekt_Ponude WHERE ID IN (' . $placeholders . ')');
+        $st->execute($keys);
 
         $proizvodiUKosarici = [];
         while ($row = $st->fetch()) {
@@ -412,30 +419,56 @@ class SpecerajService
         return $proizvodiUKosarici;
     }
 
-    function izracunajPotrosnjuUDucanu($ducan_id, $proizvodiUKosarici)
+
+function izracunajPotrosnjuUDucanu($ducan_id, $proizvodiUKosarici)
     {
         $db = DB::getConnection();
-        $st = $db->prepare('SELECT SUM(p.Cijena) AS Potrosnja,
-                            p.ID AD NovaPonudaID
-                            FROM projekt_Ponude p
-                            WHERE p.ID_Ducan = :ducan_id
-                            AND p.ID_Proizvod IN (' . implode(',', $proizvodiUKosarici) . ')');
-        $st->bindParam(':ducan_id', $ducan_id, PDO::PARAM_INT);
-        $st->execute();
+        $values = array_values($proizvodiUKosarici);
 
-        $novePonude = [];
-        while ($row = $st->fetch()) {
-            $novePonude[] = $row['NovaPonudaID'];
+        if (empty($values)) {
+            return ['Potrosnja' => 0, 'NovePonude' => []];
         }
 
-        // NEDOVRSENO: TREBA SKUZITI KAKO IZVUCE LISTA S NOVIM PONUDA_IDevima I TO U PORETKU U KOJEM SU BILI I STARI PROIZVODI
-        // I TREBA VRATITI TO I SUMU POTROSNJE
+        // Prepare named parameter for ducan_id
+        $placeholders = implode(',', array_fill(0, count($values), '?'));
 
-        if ($row = $st->fetch()) {
-            $potrosnja = $row['Potrosnja'];
+        $sql = 'SELECT p.ID, p.Cijena, p.Akcija
+                FROM projekt_Ponude p
+                WHERE p.ID_Ducan = :ducan_id
+                AND p.ID_Proizvod IN (' . $placeholders . ')';
+
+        print( $sql );
+
+        try {
+            $st = $db->prepare($sql);
+            $st->bindParam(':ducan_id', $ducan_id, PDO::PARAM_INT);
+
+
+            // // Bind positional parameters for IN condition
+            // foreach ($values as $key => $value) {
+            //     $param_index = $key; // Positional parameters start from 1
+            //     $st->bindParam($param_index, $value, PDO::PARAM_INT);
+            // }
+            //
+            // print( $sql );
+
+            $st->execute($values);
+
+            $novePonude = [];
+            $potrosnja = 0;
+
+            while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
+                $novePonude[] = $row['ID'];
+                $potrosnja += ($row['Akcija'] === NULL) ? $row['Cijena'] : $row['Akcija'];
+            }
+
+            return ['Potrosnja' => $potrosnja, 'NovePonude' => $novePonude];
+
+        } catch (PDOException $e) {
+            echo 'PDO Exception: ' . $e->getMessage();
+            return ['Potrosnja' => 0, 'NovePonude' => []];
         }
     }
-
     //-------------------------------------------------------------------------------------------------------------------------
     // funkcije za Recenzije
     //-------------------------------------------------------------------------------------------------------------------------

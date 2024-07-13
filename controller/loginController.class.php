@@ -26,16 +26,15 @@ class LoginController
             {
                 if( isset( $_POST['btn_login'] ) )
                 {
-                    $ime = $_POST['ime'];
-                    $prezime = $_POST['prezime'];
+                    $username = $_POST['username'];
                     $password = $_POST['password'];
 
                     $ss = new SpecerajService();
-                    $user = $ss->postojiLiUser( $ime, $prezime );
+                    $user = $ss->postojiLiUser( $username );
 
                     if( $user === 0 )
                     {
-                        $msg = 'Korisnik ' . $ime . ' ' . $prezime . ' ne postoji!';
+                        $msg = 'Korisnik ' . $username . ' ne postoji!';
                         $this->logiranje( $msg );
                     }
                     else
@@ -44,8 +43,7 @@ class LoginController
 
                         if( password_verify( $password, $password_hash ) )
                         {
-                            $_SESSION['ime'] = $ime;
-                            $_SESSION['prezime'] = $prezime;
+                            $_SESSION['username'] = $username;
                             $_SESSION['ID'] = $user['ID'];
 
                             # Kreiranje nove košarice za novog usera
@@ -89,8 +87,7 @@ class LoginController
 
     function registrirajSe()
     {
-        $ime = $_POST['ime'];
-        $prezime = $_POST['prezime'];
+        $username = $_POST['username'];
         $password = $_POST['password'];
         $potvrdi_password = $_POST['potvrdi_password'];
 
@@ -99,7 +96,7 @@ class LoginController
             $msg = 'Password i potvrda passworda nisu bili isti, molim Vas pokušajte ponovo!';
             registracija( $msg );
         }
-        if( empty($ime) || empty($prezime) || empty($password)) {
+        else if( empty($username) || empty($password)) {
             $msg = 'Niti jedno polje ne smije ostati prazno!';
             registracija( $msg );
         }
@@ -111,7 +108,7 @@ class LoginController
             $postoji = false;
             foreach($korisnici as $korisnik )
             {
-                if( $ime === $korisnik->Ime && $prezime === $korisnik->Prezime )
+                if( $username === $korisnik->Username )
                 {
                     $postoji = true;
                     break;
@@ -120,14 +117,14 @@ class LoginController
 
             if( $postoji )
             {
-                $msg = 'Korisnik s imenom ' . $ime . ' ' . $prezime . ' već postoji!<br>Vratite se na stranicu za ulogiravanje.';
+                $msg = 'Korisnik s usernameom ' . $username . ' već postoji!<br>Vratite se na stranicu za ulogiravanje.';
                 registracija( $msg );
             }
             else
             {
                 $db = DB::getConnection();
-                $st = $db->prepare('INSERT INTO `projekt_Kupci` (Ime, Prezime, Password_Hash) VALUES (:ime, :prez, :pass)');
-                $st->execute(array('ime' => $ime, 'prez' => $prezime, 'pass' => password_hash($password, PASSWORD_DEFAULT)));
+                $st = $db->prepare('INSERT INTO `projekt_Kupci` (Username, Password_Hash) VALUES (:username, :pass)');
+                $st->execute(array('username' => $username, 'pass' => password_hash($password, PASSWORD_DEFAULT)));
                 $ID_novogKupca = $db->lastInsertId();
 
                 $msg = 'Korisnički račun uspješno kreiran!<br>Molimo Vas ulogirajte se kako biste mogli koristiti aplikaciju.';

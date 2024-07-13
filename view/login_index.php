@@ -16,10 +16,8 @@ function logiranje( $msg = '' )
         <?php echo '<strong>' . $msg . '</strong>'; ?>
         <br>
         <form action="index.php?rt=login/index" method="post">
-            <label for="ime">Ime:</label>
-            <input type="text" id="ime" name="ime">
-            <label for="prezime">Prezime:</label>
-            <input type="text" id="prezime" name="prezime">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username">
             <label for="password">Password:</label>
             <input type="password" id="password" name="password">
             <div class="button-container">

@@ -47,8 +47,7 @@ try {
     $st = $db->prepare("
         CREATE TABLE IF NOT EXISTS projekt_Kupci (
             ID INT AUTO_INCREMENT PRIMARY KEY,
-            Ime VARCHAR(50) NOT NULL,
-            Prezime VARCHAR(50) NOT NULL,
+            Username VARCHAR(15) NOT NULL,
             Password_Hash VARCHAR(255) NOT NULL
         )
     ");
@@ -127,10 +126,11 @@ echo "Napravio tablicu projekt_Recenzije.<br />";
 
 // Insert examples into Kupci
 try {
-    $st = $db->prepare('INSERT INTO projekt_Kupci (Ime, Prezime, Password_Hash) VALUES (:ime, :prez, :pass)');
+    $st = $db->prepare('INSERT INTO projekt_Kupci (Username, Password_Hash) VALUES (:username, :pass)');
 
-    $st->execute(array('ime' => 'Bruno', 'prez' => 'Polančec', 'pass' => password_hash('bruninasifra', PASSWORD_DEFAULT)));
-    $st->execute(array('ime' => 'Josip', 'prez' => 'Plazanić', 'pass' => password_hash('josipovasifra', PASSWORD_DEFAULT)));
+    $st->execute(array('username' => 'BrunoPol', 'pass' => password_hash('bruninasifra', PASSWORD_DEFAULT)));
+    $st->execute(array('username' => 'JosipPlaz', 'pass' => password_hash('josipovasifra', PASSWORD_DEFAULT)));
+    $st->execute(array('username' => '', 'pass' => password_hash('', PASSWORD_DEFAULT)));
 }
 catch( PDOException $e ) { exit( "PDO error [insert projekt_Kupci]: " . $e->getMessage() ); }
 
