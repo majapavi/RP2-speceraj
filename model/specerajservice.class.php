@@ -44,7 +44,7 @@ class SpecerajService
         $kupci = [];
         while( $row = $st->fetch() )
         {
-            $kupac = new Kupac( $row['ID'], $row['Ime'], $row['Prezime'], $row['Password_Hash'] );
+            $kupac = new Kupac( $row['ID'], $row['Username'], $row['Password_Hash'] );
             $kupci[] = $kupac;
         }
 
