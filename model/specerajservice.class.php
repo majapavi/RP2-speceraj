@@ -1,22 +1,21 @@
-<!-- 
- Ovaj servis sadrzi sljedece funkcionalnosti:
-
-    getAll() funkcije:          getAllKupci(), getAllDucani(), getAllProizvodi(), getAllPonude(), getAllRecenzije()
-
-    getById() funkcije:         getProizvodById( $id_proizvod ), getDucanById( $id_ducan ), getPonudaById( $id_ponuda ),
-                                getPonudeByIdProizvod( $id_proizvod ) -> PO IDu DRUGE KLASE
-
-    prepareView() funkcije:     getKosaricaArtiklInfo( $id_ponuda, $kolicina ), getAllArtikliInfo( $kosarica ), getKarticaByIdProizvoda( $id_proizvod ),
-                                getAllKartice( $search = '', $sort = '' ), getAllAkcije( $search = '', $sort = '', $ducani_ids = [1,2,3,4,5,6] ), getRecenzijeForView()
-
-    funkcije za Kosaricu:       getNajjeftinijaPonudaProizvoda( $id_proizvod ), getProizvodiFromPonude($ponudeUKosarici), izracunajPotrosnjuUDucanu($ducan_id, $proizvodiUKosarici)
-
-    funkcije za Recenzije:      unesiRecenziju( $user_id, $store_id, $review, $rating ), azurirajProsjek( $id_ducan )
-
-    ostale pomocne funkcije:    postojiLiUser( $ime, $prezime ),  getAllDucaniIds()
--->
-
 <?php
+// Ovaj servis sadrzi sljedece funkcionalnosti:
+
+//     getAll() funkcije:          getAllKupci(), getAllDucani(), getAllProizvodi(), getAllPonude(), getAllRecenzije()
+
+//     getById() funkcije:         getProizvodById( $id_proizvod ), getDucanById( $id_ducan ), getPonudaById( $id_ponuda ),
+//                                 getPonudeByIdProizvod( $id_proizvod ) -> PO IDu DRUGE KLASE
+
+//     prepareView() funkcije:     getKosaricaArtiklInfo( $id_ponuda, $kolicina ), getAllArtikliInfo( $kosarica ), getKarticaByIdProizvoda( $id_proizvod ),
+//                                 getAllKartice( $search = '', $sort = '' ), getAllAkcije( $search = '', $sort = '', $ducani_ids = [1,2,3,4,5,6] ), getRecenzijeForView()
+
+//     funkcije za Kosaricu:       getNajjeftinijaPonudaProizvoda( $id_proizvod ), getProizvodiFromPonude($ponudeUKosarici), izracunajPotrosnjuUDucanu($ducan_id, $proizvodiUKosarici)
+
+//     funkcije za Recenzije:      unesiRecenziju( $user_id, $store_id, $review, $rating ), azurirajProsjek( $id_ducan )
+
+//     ostale pomocne funkcije:    postojiLiUser( $ime, $prezime ),  getAllDucaniIds()
+
+
 
 require_once __DIR__ . '/../app/database/db.class.php';
 require_once __DIR__ . '/kupci.class.php';

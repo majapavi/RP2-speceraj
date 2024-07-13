@@ -5,7 +5,7 @@
     -   kartica_proizvoda
 
 /* općenito na karticama */
-#sve_ponude, #sve_akcije{
+#sve_ponude, #sve_akcije, #kosarica{
     margin-left: 20px;
 }
 h3{
@@ -239,5 +239,57 @@ h3{
     border-radius: 5px;
     width: 100px;
     padding: 5px;
+}
+/* -------------------------------------- */
+
+/* Kartica artikla */
+.kartica_artikla{
+    display: flex;
+    flex-direction: row;
+    background-color: #95A5A6;
+    border: 5px solid #2C3E50;
+    border-radius: 15px;
+    padding: 20px;
+    width: 1000px;
+    height: 130px;
+    margin: 10px;
+    align-items: center;
+    justify-content: center;
+    transition: height 0.5s ease, padding 0.5s ease, opacity 0.5s ease;
+    opacity: 1;
+    overflow: hidden;
+}
+.kartica_artikla.fade-out {
+    opacity: 0;
+    height: 0;
+    padding: 0;
+}
+.kartica_artikla img {
+    border-radius: 15px;
+    /* padding: 10px; */
+    width: 110px;
+    height: 110px;
+    margin-left: 10px;
+}
+.kartica_artikla h4 {
+    text-align: center;
+    font-size: 15px;
+    width: 200px;
+    margin: 5px;
+}
+.kartica_artikla button{
+    background-color: #ECF0F1;
+    border-radius: 5px;
+    margin: 0px;
+    width: 70px;
+}
+.kartica_artikla .akcija{
+    color: #2C3E50;
+    background-color: #8caccb;
+    border-radius: 10px;
+    border: 0px solid #2C3E50;
+}
+.kartica_artikla div{
+    margin: auto;
 }
 /* -------------------------------------- */
