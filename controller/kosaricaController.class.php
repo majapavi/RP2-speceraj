@@ -37,43 +37,45 @@ class KosaricaController
         // Provjera postojanja cookiea
         if (isset($_COOKIE[$poz])) {
             $kosarica = json_decode($_COOKIE[$poz], true);
+            if(count($kosarica) > 0){
 
-            foreach ($kosarica as $ponudaId => $kolicina) {
-                $ponuda = $ss->getPonudaById($ponudaId);
+                foreach ($kosarica as $ponudaId => $kolicina) {
+                    $ponuda = $ss->getPonudaById($ponudaId);
 
-                $proizvod_id = $ponuda->ID_Proizvod;
-                $najjeftinijaPonuda = $ss->getNajjeftinijaPonudaProizvoda($proizvod_id);
+                    $proizvod_id = $ponuda->ID_Proizvod;
+                    $najjeftinijaPonuda = $ss->getNajjeftinijaPonudaProizvoda($proizvod_id);
 
-                if ($najjeftinijaPonuda->ID != $ponuda->ID) {
-                    // Ažuriraj košaricu
-                    unset($kosarica[$ponudaId]);
-                    $kosarica[$najjeftinijaPonuda->ID] = $kolicina;
+                    if ($najjeftinijaPonuda->ID != $ponuda->ID) {
+                        // Ažuriraj košaricu
+                        unset($kosarica[$ponudaId]);
+                        $kosarica[$najjeftinijaPonuda->ID] = $kolicina;
+                    }
                 }
+                //
+                // // Pretvaranje košarice u JSON za pohranu u cookie
+                // $kosaricaJson = json_encode($kosarica);
+                //
+                // // Postavljanje cookiea s ažuriranom košaricom
+                // setcookie($poz, $kosaricaJson, time() + (86400 * 7), "/"); // Cookie traje 7 dana
+
+                $jsonValue = json_encode($kosarica);
+
+                // Construct the Set-Cookie header
+                $cookieName = 'kosarica' . $_SESSION['ID'];
+                $cookieValue = $jsonValue;
+                $cookieExpire = time() + (86400 * 7);  // Cookie lasts for 7 days
+                $cookiePath = '/';
+                $setCookieHeader = sprintf(
+                    'Set-Cookie: %s=%s; expires=%s; path=%s',
+                    $cookieName,
+                    $cookieValue,
+                    gmdate('D, d-M-Y H:i:s T', $cookieExpire),
+                    $cookiePath
+                );
+
+                // Send the header
+                header($setCookieHeader);
             }
-            //
-            // // Pretvaranje košarice u JSON za pohranu u cookie
-            // $kosaricaJson = json_encode($kosarica);
-            //
-            // // Postavljanje cookiea s ažuriranom košaricom
-            // setcookie($poz, $kosaricaJson, time() + (86400 * 7), "/"); // Cookie traje 7 dana
-
-            $jsonValue = json_encode($kosarica);
-
-            // Construct the Set-Cookie header
-            $cookieName = 'kosarica' . $_SESSION['ID'];
-            $cookieValue = $jsonValue;
-            $cookieExpire = time() + (86400 * 7);  // Cookie lasts for 7 days
-            $cookiePath = '/';
-            $setCookieHeader = sprintf(
-                'Set-Cookie: %s=%s; expires=%s; path=%s',
-                $cookieName,
-                $cookieValue,
-                gmdate('D, d-M-Y H:i:s T', $cookieExpire),
-                $cookiePath
-            );
-
-            // Send the header
-            header($setCookieHeader);
         }
         else{
             // ovo samo ako je kosarica prazna (isset($_COOKIE[$poz]) == false)
