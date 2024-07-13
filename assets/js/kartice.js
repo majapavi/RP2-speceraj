@@ -165,6 +165,7 @@ function stvori_karticu_artikla(artiklZaView, userID)
     sadrzaj.appendChild(kolicina);
 
     // Cijena
+    /* TU TREBA SLOZIT DA GLEDA AKCIJU AKO JE NA AKCIJI */
     const cijena = document.createElement('div');
     cijena.textContent = `Cijena: ${artiklZaView.Cijena}`;
     sadrzaj.appendChild(cijena);
@@ -178,7 +179,13 @@ function stvori_karticu_artikla(artiklZaView, userID)
     gumb.addEventListener('click', function() {
         let ponuda = artiklZaView.ponudaID;
         makni_artikl_iz_kosarice(userID, ponuda);
-        console.log(getCookie(`kosarica${userID}`));
+
+        // fade
+        sadrzaj.classList.add('fade-out');
+        // brisanje
+        sadrzaj.addEventListener('transitionend', function() {
+            sadrzaj.style.display = 'none';
+        }, { once: true });
     });
 
     return sadrzaj;
