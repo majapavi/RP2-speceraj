@@ -75,7 +75,15 @@ class KosaricaController
             // Send the header
             header($setCookieHeader);
         }
+<<<<<<< HEAD
 
+=======
+        else{
+            // ovo samo ako je kosarica prazna (isset($_COOKIE[$poz]) == false)
+            $kosarica = [];
+        }
+    
+>>>>>>> 739840fc75fab949584aaf85e169c3b383c3dfcc
         // Dohvaćanje artikala za prikaz
         $kosaricaZaView = $ss->getAllArtikliInfo($kosarica);
         $title = 'Moja košarica (nakon optimizacije 1)';
