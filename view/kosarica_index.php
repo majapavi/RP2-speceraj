@@ -6,10 +6,14 @@
     <button type="submit">Maksimalna ušteda</button>
 </form>
 
+<form action="index.php?rt=kosarica/ustedaUJednomDucanu" method="post">
+    <button type="submit">Obavi kupnju u jednom dućanu</button>
+</form>
+
 <script>
     let kosaricaZaView = <?php echo json_encode($kosaricaZaView); ?>;
     let userID = <?php echo $_SESSION["ID"]; ?>;
-    
+
     if( kosaricaZaView.length == 0 ){
         $('#kosarica').append(`<p>Vaša košarica je prazna.</p>`)
     }
