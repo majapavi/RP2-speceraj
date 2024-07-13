@@ -99,6 +99,10 @@ class LoginController
             $msg = 'Password i potvrda passworda nisu bili isti, molim Vas pokušajte ponovo!';
             registracija( $msg );
         }
+        if( empty($ime) || empty($prezime) || empty($password)) {
+            $msg = 'Niti jedno polje ne smije ostati prazno!';
+            registracija( $msg );
+        }
         else
         {
             $ss = new SpecerajService();
