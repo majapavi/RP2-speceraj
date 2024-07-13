@@ -13,7 +13,7 @@ class KosaricaController
         }
         //$kosarica = array(6 => 2, 9 => 3, 3 => 1);
         // print_r($_COOKIE['kosarica' . $_SESSION["ID"]]); echo '<hr>';
-        print("Kosarica za userID = $_SESSION[ID]:  "); print_r($kosarica); echo '<br>';
+        // print("Kosarica za userID = $_SESSION[ID]:  "); print_r($kosarica); echo '<br>';
 
         $specerajService = new SpecerajService();
         $kosaricaZaView = $specerajService->getAllArtikliInfo($kosarica);
@@ -75,15 +75,11 @@ class KosaricaController
             // Send the header
             header($setCookieHeader);
         }
-<<<<<<< HEAD
-
-=======
         else{
             // ovo samo ako je kosarica prazna (isset($_COOKIE[$poz]) == false)
             $kosarica = [];
         }
-    
->>>>>>> 739840fc75fab949584aaf85e169c3b383c3dfcc
+
         // Dohvaćanje artikala za prikaz
         $kosaricaZaView = $ss->getAllArtikliInfo($kosarica);
         $title = 'Moja košarica (nakon optimizacije 1)';
@@ -94,47 +90,55 @@ class KosaricaController
     {
         $ss = new SpecerajService();
         $ducani_ids = $ss->getAllDucaniIds();
-        $this->debug();
-        $ponudeUKosarici = json_decode($_COOKIE[ 'kosarica' . $_SESSION['ID'] ]);
-        print_r( $ponudeUKosarici );
-        print(count($ponudeUKosarici));
+        // $this->debug();
+        $kosarica = NULL;
+        if(isset($_COOKIE[ 'kosarica' . $_SESSION['ID'] ])) {
+            $ponudeUKosarici = json_decode($_COOKIE[ 'kosarica' . $_SESSION['ID'] ]);
+            // print_r( $ponudeUKosarici );
+            // print(count($ponudeUKosarici));
 
-        $polje = [];
-        foreach( $ducani_ids as $ducan_id ){
-            $polje[] = $ss->izracunajPotrosnjuUDucanu($ducan_id, $ponudeUKosarici);
+            $polje = [];
+            foreach( $ducani_ids as $ducan_id ){
+                $polje[] = $ss->izracunajPotrosnjuUDucanu($ducan_id, $ponudeUKosarici);
+            }
+            // echo '<pre>';
+            // echo '$polje = '; print_r( $polje );
+            // echo '</pre>';
+            $pamti = NULL;
+            foreach ($polje as $ducan) {
+                if($pamti == NULL) $pamti = $ducan;
+                else if( $pamti['Potrosnja'] > $ducan['Potrosnja'] && $ducan['Potrosnja'] !== -1 ) $pamti = $ducan;
+            }
+            // echo '<pre>';
+            // echo '$pamti[\'NovePonude\'] = '; print_r( $pamti['NovePonude'] );
+            // echo '</pre>';
+            if( $pamti['Potrosnja'] !== -1 ) {
+                $jsonValue = json_encode($pamti['NovePonude']);
+
+                // Construct the Set-Cookie header
+                $cookieName = 'kosarica' . $_SESSION['ID'];
+                $cookieValue = $jsonValue;
+                $cookieExpire = time() + (86400 * 7);  // Cookie lasts for 7 days
+                $cookiePath = '/';
+                $setCookieHeader = sprintf(
+                    'Set-Cookie: %s=%s; expires=%s; path=%s',
+                    $cookieName,
+                    $cookieValue,
+                    gmdate('D, d-M-Y H:i:s T', $cookieExpire),
+                    $cookiePath
+                );
+
+                // Send the header
+                header($setCookieHeader);
+            }
+
+            $kosarica = $pamti['NovePonude'];
         }
-        // echo '<pre>';
-        // echo '$polje = '; print_r( $polje );
-        // echo '</pre>';
-        $pamti = NULL;
-        foreach ($polje as $ducan) {
-            if($pamti == NULL) $pamti = $ducan;
-            else if( $pamti['Potrosnja'] > $ducan['Potrosnja'] && $ducan['Potrosnja'] !== -1 ) $pamti = $ducan;
+        else {
+            $kosarica = [];
         }
-        echo '<pre>';
-        echo '$pamti[\'NovePonude\'] = '; print_r( $pamti['NovePonude'] );
-        echo '</pre>';
-
-        $jsonValue = json_encode($pamti['NovePonude']);
-
-        // Construct the Set-Cookie header
-        $cookieName = 'kosarica' . $_SESSION['ID'];
-        $cookieValue = $jsonValue;
-        $cookieExpire = time() + (86400 * 7);  // Cookie lasts for 7 days
-        $cookiePath = '/';
-        $setCookieHeader = sprintf(
-            'Set-Cookie: %s=%s; expires=%s; path=%s',
-            $cookieName,
-            $cookieValue,
-            gmdate('D, d-M-Y H:i:s T', $cookieExpire),
-            $cookiePath
-        );
-
-        // Send the header
-        header($setCookieHeader);
-
         // Dohvaćanje artikala za prikaz
-        $kosaricaZaView = $ss->getAllArtikliInfo($pamti['NovePonude']);
+        $kosaricaZaView = $ss->getAllArtikliInfo($kosarica);
         $title = 'Moja košarica (nakon optimizacije 2)';
         require_once __DIR__ . '/../view/kosarica_index.php';
     }

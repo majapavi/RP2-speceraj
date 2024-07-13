@@ -399,6 +399,9 @@ class SpecerajService
 
     function getProizvodiFromPonude( $keys )
     {
+        if(empty($keys)) {
+            return -1;
+        }
         $db = DB::getConnection();
         $placeholders = implode(',', array_fill(0, count($keys), '?'));
         $st = $db->prepare('SELECT * FROM `projekt_Ponude` WHERE `ID` IN (' . $placeholders . ')');
@@ -424,7 +427,7 @@ class SpecerajService
         }
         $values = $this->getProizvodiFromPonude($keys);
 
-        if (empty($values)) {
+        if (empty($values) || $values === -1) {
             return ['Potrosnja' => -1, 'NovePonude' => []];
         }
 
