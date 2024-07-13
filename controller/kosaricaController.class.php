@@ -32,26 +32,38 @@ class KosaricaController
     {
         // zove getNajjeftinijaPonudaProizvoda iz specerajservice
         $ss = new SpecerajService();
-        print_r($_COOKIE['kosarica'][$_SESSION["ID"]]);
-        foreach ($_COOKIE['kosarica'][$_SESSION["ID"]] as $ponudaId => $kolicina)
-        {
-            $ponuda = $ss->getPonudaById($ponudaId);
-
-            $proizvod_id = $ponuda->ID_Proizvod;
-            $najjeftinijaPonuda = $ss->getNajjeftinijaPonudaProizvoda($proizvod_id);
-
-            if ($najjeftinijaPonuda != $ponuda)
-            {
-                unset($_COOKIE['kosarica'][$_SESSION["ID"]][$ponudaId]);
-                $_COOKIE['kosarica'][$_SESSION["ID"]][$najjeftinijaPonuda->ID] = $kolicina;
+        $poz = "kosarica" . $_SESSION["ID"];
+        
+        // Provjera postojanja cookiea
+        if (isset($_COOKIE[$poz])) {
+            $kosarica = json_decode($_COOKIE[$poz], true);
+    
+            foreach ($kosarica as $ponudaId => $kolicina) {
+                $ponuda = $ss->getPonudaById($ponudaId);
+    
+                $proizvod_id = $ponuda->ID_Proizvod;
+                $najjeftinijaPonuda = $ss->getNajjeftinijaPonudaProizvoda($proizvod_id);
+    
+                if ($najjeftinijaPonuda->ID != $ponuda->ID) {
+                    // Ažuriraj košaricu
+                    unset($kosarica[$ponudaId]);
+                    $kosarica[$najjeftinijaPonuda->ID] = $kolicina;
+                }
             }
+    
+            // Pretvaranje košarice u JSON za pohranu u cookie
+            $kosaricaJson = json_encode($kosarica);
+    
+            // Postavljanje cookiea s ažuriranom košaricom
+            setcookie($poz, $kosaricaJson, time() + (86400 * 7), "/"); // Cookie traje 7 dana
         }
-
-        $kosaricaZaView = $ss->getAllArtikliInfo($_COOKIE['kosarica'][$_SESSION["ID"]]);
+    
+        // Dohvaćanje artikala za prikaz
+        $kosaricaZaView = $ss->getAllArtikliInfo($kosarica);
         $title = 'Moja košarica';
         require_once __DIR__ . '/../view/kosarica_index.php';
     }
-
+    
     function ustedaUJednomDucanu()
     {
         $ss = new SpecerajService();

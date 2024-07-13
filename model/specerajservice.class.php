@@ -385,11 +385,10 @@ class SpecerajService
         $db = DB::getConnection();
         $st = $db->prepare( 'SELECT * FROM `projekt_Ponude`
                             WHERE `ID_Proizvod` = :id
-                            AND `Cijena` = 
-                                (SELECT MIN(`Cijena`)
-                                FROM `projekt_Ponude`
-                                WHERE `ID_Proizvod` = :id)'
-                            );
+                            AND COALESCE(Akcija, Cijena) = (SELECT MIN(COALESCE(Akcija, Cijena))
+                            FROM `projekt_Ponude`
+                            WHERE `ID_Proizvod` = :id)
+                         ');
         $st->bindParam(':id', $id_proizvod, PDO::PARAM_INT);
         $st->execute();
 
