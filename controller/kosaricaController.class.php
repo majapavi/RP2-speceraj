@@ -52,6 +52,10 @@ class KosaricaController
             // Postavljanje cookiea s ažuriranom košaricom
             setcookie($poz, $kosaricaJson, time() + (86400 * 7), "/"); // Cookie traje 7 dana
         }
+        else{
+            // ovo samo ako je kosarica prazna (isset($_COOKIE[$poz]) == false)
+            $kosarica = [];
+        }
     
         // Dohvaćanje artikala za prikaz
         $kosaricaZaView = $ss->getAllArtikliInfo($kosarica);
