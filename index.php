@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if( !isset( $_GET['rt'] ) )
+if( !isset( $_GET['rt'] ) || !isset($_SESSION['ID']) )
 {
     $con = 'login';
     $action = 'index';

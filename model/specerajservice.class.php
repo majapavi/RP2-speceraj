@@ -370,6 +370,17 @@ class SpecerajService
         }
     }
 
+    function registrirajKorisnika( $username, $password )
+    {
+        $db = DB::getConnection();
+        $st = $db->prepare('INSERT INTO `projekt_Kupci` (Username, Password_Hash) VALUES (:username, :pass)');
+        $st->execute(array('username' => $username, 'pass' => password_hash($password, PASSWORD_DEFAULT)));
+        $ID_novogKupca = $db->lastInsertId();
+        
+        $msg = 'Korisnički račun uspješno kreiran!<br>Molimo Vas ulogirajte se kako biste mogli koristiti aplikaciju.';
+        return $msg;
+    }
+
     //-------------------------------------------------------------------------------------------------------------------------
     // funkcije za Kosaricu
     //-------------------------------------------------------------------------------------------------------------------------
