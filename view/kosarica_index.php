@@ -13,7 +13,14 @@
     </form>
 
     <button id="isprazni">Isprazni košaricu</button>
+
+    
+    <form action="index.php?rt=kosarica/ispisiPopisZaKupnju" method="post">
+        <button type="submit">Ispiši popis za kupnju</button>
+    </form>
+    
 </div>
+
 <script>
     let kosaricaZaView = <?php echo json_encode($kosaricaZaView); ?>;
     let userID = <?php echo $_SESSION["ID"]; ?>;
