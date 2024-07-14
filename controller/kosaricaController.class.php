@@ -23,11 +23,6 @@ class KosaricaController
         require_once __DIR__ . '/../view/kosarica_index.php';
     }
 
-    function stvoriNovuKosaricu()
-    {
-        $_COOKIE['kosarica'][$_SESSION["ID"]] = array();
-    }
-
     function maxGlobalnaUsteda()
     {
         // zove getNajjeftinijaPonudaProizvoda iz specerajservice
@@ -48,16 +43,11 @@ class KosaricaController
                     if ($najjeftinijaPonuda->ID != $ponuda->ID) {
                         // Ažuriraj košaricu
                         unset($kosarica[$ponudaId]);
-                        $kosarica[$najjeftinijaPonuda->ID] = $kolicina;
+                        if( isset($kosarica[$najjeftinijaPonuda->ID]) ) $kosarica[$najjeftinijaPonuda->ID] += $kolicina;
+                        else                                            $kosarica[$najjeftinijaPonuda->ID]  = $kolicina;
                     }
                 }
-                //
-                // // Pretvaranje košarice u JSON za pohranu u cookie
-                // $kosaricaJson = json_encode($kosarica);
-                //
-                // // Postavljanje cookiea s ažuriranom košaricom
-                // setcookie($poz, $kosaricaJson, time() + (86400 * 7), "/"); // Cookie traje 7 dana
-
+                ksort($kosarica);
                 $jsonValue = json_encode($kosarica);
 
                 // Construct the Set-Cookie header
@@ -166,22 +156,6 @@ class KosaricaController
             readfile($filePath);
             exit; // Ensure no further code is executed
         }
-    }
-        
-    function enkodiraj($novePonude)
-    {
-        $returnString = "{";
-        $prvi = true;
-        foreach ($novePonude as $key => $value) {
-            if( !$prvi ) {
-                $returnString .= ",";
-            }
-            $returnString .= "\"" . $key . "\":" . $value;
-            if( $prvi ) $prvi = false;
-        }
-        $returnString .= "}";
-
-        return $returnString;
     }
 
     function debug() {
