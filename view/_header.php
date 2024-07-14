@@ -11,7 +11,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
     <script src="assets/js/cookies.js"></script>
     <script src="assets/js/kartice.js"></script>
-    
+
     <link rel="stylesheet" href="assets/css/kartice.css">
     <link rel="stylesheet" href="assets/css/basic.css">
     <link rel="stylesheet" href="assets/css/recenzije.css">

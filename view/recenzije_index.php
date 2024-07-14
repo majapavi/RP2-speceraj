@@ -14,7 +14,7 @@
                     }
                 ?>
             </select>
-            
+
             <br><br>
 
             <label for="review">Recenzija:</label><br>
@@ -80,7 +80,7 @@
     const stars = document.querySelectorAll('.star');
     let selectedRating = 0;
     let prosjek;
-    
+
     // Mappiranje prosjeka (koristi se za ažuriranje ocjene pokraj selecta)
     <?php
         $prosjekValues = array_map(function($ducan) {
@@ -89,7 +89,7 @@
                 "Naziv" => $ducan->Naziv,
             ];
         }, $ducani);
-        
+
         // Encode the "Prosjek" values to JSON
         $prosjekJson = json_encode($prosjekValues);
     ?>

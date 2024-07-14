@@ -188,7 +188,7 @@ class SpecerajService
         $proizvod = $this->getProizvodById( $ponuda->ID_Proizvod );
         $ducan = $this->getDucanById( $ponuda->ID_Ducan );
         //echo "ID ponude: $proizvod->ID, Količina: $kolicina, Naziv: $proizvod->Naziv" . "<br>";
-        $artikl = new Artikl( $proizvod->Link, $proizvod->Naziv, $ducan->Link, $kolicina, $ponuda->Cijena, $ponuda->Akcija, $id_ponuda, $proizvod->Korak);        
+        $artikl = new Artikl( $proizvod->Link, $proizvod->Naziv, $ducan->Link, $kolicina, $ponuda->Cijena, $ponuda->Akcija, $id_ponuda, $proizvod->Korak);
 
         return $artikl;
     }
@@ -376,7 +376,7 @@ class SpecerajService
         $st = $db->prepare('INSERT INTO `projekt_Kupci` (Username, Password_Hash) VALUES (:username, :pass)');
         $st->execute(array('username' => $username, 'pass' => password_hash($password, PASSWORD_DEFAULT)));
         $ID_novogKupca = $db->lastInsertId();
-        
+
         $msg = 'Korisnički račun uspješno kreiran!<br>Molimo Vas ulogirajte se kako biste mogli koristiti aplikaciju.';
         return $msg;
     }
@@ -431,6 +431,10 @@ class SpecerajService
         }
         $values = $this->getProizvodiFromPonude($keys); // iz ID-eva ponuda dobivamo ID-eve proizvoda
 
+        if (empty($values) || $values === -1) {
+            return ['Potrosnja' => -1, 'NovePonude' => []]; // ovo nam znaci da kupnja nije moguca jer nemamo proizvode
+        }
+        
         //sada za svaki proizvod gledamo ima li više ponavljanja istog
         $kol2 = [];
         for( $i = 0; $i < count($keys); ++$i) {
@@ -444,10 +448,6 @@ class SpecerajService
             $kolicina[] = $k;
         }
         $koliko = count(array_unique($values));
-
-        if (empty($values) || $values === -1) {
-            return ['Potrosnja' => -1, 'NovePonude' => []]; // ovo nam znaci da kupnja nije moguca jer nemamo proizvode
-        }
 
         $proizvodiIDs = implode(',', $values);
         $db = DB::getConnection();
