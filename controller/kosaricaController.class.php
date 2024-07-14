@@ -148,19 +148,20 @@ class KosaricaController
     function ispisiPopisZaKupnju()
     {
         if (isset($_COOKIE['kosarica' . $_SESSION["ID"]])) {
-            $kosarica = json_decode($_COOKIE['kosarica' . $_SESSION["ID"]]);
+    
+            $kosarica = json_decode($_COOKIE['kosarica' . $_SESSION["ID"]], true);
+    
             $ss = new SpecerajService();
             $popisZaIspis = $ss->getAllStavke($kosarica);
-            $popisZaIspis = implode("\n", $popisZaIspis);
-        
+
             // Create and write to the file
             $filePath = 'Popis.txt';
             if (!file_exists($filePath)) {
                 touch($filePath); // Create the file if it doesn't exist
+                echo "File created: " . $filePath . "<br>";
             }
             file_put_contents($filePath, $popisZaIspis);
-            
-            // Ensure no output is sent before the headers
+                
             ob_clean();
     
             // Generate download headers and serve the file
@@ -168,21 +169,10 @@ class KosaricaController
             header('Content-Disposition: attachment; filename="Popis.txt"');
             header('Content-Length: ' . filesize($filePath));
             readfile($filePath);
-            
-            // Terminate script execution to prevent further output
-            exit();
-        } else {
-            echo "<script>alert('Košarica je prazna ili nije dostupna.');</script>";
-        }
-    
-        // Optionally include the rest of your page logic here, executed only if the basket is empty or unavailable
-        if (isset($kosaricaZaView)) {
-            $kosaricaZaView = $ss->getAllArtikliInfo($_COOKIE['kosarica' . $_SESSION["ID"]]);
-            $title = 'Moja košarica';
-            require_once __DIR__ . '/../view/kosarica_index.php';
+            exit; // Ensure no further code is executed
         }
     }
-                
+        
     function enkodiraj($novePonude)
     {
         $returnString = "{";

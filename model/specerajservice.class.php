@@ -458,16 +458,22 @@ class SpecerajService
         $proizvod = $this->getProizvodById( $ponuda->ID_Proizvod );
         $ducan = $this->getDucanById( $ponuda->ID_Ducan );
 
-        $stavka = new Stavka( $proizvod->Naziv, $ducan->Naziv, $kolicina, $ponuda->Cijena, $ponuda->Akcija);
-        return $stavka;
+        if( $ponuda->Akcija === NULL ) {
+            $stavkaString = sprintf("%-25s %-15s %-15s %-15s", $proizvod->Naziv, $ducan->Naziv, $kolicina, $ponuda->Cijena);
+        }
+        else {
+            $stavkaString = sprintf("%-25s %-15s %-15s %-15s", $proizvod->Naziv, $ducan->Naziv, $kolicina, $ponuda->Akcija);
+        }
+        print_r($stavkaString); echo '<br>';
+        return $stavkaString;
     }
 
     function getAllStavke( $kosarica )
     {
-        $stavke = [];
+        $stavke = sprintf("%-25s %-15s %-15s %-15s\n---------------------------------------------------------------------------\n", "Naziv proizvoda", "Ducan", "Kolicina", "Za platiti");
         foreach( $kosarica as $id_ponuda => $kolicina ) {
-            $stavka = $this->getStavka( $id_ponuda, $kolicina );
-            $stavke[] = array( $stavka->ArtiklaNaziv, $stavka->DucanNaziv, $stavka->Kolicina, $stavka->CijenaSAkcijom);
+            $stavkaString = $this->getStavka( $id_ponuda, $kolicina );
+            $stavke .= $stavkaString . "\n";
         }
 
         print_r($stavke); echo '<br>';
