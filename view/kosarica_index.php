@@ -27,7 +27,10 @@
     let ukupna_cijena = 0;
 
     if( kosaricaZaView.length == 0 ){
-        $('#kosarica').append(`<p>Vaša košarica je prazna.</p>`)
+        $('#kosarica').append(`<p style="margin-left:20px">Vaša košarica je prazna.</p>`);
+        $('#gumbi').empty();
+        $('#gumbi').append("<p style='margin:auto'>Dodajte artikle u košaricu za dodatne funkcionalnosti</p>");
+        $('#gumbi').hide();
     }
     else{
         kosaricaZaView.forEach( artiklZaView => {
@@ -40,7 +43,7 @@
             }
         });
     }
-    $('#ukupna_cijena').html(`Ukupna cijena: ${Math.round(ukupna_cijena*100)/100} €`);
+    $('#ukupna_cijena').html(`Ukupna cijena: `).append(`<label id="broj">${Math.round(ukupna_cijena*100)/100}</label> €`);
 
     $('#isprazni').on('click', function() {
         document.cookie ='kosarica' + userID + '=null; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';

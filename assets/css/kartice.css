@@ -305,7 +305,7 @@ h3{
     width: 1000px;
     height: 60px;
     align-items: center;
-    justify-content: center;
+    justify-content: end;
     background-color: #8caccb;
     border: 3px solid #2C3E50;
 }
@@ -314,7 +314,16 @@ h3{
     background-color: #ECF0F1;
     color: #2C3E50;
     border-radius: 5px;
-    /* margin: auto; */
-    margin: 40px;
+    margin: 10px;
     height: 40px;
+}
+#ukupna_cijena{
+    margin-right: auto;
+}
+.gumbici{
+    display: flex;
+    flex-direction: column;
+}
+.gumbici button{
+    margin: 5px;
 }

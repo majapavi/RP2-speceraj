@@ -180,11 +180,23 @@ function stvori_karticu_artikla(artiklZaView, userID)
     gumb.classList.add('removeBtn');
     gumb.textContent = 'Ukloni iz košarice';
     gumb.style.marginLeft = 'auto';
-    sadrzaj.appendChild(gumb);
+    // sadrzaj.appendChild(gumb);
 
     gumb.addEventListener('click', function() {
         let ponuda = artiklZaView.ponudaID;
         makni_artikl_iz_kosarice(userID, ponuda);
+
+        const broj_label = $('#broj');
+        let broj = parseFloat(broj_label.text());
+        if(artiklZaView.Akcija == null){
+            broj-= artiklZaView.Cijena*artiklZaView.Kolicina;
+        }
+        else{
+            broj-= artiklZaView.Akcija*artiklZaView.Kolicina;
+        }
+        broj = Math.round(broj*100)/100;
+        broj_label.empty();
+        broj_label.text(broj.toFixed(2));
 
         // fade
         sadrzaj.classList.add('fade-out');
@@ -193,6 +205,23 @@ function stvori_karticu_artikla(artiklZaView, userID)
             sadrzaj.style.display = 'none';
         }, { once: true });
     });
+
+    // TEST gumb za formu "pronađi jeftiniji dućan"
+    
+    const gumbici = document.createElement('div');
+    gumbici.classList.add('gumbici');
+    gumbici.appendChild(gumb);
+
+    const forma_za_gumb2 = document.createElement('form');
+    forma_za_gumb2.setAttribute('action', 'index.php?rt=kosarica/index');
+    forma_za_gumb2.setAttribute('method', 'post');
+    const gumb2 = document.createElement('button');
+    gumb2.setAttribute('type', 'submit');
+    gumb2.textContent = "Nađi jeftinije";
+    forma_za_gumb2.appendChild(gumb2);
+    gumbici.appendChild(forma_za_gumb2);
+    
+    sadrzaj.appendChild(gumbici);
 
     return sadrzaj;
 }
