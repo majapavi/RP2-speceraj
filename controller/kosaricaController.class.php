@@ -150,7 +150,7 @@ class KosaricaController
             $popisZaIspis = $ss->getAllStavke($kosarica);
 
             // Create and write to the file
-            $filePath = 'Popis.txt';
+            $filePath = __DIR__ . '/../popis/Popis.txt';
             if (!file_exists($filePath)) {
                 touch($filePath); // Create the file if it doesn't exist
                 echo "File created: " . $filePath . "<br>";

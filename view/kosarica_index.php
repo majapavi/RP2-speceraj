@@ -28,8 +28,6 @@
 
     if( kosaricaZaView.length == 0 ){
         $('#kosarica').append(`<p style="margin-left:20px">Vaša košarica je prazna.</p>`);
-        $('#gumbi').empty();
-        $('#gumbi').append("<p style='margin:auto'>Dodajte artikle u košaricu za dodatne funkcionalnosti</p>");
         $('#gumbi').hide();
     }
     else{
