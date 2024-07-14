@@ -96,24 +96,19 @@ class KosaricaController
         $kosarica = NULL;
         if(isset($_COOKIE[ 'kosarica' . $_SESSION['ID'] ])) {
             $ponudeUKosarici = json_decode($_COOKIE[ 'kosarica' . $_SESSION['ID'] ]);
-            // print_r( $ponudeUKosarici );
-            // print(count($ponudeUKosarici));
+
 
             $polje = [];
             foreach( $ducani_ids as $ducan_id ){
                 $polje[] = $ss->izracunajPotrosnjuUDucanu($ducan_id, $ponudeUKosarici);
             }
-            // echo '<pre>';
-            // echo '$polje = '; print_r( $polje );
-            // echo '</pre>';
+
             $pamti = NULL;
             foreach ($polje as $ducan) {
                 if($pamti == NULL) $pamti = $ducan;
-                else if( $pamti['Potrosnja'] > $ducan['Potrosnja'] && $ducan['Potrosnja'] !== -1 ) $pamti = $ducan;
+                else if( ($pamti['Potrosnja'] > $ducan['Potrosnja'] || $pamti['Potrosnja'] === -1) && $ducan['Potrosnja'] !== -1 ) $pamti = $ducan;
             }
-            // echo '<pre>';
-            // echo '$pamti[\'NovePonude\'] = '; print_r( $pamti['NovePonude'] );
-            // echo '</pre>';
+
             if( $pamti['Potrosnja'] !== -1 ) {
                 $jsonValue = json_encode($pamti['NovePonude']);
 

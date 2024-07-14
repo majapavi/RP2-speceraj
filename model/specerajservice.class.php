@@ -399,8 +399,8 @@ class SpecerajService
             return -1;
         }
         $db = DB::getConnection();
-        $placeholders = implode(',', array_fill(0, count($keys), '?'));
-        $st = $db->prepare('SELECT * FROM `projekt_Ponude` WHERE `ID` IN (' . $placeholders . ')');
+        $ponudeIDs = implode(',', array_fill(0, count($keys), '?'));
+        $st = $db->prepare('SELECT * FROM `projekt_Ponude` WHERE `ID` IN (' . $ponudeIDs . ')');
         $st->execute($keys);
 
         $proizvodiUKosarici = [];
@@ -413,27 +413,37 @@ class SpecerajService
 
     function izracunajPotrosnjuUDucanu($ducan_id, $ponudeUKosarici)
     {
-        $db = DB::getConnection();
-        $keys = []; $kolicina = [];
-        $koliko = 0;
-        foreach ($ponudeUKosarici as $key => $value) {
+        $keys = []; $kol = [];
+        foreach ($ponudeUKosarici as $key => $value) { // $key = ID_Ponude, $value = kolicina
             $keys[] = $key;
-            $kolicina[] = $value;
-            $koliko++;
+            $kol[] = $value;
         }
-        $values = $this->getProizvodiFromPonude($keys);
+        $values = $this->getProizvodiFromPonude($keys); // iz ID-eva ponuda dobivamo ID-eve proizvoda
+
+        //sada za svaki proizvod gledamo ima li više ponavljanja istog
+        $kol2 = [];
+        for( $i = 0; $i < count($keys); ++$i) {
+            if( isset($kol2[$values[$i]]) ) $kol2[$values[$i]] += $kol[$i];
+            else                            $kol2[$values[$i]]  = $kol[$i];
+        }
+
+        // na kraju to pospremimo u polje kolicina, u poretku u kojem ćemo i dohvatiti iz baze
+        $kolicina = [];
+        foreach ($kol2 as $k) {
+            $kolicina[] = $k;
+        }
+        $koliko = count(array_unique($values));
 
         if (empty($values) || $values === -1) {
-            return ['Potrosnja' => -1, 'NovePonude' => []];
+            return ['Potrosnja' => -1, 'NovePonude' => []]; // ovo nam znaci da kupnja nije moguca jer nemamo proizvode
         }
 
-        // Prepare named parameter for ducan_id
-        $placeholders = implode(',', $values);
-
+        $proizvodiIDs = implode(',', $values);
+        $db = DB::getConnection();
         $st = $db->prepare("SELECT p.ID, p.Cijena, p.Akcija
                             FROM projekt_Ponude p
                             WHERE p.ID_Ducan = :ducan_id
-                            AND p.ID_Proizvod IN ($placeholders)");
+                            AND p.ID_Proizvod IN ($proizvodiIDs)");
         $st->bindParam(':ducan_id', $ducan_id, PDO::PARAM_INT);
 
         $st->execute();
@@ -448,8 +458,9 @@ class SpecerajService
             $it++;
         }
 
+        // koliko = broj proizvoda u kosarici; it = broj proizvoda koje smo pronasli u ducanu
         if($koliko === $it) return ['Potrosnja' => $potrosnja, 'NovePonude' => $novePonude];
-        else return ['Potrosnja' => -1, 'NovePonude' => []];
+        else return ['Potrosnja' => -1, 'NovePonude' => []];  // nema svih proizvoda u ducanu
     }
 
     function getStavka( $id_ponuda, $kolicina )
