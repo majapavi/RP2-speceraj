@@ -38,7 +38,6 @@ function stvori_karticu_proizvoda( input, userID ){
     const ducani = $('<div></div>').addClass('ducani');
 
     $.each(input.Ducani, function(index, info) {
-        // console.log("INFO: ", info);
         const ovaj_ducan = $('<div></div>').addClass('jedan_ducan');
 
         const logo = $('<img>').attr('src', info.Logo);
@@ -132,7 +131,6 @@ function stvori_karticu_akcije( input, userID){
     gumb.on('click', function() {
         let ponuda = input.ID;
         spremi_artikl_u_kosaricu(userID, ponuda, unos.val());
-        // console.log(getCookie(`kosarica${userID}`))
     });
     
     objekt.append(gumb);
@@ -141,7 +139,7 @@ function stvori_karticu_akcije( input, userID){
 }
 
 
-// artikl = {ArtiklID, ArtiklSlika, ArtiklaNaziv, DucanSlika, Kolicina, Cijena, Akcija}
+// artikl = {ArtiklID, ArtiklSlika, ArtiklaNaziv, DucanSlika, Kolicina, Cijena, Akcija, Korak?}
 function stvori_karticu_artikla(artiklZaView, userID)
 {
     const sadrzaj = document.createElement('div');
@@ -161,15 +159,23 @@ function stvori_karticu_artikla(artiklZaView, userID)
 
     // Količina
     const kolicina = document.createElement('div');
-    kolicina.textContent = `Količina: ${artiklZaView.Kolicina}`;
+    let jedinica = "kom";
+    if(artiklZaView.Korak == 0.1){
+        jedinica = "kg";
+    }
+    kolicina.textContent = `Količina: ${artiklZaView.Kolicina} ${jedinica}`;
     sadrzaj.appendChild(kolicina);
 
     // Cijena
-    /* TU TREBA SLOZIT DA GLEDA AKCIJU AKO JE NA AKCIJI */
     const cijena = document.createElement('div');
-    cijena.textContent = `Cijena: ${artiklZaView.Cijena}`;
+    if(artiklZaView.Akcija == null){
+        cijena.textContent = `Cijena: ${Math.round(artiklZaView.Cijena*artiklZaView.Kolicina*100)/100} €`;
+    }
+    else{
+        cijena.textContent = `Cijena: ${Math.round(artiklZaView.Akcija*artiklZaView.Kolicina*100)/100} €`;
+        cijena.classList.add('akcija');
+    }
     sadrzaj.appendChild(cijena);
-
     const gumb = document.createElement('button');
     gumb.classList.add('removeBtn');
     gumb.textContent = 'Ukloni iz košarice';

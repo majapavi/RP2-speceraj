@@ -128,7 +128,6 @@ class SpecerajService
 
         if( $row = $st->fetch() ) {
             $proizvod = new Proizvod( $row['ID'], $row['Naziv'], $row['Opis'], $row['Link_na_sliku'], $row['Korak'] );
-
             return $proizvod;
         }
     }
@@ -188,9 +187,7 @@ class SpecerajService
         $proizvod = $this->getProizvodById( $ponuda->ID_Proizvod );
         $ducan = $this->getDucanById( $ponuda->ID_Ducan );
         //echo "ID ponude: $proizvod->ID, Količina: $kolicina, Naziv: $proizvod->Naziv" . "<br>";
-
-        $artikl = new Artikl( $proizvod->Link, $proizvod->Naziv, $ducan->Link, $kolicina, $ponuda->Cijena, $ponuda->Akcija, $id_ponuda);
-        //print_r($artikl); echo '<br>';
+        $artikl = new Artikl( $proizvod->Link, $proizvod->Naziv, $ducan->Link, $kolicina, $ponuda->Cijena, $ponuda->Akcija, $id_ponuda, $proizvod->Korak);        
 
         return $artikl;
     }
@@ -199,12 +196,10 @@ class SpecerajService
     {
         $artikli = [];
         foreach( $kosarica as $id_ponuda => $kolicina ) {
-            // print("$id_ponuda => $kolicina");
             $artikl = $this->getKosaricaArtiklInfo( $id_ponuda, $kolicina );
             $artikli[] = $artikl;
         }
 
-        //print_r($artikli); echo '<br>';
         return $artikli;
     }
 

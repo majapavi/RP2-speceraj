@@ -284,12 +284,37 @@ h3{
     width: 70px;
 }
 .kartica_artikla .akcija{
-    color: #2C3E50;
+    color: red;
     background-color: #8caccb;
     border-radius: 10px;
     border: 0px solid #2C3E50;
+    padding: 10px;
 }
 .kartica_artikla div{
     margin: auto;
 }
 /* -------------------------------------- */
+/* Gumbi u tabu moja košarica */
+#gumbi{
+    width: 1000px;
+    display: flex;
+    flex-direction: row;
+    border-radius: 15px;
+    margin-left: 30px;
+    padding: 20px;
+    width: 1000px;
+    height: 60px;
+    align-items: center;
+    justify-content: center;
+    background-color: #8caccb;
+    border: 3px solid #2C3E50;
+}
+#gumbi input[submit],
+#gumbi button{
+    background-color: #ECF0F1;
+    color: #2C3E50;
+    border-radius: 5px;
+    /* margin: auto; */
+    margin: 40px;
+    height: 40px;
+}

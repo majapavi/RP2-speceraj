@@ -2,9 +2,9 @@
 
 class Artikl
 {
-    public $ArtiklSlika, $ArtiklaNaziv, $DucanSlika, $Kolicina, $Cijena, $Akcija, $ponudaID;
+    public $ArtiklSlika, $ArtiklaNaziv, $DucanSlika, $Kolicina, $Cijena, $Akcija, $ponudaID, $Korak;
 
-    function __construct($ArtiklSlika, $ArtiklaNaziv, $DucanSlika, $Kolicina, $Cijena, $Akcija, $ponudaID)
+    function __construct($ArtiklSlika, $ArtiklaNaziv, $DucanSlika, $Kolicina, $Cijena, $Akcija, $ponudaID, $Korak)
     {
         $this->ArtiklSlika = $ArtiklSlika;
         $this->ArtiklaNaziv = $ArtiklaNaziv;
@@ -13,6 +13,7 @@ class Artikl
         $this->Cijena = $Cijena;
         $this->Akcija = $Akcija;
         $this->ponudaID = $ponudaID;
+        $this->Korak = $Korak;
     }
 
     function __get($property)

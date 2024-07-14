@@ -1,7 +1,7 @@
 <?php
 class Proizvod
 {
-    protected $ID, $Naziv, $Opis, $Link, $Korak;
+    public $ID, $Naziv, $Opis, $Link, $Korak;
 
     function __construct( $ID, $Naziv, $Opis, $Link, $Korak )
     {
