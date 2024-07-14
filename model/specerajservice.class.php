@@ -452,7 +452,6 @@ class SpecerajService
         else return ['Potrosnja' => -1, 'NovePonude' => []];
     }
 
-<<<<<<< HEAD
     function getStavka( $id_ponuda, $kolicina )
     {
         $ponuda = $this->getPonudaById( $id_ponuda );
@@ -474,8 +473,6 @@ class SpecerajService
         print_r($stavke); echo '<br>';
         return $stavke;
     }
-=======
->>>>>>> 874c4731e1d13745bcbeb5be88182c3c0e937a18
 
     //-------------------------------------------------------------------------------------------------------------------------
     // funkcije za Recenzije
