@@ -9,14 +9,14 @@
     </form>
 
     <form action="index.php?rt=kosarica/ustedaUJednomDucanu" method="post">
-        <button type="submit">Obavi kupnju u jednom dućanu</button>
+        <button type="submit">Kupnja u jednom dućanu</button>
     </form>
 
     <button id="isprazni">Isprazni košaricu</button>
 
     
     <form action="index.php?rt=kosarica/ispisiPopisZaKupnju" method="post">
-        <button type="submit">Ispiši popis za kupnju</button>
+        <button type="submit">Popis za kupnju</button>
     </form>
     
 </div>

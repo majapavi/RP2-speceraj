@@ -23,9 +23,52 @@ class KosaricaController
         require_once __DIR__ . '/../view/kosarica_index.php';
     }
 
-    function stvoriNovuKosaricu()
-    {
-        $_COOKIE['kosarica'][$_SESSION["ID"]] = array();
+    function sparajNaJednomArtiklu()
+   {
+        $ponudaId = $_POST['id_ponuda'];
+
+        $ss = new SpecerajService();
+        $proizvod_id = $ss->getPonudaById($ponudaId)->ID_Proizvod;
+        $najjeftinijaPonudaId = $ss->getNajjeftinijaPonudaProizvoda($proizvod_id)->ID;
+        //echo $ponudaId . " " . $najjeftinijaPonudaId;
+
+        if (isset($_COOKIE["kosarica" . $_SESSION["ID"]]) && $ponudaId!= $najjeftinijaPonudaId) {
+            $kosarica = json_decode($_COOKIE["kosarica" . $_SESSION["ID"]], true);
+            if( isset($kosarica[$ponudaId]) ){
+                if( isset($kosarica[$najjeftinijaPonudaId]) ){
+                    $kosarica[$najjeftinijaPonudaId] += $kosarica[$ponudaId];
+                }
+                else{
+                    $kosarica[$najjeftinijaPonudaId] = $kosarica[$ponudaId];
+                }
+                unset($kosarica[$ponudaId]);
+
+                $jsonValue = json_encode($kosarica);
+
+                // Construct the Set-Cookie header
+                $cookieName = 'kosarica' . $_SESSION['ID'];
+                $cookieValue = $jsonValue;
+                $cookieExpire = time() + (86400 * 7);  // Cookie lasts for 7 days
+                $cookiePath = '/';
+                $setCookieHeader = sprintf(
+                    'Set-Cookie: %s=%s; expires=%s; path=%s',
+                    $cookieName,
+                    $cookieValue,
+                    gmdate('D, d-M-Y H:i:s T', $cookieExpire),
+                    $cookiePath
+                );
+                header($setCookieHeader);
+                }
+
+        }
+        else{
+            $kosarica = [];
+        }
+
+        // Dohvaćanje artikala za prikaz
+        $kosaricaZaView = $ss->getAllArtikliInfo($kosarica);
+        $title = 'Moja košarica (nakon optimizacije 1)';
+        require_once __DIR__ . '/../view/kosarica_index.php';
     }
 
     function maxGlobalnaUsteda()
@@ -51,12 +94,6 @@ class KosaricaController
                         $kosarica[$najjeftinijaPonuda->ID] = $kolicina;
                     }
                 }
-                //
-                // // Pretvaranje košarice u JSON za pohranu u cookie
-                // $kosaricaJson = json_encode($kosarica);
-                //
-                // // Postavljanje cookiea s ažuriranom košaricom
-                // setcookie($poz, $kosaricaJson, time() + (86400 * 7), "/"); // Cookie traje 7 dana
 
                 $jsonValue = json_encode($kosarica);
 
