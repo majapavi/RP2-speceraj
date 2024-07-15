@@ -25,38 +25,34 @@ class KosaricaController
         $ss = new SpecerajService();
         $proizvod_id = $ss->getPonudaById($ponudaId)->ID_Proizvod;
         $najjeftinijaPonudaId = $ss->getNajjeftinijaPonudaProizvoda($proizvod_id)->ID;
-        //echo $ponudaId . " " . $najjeftinijaPonudaId;
 
-        if (isset($_COOKIE["kosarica" . $_SESSION["ID"]]) && $ponudaId!= $najjeftinijaPonudaId) {
-            $kosarica = json_decode($_COOKIE["kosarica" . $_SESSION["ID"]], true);
-            if( isset($kosarica[$ponudaId]) ){
-                if( isset($kosarica[$najjeftinijaPonudaId]) ){
-                    $kosarica[$najjeftinijaPonudaId] += $kosarica[$ponudaId];
-                }
-                else{
-                    $kosarica[$najjeftinijaPonudaId] = $kosarica[$ponudaId];
-                }
-                unset($kosarica[$ponudaId]);
-
-                $jsonValue = json_encode($kosarica);
-
-                // Construct the Set-Cookie header
-                $cookieName = 'kosarica' . $_SESSION['ID'];
-                $cookieValue = $jsonValue;
-                $cookieExpire = time() + (86400 * 7);  // Cookie lasts for 7 days
-                $cookiePath = '/';
-                $setCookieHeader = sprintf(
-                    'Set-Cookie: %s=%s; expires=%s; path=%s',
-                    $cookieName,
-                    $cookieValue,
-                    gmdate('D, d-M-Y H:i:s T', $cookieExpire),
-                    $cookiePath
-                );
-                header($setCookieHeader);
+        $kosarica = json_decode($_COOKIE["kosarica" . $_SESSION["ID"]], true);
+        if ($ponudaId!= $najjeftinijaPonudaId) {
+            if( isset($kosarica[$najjeftinijaPonudaId]) ){
+                $kosarica[$najjeftinijaPonudaId] += $kosarica[$ponudaId];
             }
+            else{
+                $kosarica[$najjeftinijaPonudaId] = $kosarica[$ponudaId];
+            }
+            unset($kosarica[$ponudaId]);
+
+            $jsonValue = json_encode($kosarica);
+
+            // Construct the Set-Cookie header
+            $cookieName = 'kosarica' . $_SESSION['ID'];
+            $cookieValue = $jsonValue;
+            $cookieExpire = time() + (86400 * 7);  // Cookie lasts for 7 days
+            $cookiePath = '/';
+            $setCookieHeader = sprintf(
+                'Set-Cookie: %s=%s; expires=%s; path=%s',
+                $cookieName,
+                $cookieValue,
+                gmdate('D, d-M-Y H:i:s T', $cookieExpire),
+                $cookiePath
+            );
+            header($setCookieHeader);
         }
 
-        // Dohvaćanje artikala za prikaz
         $kosaricaZaView = $ss->getAllArtikliInfo($kosarica);
         $title = 'Moja košarica (nakon optimizacije 1)';
         require_once __DIR__ . '/../view/kosarica_index.php';
@@ -64,7 +60,6 @@ class KosaricaController
 
     function maxGlobalnaUsteda()
     {
-        // zove getNajjeftinijaPonudaProizvoda iz specerajservice
         $ss = new SpecerajService();
         $poz = "kosarica" . $_SESSION["ID"];
 
@@ -101,8 +96,6 @@ class KosaricaController
                     gmdate('D, d-M-Y H:i:s T', $cookieExpire),
                     $cookiePath
                 );
-
-                // Send the header
                 header($setCookieHeader);
             }
         }
@@ -111,7 +104,6 @@ class KosaricaController
             $kosarica = [];
         }
 
-        // Dohvaćanje artikala za prikaz
         $kosaricaZaView = $ss->getAllArtikliInfo($kosarica);
         $title = 'Moja košarica';
         require_once __DIR__ . '/../view/kosarica_index.php';
@@ -121,7 +113,6 @@ class KosaricaController
     {
         $ss = new SpecerajService();
         $ducani_ids = $ss->getAllDucaniIds();
-        // $this->debug();
         $kosarica = NULL;
         if(isset($_COOKIE[ 'kosarica' . $_SESSION['ID'] ])) {
             $ponudeUKosarici = json_decode($_COOKIE[ 'kosarica' . $_SESSION['ID'] ]);
@@ -153,8 +144,6 @@ class KosaricaController
                     gmdate('D, d-M-Y H:i:s T', $cookieExpire),
                     $cookiePath
                 );
-
-                // Send the header
                 header($setCookieHeader);
             }
 
@@ -163,7 +152,7 @@ class KosaricaController
         else {
             $kosarica = [];
         }
-        // Dohvaćanje artikala za prikaz
+
         $kosaricaZaView = $ss->getAllArtikliInfo($kosarica);
         $title = 'Moja košarica';
         require_once __DIR__ . '/../view/kosarica_index.php';
