@@ -88,6 +88,19 @@
         }
     ?>
     
+    // Event listener koji osigurava da obavijesti nejdu u footer
+    document.addEventListener('scroll', function() {
+        const dodavanje = document.getElementById('dodavanje');
+        const footer = document.querySelector('footer');
+        const footerRect = footer.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+
+        if (footerRect.top > windowHeight) {
+            dodavanje.style.bottom = '10px';
+        } else {
+            dodavanje.style.bottom = `${windowHeight - footerRect.top + 10}px`;
+        }
+    });
 </script>
 
 <?php require_once __DIR__ . '/_footer.php'; ?>

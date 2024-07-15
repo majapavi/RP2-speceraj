@@ -21,11 +21,16 @@
 
 <div id="kosarica"></div>
 
+<div id="dodavanje"></div>
+
 <script>
     let kosaricaZaView = <?php echo json_encode($kosaricaZaView); ?>;
     let userID = <?php echo $_SESSION["ID"]; ?>;
     let ukupna_cijena = 0;
     let mijenjani = localStorage.getItem('index_mijenjanog');
+    let isti_broj = (localStorage.getItem('broj_kartica') == kosaricaZaView.length) ;
+
+    $('#dodavanje').css('bottom', '120px');
 
     if( kosaricaZaView.length == 0 ){
         $('#kosarica').append(`<p style="margin-left: 40px">Vaša košarica je prazna.</p>`);
@@ -35,7 +40,8 @@
         // Punimo kosaricu artiklima (u css-u im je height i opacity 0)
         kosaricaZaView.forEach( (artiklZaView, index) => {
             const nova = stvori_karticu_artikla(artiklZaView, userID, index);
-            if(mijenjani && index != mijenjani){
+            
+            if( mijenjani && (index != mijenjani || !isti_broj) ){
                 nova.addClass('fade-in');
             }
             $('#kosarica').append( nova );
@@ -47,7 +53,7 @@
                 ukupna_cijena += Math.round(artiklZaView.Akcija*artiklZaView.Kolicina*100)/100;
             }
         });
-        if(mijenjani && $('.kartica_artikla').eq(mijenjani).length ){
+        if(mijenjani && isti_broj ){
             setTimeout(() => {
                 $('.kartica_artikla').eq(mijenjani).addClass('fade-in');
             }, 100);
@@ -112,10 +118,19 @@
         }, ($('.kartica_artikla').length+2)*100);
     });
 
+    // Event listener koji osigurava da obavijesti nejdu u footer
+    document.addEventListener('scroll', function() {
+        const dodavanje = document.getElementById('dodavanje');
+        const footer = document.querySelector('footer');
+        const footerRect = footer.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
 
-
-
-
+        if (footerRect.top > windowHeight) {
+            dodavanje.style.bottom = '10px';
+        } else {
+            dodavanje.style.bottom = `${windowHeight - footerRect.top + 10}px`;
+        }
+    });
 
     // Pamćenje scroll pozicije
     //  --> Koristi se u slučaju individualne optimizacije artikla
@@ -123,8 +138,18 @@
     if (scrollPosition) {
         // AKo je postavljena pozicija scrolla, vratimo se gdi smo bili
         window.scrollTo(0, parseInt(scrollPosition, 10));
-        localStorage.removeItem('scrollPosition'); // Clean up
-        localStorage.removeItem('index_mijenjanog'); // Clean up
+        localStorage.removeItem('scrollPosition');
+        localStorage.removeItem('index_mijenjanog');
+        localStorage.removeItem('broj_kartica');
+
+        if(!isti_broj){
+            const obavijest = $('<div class="obavijest"></div');
+            obavijest.text(`Količina proizvoda pribrojena najjeftinijoj ponudi`);
+            $('#dodavanje').append(obavijest);
+            setTimeout(() => {
+                obavijest.addClass('pokazi');
+            }, 10);
+        }
     }
 </script>
 

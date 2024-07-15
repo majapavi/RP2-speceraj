@@ -197,7 +197,7 @@ function stvori_karticu_artikla(artiklZaView, userID, index) {
     if (artiklZaView.Korak == 0.1) {
         jedinica = "kg";
     }
-    const kolicina = $('<div>').text(`Količina: ${artiklZaView.Kolicina} ${jedinica}`);
+    const kolicina = $('<div>').text(`Količina: ${Math.round(artiklZaView.Kolicina * 100) / 100} ${jedinica}`);
     sadrzaj.append(kolicina);
 
     // Cijena
@@ -272,10 +272,13 @@ function stvori_karticu_artikla(artiklZaView, userID, index) {
     
     forma_za_gumb2.on('submit', function(event) {
         event.preventDefault();
+        localStorage.setItem('broj_kartica', $('.kartica_artikla.fade-in').length );
         sadrzaj.removeClass('fade-in');
         // Spremamo poziciju scrolla
         localStorage.setItem('index_mijenjanog', index);
         localStorage.setItem('scrollPosition', window.scrollY);
+        
+        $('.obavijest').removeClass('pokazi');
 
         setTimeout(() => {
             this.submit();
