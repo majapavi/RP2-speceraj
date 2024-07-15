@@ -180,62 +180,54 @@ function stvori_karticu_akcije( input, userID){
 
 
 // artikl = {ArtiklID, ArtiklSlika, ArtiklaNaziv, DucanSlika, Kolicina, Cijena, Akcija, Korak?}
-function stvori_karticu_artikla(artiklZaView, userID)
-{
-    const sadrzaj = document.createElement('div');
-    sadrzaj.classList.add('kartica_artikla');
+function stvori_karticu_artikla(artiklZaView, userID) {
+    const sadrzaj = $('<div>', { class: 'kartica_artikla' });
 
-    const slika_proizvoda = document.createElement('img');
-    slika_proizvoda.src = artiklZaView.ArtiklSlika;
-    sadrzaj.appendChild(slika_proizvoda);
+    const slika_proizvoda = $('<img>', { src: artiklZaView.ArtiklSlika });
+    sadrzaj.append(slika_proizvoda);
 
-    const ime_proizvoda = document.createElement('h4');
-    ime_proizvoda.textContent = artiklZaView.ArtiklaNaziv;
-    sadrzaj.appendChild(ime_proizvoda);
+    const ime_proizvoda = $('<h4>').text(artiklZaView.ArtiklaNaziv);
+    sadrzaj.append(ime_proizvoda);
 
-    const slika_ducana = document.createElement('img');
-    slika_ducana.src = artiklZaView.DucanSlika;
-    sadrzaj.appendChild(slika_ducana);
+    const slika_ducana = $('<img>', { src: artiklZaView.DucanSlika });
+    sadrzaj.append(slika_ducana);
 
     // Količina
-    const kolicina = document.createElement('div');
     let jedinica = "kom";
-    if(artiklZaView.Korak == 0.1){
+    if (artiklZaView.Korak == 0.1) {
         jedinica = "kg";
     }
-    kolicina.textContent = `Količina: ${artiklZaView.Kolicina} ${jedinica}`;
-    sadrzaj.appendChild(kolicina);
+    const kolicina = $('<div>').text(`Količina: ${artiklZaView.Kolicina} ${jedinica}`);
+    sadrzaj.append(kolicina);
 
     // Cijena
-    const cijena = document.createElement('div');
-    if(artiklZaView.Akcija == null){
-        cijena.textContent = `Cijena: ${Math.round(artiklZaView.Cijena*artiklZaView.Kolicina*100)/100} €`;
+    const cijena = $('<div>');
+    if (artiklZaView.Akcija == null) {
+        cijena.text(`Cijena: ${Math.round(artiklZaView.Cijena * artiklZaView.Kolicina * 100) / 100} €`);
+    } else {
+        cijena.text(`Cijena: ${Math.round(artiklZaView.Akcija * artiklZaView.Kolicina * 100) / 100} €`);
+        cijena.addClass('akcija');
     }
-    else{
-        cijena.textContent = `Cijena: ${Math.round(artiklZaView.Akcija*artiklZaView.Kolicina*100)/100} €`;
-        cijena.classList.add('akcija');
-    }
-    sadrzaj.appendChild(cijena);
-    const gumb = document.createElement('button');
-    gumb.classList.add('removeBtn');
-    gumb.textContent = 'Ukloni iz košarice';
-    gumb.style.marginLeft = 'auto';
-    // sadrzaj.appendChild(gumb);
+    sadrzaj.append(cijena);
 
-    gumb.addEventListener('click', function() {
+    const gumb = $('<button>', {
+        class: 'removeBtn',
+        text: 'Ukloni iz košarice',
+        css: { marginLeft: 'auto' }
+    });
+
+    gumb.on('click', function () {
         let ponuda = artiklZaView.ponudaID;
         makni_artikl_iz_kosarice(userID, ponuda);
 
         const broj_label = $('#broj');
         let broj = parseFloat(broj_label.text());
-        if(artiklZaView.Akcija == null){
-            broj-= artiklZaView.Cijena*artiklZaView.Kolicina;
+        if (artiklZaView.Akcija == null) {
+            broj -= artiklZaView.Cijena * artiklZaView.Kolicina;
+        } else {
+            broj -= artiklZaView.Akcija * artiklZaView.Kolicina;
         }
-        else{
-            broj-= artiklZaView.Akcija*artiklZaView.Kolicina;
-        }
-        broj = Math.round(broj*100)/100;
-        broj_label.empty();
+        broj = Math.round(broj * 100) / 100;
         broj_label.text(broj.toFixed(2));
 
         // fade
@@ -257,25 +249,36 @@ function stvori_karticu_artikla(artiklZaView, userID)
     });
 
     // TEST gumb za formu "pronađi jeftiniji dućan"
-    
-    const gumbici = document.createElement('div');
-    gumbici.classList.add('gumbici');
-    gumbici.appendChild(gumb);
+    const gumbici = $('<div>', { class: 'gumbici' });
+    gumbici.append(gumb);
 
-    const forma_za_gumb2 = document.createElement('form');
-    forma_za_gumb2.setAttribute('action', 'index.php?rt=kosarica/index');
-    forma_za_gumb2.setAttribute('method', 'post');
+    const forma_za_gumb2 = $('<form>', {
+        action: `index.php?rt=kosarica/sparajNaJednomArtiklu`,
+        method: 'post'
+    });
+
+    const idPonudaInput = $('<input>', {
+        type: 'hidden',
+        name: 'id_ponuda',
+        value: artiklZaView.ponudaID // Assuming ponudaID is the parameter you want to send
+    });
+
+    forma_za_gumb2.append(idPonudaInput);
+
+    const gumb2 = $('<button>', {
+        type: 'submit',
+        text: 'Nađi jeftinije'
+    });
+    
     forma_za_gumb2.onsubmit = function() {
         // Spremamo poziciju scrolla
         localStorage.setItem('scrollPosition', window.scrollY);
     };
-    const gumb2 = document.createElement('button');
-    gumb2.setAttribute('type', 'submit');
-    gumb2.textContent = "Nađi jeftinije";
-    forma_za_gumb2.appendChild(gumb2);
-    gumbici.appendChild(forma_za_gumb2);
-    
-    sadrzaj.appendChild(gumbici);
+
+    forma_za_gumb2.append(gumb2);
+    gumbici.append(forma_za_gumb2);
+
+    sadrzaj.append(gumbici);
 
     return sadrzaj;
 }

@@ -14,7 +14,7 @@
 
     
     <form action="index.php?rt=kosarica/ispisiPopisZaKupnju" method="post">
-        <button type="submit">Ispiši popis za kupnju</button>
+        <button type="submit">Popis za kupnju</button>
     </form>
     
 </div>
