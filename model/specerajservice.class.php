@@ -474,6 +474,24 @@ class SpecerajService
         else return ['Potrosnja' => -1, 'NovePonude' => []];  // nema svih proizvoda u ducanu
     }
 
+    function replaceCroatianChars($string)
+    {
+        $replacePairs = array(
+            'š' => 's',
+            'đ' => 'd',
+            'č' => 'c',
+            'ć' => 'c',
+            'ž' => 'z',
+            'Š' => 'S',
+            'Đ' => 'D',
+            'Č' => 'C',
+            'Ć' => 'C',
+            'Ž' => 'Z'
+        );
+
+        return strtr($string, $replacePairs);
+    }
+
     function getStavka($id_ponuda, $kolicina)
     {
         $ponuda = $this->getPonudaById($id_ponuda);
@@ -488,9 +506,9 @@ class SpecerajService
         $zaPlatiti = round($price * $kolicina, 2);
     
         if ($proizvod->Korak == 0.1) {
-            $stavkaString = sprintf("%-26s %-15s %-15s %-10s", $proizvod->Naziv, $ducan->Naziv, $kolicina . " kg", $zaPlatiti . " €");
+            $stavkaString = sprintf("%-25s %-15s %-15s %-10s", $this->replaceCroatianChars($proizvod->Naziv), $ducan->Naziv, $kolicina . " kg", $zaPlatiti . " €");
         } else {
-            $stavkaString = sprintf("%-25s %-15s %-15s %-10s", $proizvod->Naziv, $ducan->Naziv, $kolicina . " kom", $zaPlatiti . " €");
+            $stavkaString = sprintf("%-25s %-15s %-15s %-10s", $this->replaceCroatianChars($proizvod->Naziv), $ducan->Naziv, $kolicina . " kom", $zaPlatiti . " €");
         }
     
     
