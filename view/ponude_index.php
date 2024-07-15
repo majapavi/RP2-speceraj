@@ -22,6 +22,8 @@
 
 <div id="sve_ponude"></div>
 
+<div id="dodavanje"></div>
+
 <script>
 
     let kartica;

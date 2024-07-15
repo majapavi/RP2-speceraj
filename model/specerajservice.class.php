@@ -481,10 +481,10 @@ class SpecerajService
         $ducan = $this->getDucanById( $ponuda->ID_Ducan );
 
         if( $ponuda->Akcija === NULL ) {
-            $stavkaString = sprintf("%-25s %-15s %-15s %-15s", $proizvod->Naziv, $ducan->Naziv, $kolicina, $ponuda->Cijena*$kolicina);
+            $stavkaString = sprintf("%-25s %-15s %-15s %-15s €", $proizvod->Naziv, $ducan->Naziv, $kolicina, round($ponuda->Cijena*$kolicina, 2));
         }
         else {
-            $stavkaString = sprintf("%-25s %-15s %-15s %-15s", $proizvod->Naziv, $ducan->Naziv, $kolicina, $ponuda->Akcija*$kolicina);
+            $stavkaString = sprintf("%-25s %-15s %-15s %-15s €", $proizvod->Naziv, $ducan->Naziv, $kolicina, round($ponuda->Akcija*$kolicina, 2));
         }
         print_r($stavkaString); echo '<br>';
         return $stavkaString;

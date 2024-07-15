@@ -41,9 +41,9 @@ function stvori_karticu_proizvoda( input, userID ){
         const ovaj_ducan = $('<div></div>').addClass('jedan_ducan');
 
         const logo = $('<img>').attr('src', info.Logo);
-        let dodatno = 'kg';
-        if( input.Proizvod_Korak == 1 ){
-            dodatno = "kom";
+        let dodatno = 'kom';
+        if( input.Proizvod_Korak == 0.1 ){
+            dodatno = "kg";
         }
         const cijena = $('<p></p>').html(`<strong>${info.Naziv}</strong><br>${info.Cijena} €/${dodatno}<br>`);
         if(info.Akcija == "DA"){
@@ -59,6 +59,25 @@ function stvori_karticu_proizvoda( input, userID ){
         gumb.on('click', function() {
             let ponuda = info.ID_Ponuda;
             spremi_artikl_u_kosaricu(userID, ponuda, unos.val());
+
+            // Ispis potvrde
+            const dodavanje = $('#dodavanje');
+            const obavijest = $('<div class="obavijest"></div');
+            obavijest.text(`Dodan proizvod ${input.Proizvod_Naziv} u košaricu\n(${unos.val()} ${dodatno}, ${info.Naziv})`);
+            dodavanje.append(obavijest);
+
+            setTimeout(() => {
+                obavijest.addClass('pokazi');
+            }, 10);
+
+            setTimeout(() => {
+                obavijest.removeClass('pokazi');
+            
+                setTimeout(() => {
+                    obavijest.remove();
+                }, 500);
+            }, 4000);
+
         });
 
         ovaj_ducan.append(logo).append(cijena).append(gumb);
@@ -116,7 +135,9 @@ function stvori_karticu_akcije( input, userID){
     akcija.css('margin', 'auto').css('padding','5px');
     akcija.addClass('akcija')
     akcija.append(input.Akcija);
+    let dodatno = "kom";
     if(input.Korak == 0.1){
+        dodatno = "kg";
         akcija.append("€ / kg");
         cijena.append("€ / kg");
     }
@@ -131,6 +152,25 @@ function stvori_karticu_akcije( input, userID){
     gumb.on('click', function() {
         let ponuda = input.ID;
         spremi_artikl_u_kosaricu(userID, ponuda, unos.val());
+        
+            // Ispis potvrde
+            const dodavanje = $('#dodavanje');
+            const obavijest = $('<div class="obavijest"></div');
+            obavijest.text(`Dodan proizvod ${input.Naziv} u košaricu\n(${unos.val()} ${dodatno}, ${input.Ducan})`);
+            dodavanje.append(obavijest);
+
+            setTimeout(() => {
+                obavijest.addClass('pokazi');
+            }, 10);
+
+            setTimeout(() => {
+                obavijest.removeClass('pokazi');
+            
+                setTimeout(() => {
+                    obavijest.remove();
+                }, 500);
+            }, 4000);
+
     });
     
     objekt.append(gumb);
@@ -199,10 +239,20 @@ function stvori_karticu_artikla(artiklZaView, userID)
         broj_label.text(broj.toFixed(2));
 
         // fade
-        sadrzaj.classList.add('fade-out');
+        sadrzaj.classList.remove('fade-in');
         // brisanje
         sadrzaj.addEventListener('transitionend', function() {
-            sadrzaj.style.display = 'none';
+            // sadrzaj.style.display = 'none';
+
+            // Provjera ima li jos vidljivih elemenata
+            if($('.kartica_artikla').filter('.fade-in').length  == 0){
+                $('#gumbi').addClass('fade-out');
+                const poruka = $(`<p style="margin-left:20px">Vaša košarica je prazna.</p>`);
+                poruka.hide();
+                $('#kosarica').append(poruka);
+                poruka.fadeIn(500);
+            }
+
         }, { once: true });
     });
 
@@ -215,6 +265,10 @@ function stvori_karticu_artikla(artiklZaView, userID)
     const forma_za_gumb2 = document.createElement('form');
     forma_za_gumb2.setAttribute('action', 'index.php?rt=kosarica/index');
     forma_za_gumb2.setAttribute('method', 'post');
+    forma_za_gumb2.onsubmit = function() {
+        // Spremamo poziciju scrolla
+        localStorage.setItem('scrollPosition', window.scrollY);
+    };
     const gumb2 = document.createElement('button');
     gumb2.setAttribute('type', 'submit');
     gumb2.textContent = "Nađi jeftinije";

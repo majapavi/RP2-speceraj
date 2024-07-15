@@ -35,6 +35,8 @@
 
 <div id="sve_akcije"></div>
 
+<div id="dodavanje"></div>
+
 <script>
     let akcija;
     let userID = <?php echo $_SESSION["ID"]; ?>;
