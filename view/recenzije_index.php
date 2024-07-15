@@ -2,10 +2,10 @@
 
 <div class="container">
     <div class="left-box">
-        <p><?php echo $msg; ?></p>
+        <p class="review-message"><?php echo $msg; ?></p>
 
         <form id="reviewForm" method="post" action="index.php?rt=recenzije/posalji">
-            <label for="store">Odaberi dućan:</label>
+            <label for="store">Odaberite dućan:</label>
             <select id="store" name="store" required>
                 <?php
                     foreach( $ducani as $ducan ) {
@@ -18,7 +18,7 @@
             <br><br>
 
             <label for="review">Recenzija:</label><br>
-            <textarea class="review" name="review" required></textarea>
+            <textarea class="review" name="review" maxlength="300" required></textarea>
             <br>
 
             <div class="rating-container">

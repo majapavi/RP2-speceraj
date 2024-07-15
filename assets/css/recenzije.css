@@ -13,7 +13,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
-    height: 60vh; /* Ovdje možete prilagoditi visinu containera po potrebi */
+    height: 60vh; /* vh = viewport height */
 }
 .left-box {
     background-color: #95A5A6;
@@ -26,17 +26,20 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     overflow: hidden;
+}
+.review-message {
+    margin-left: 5%;
+    display: block;
 }
 .left-box label[for="review"], .left-box label[for="store"] {
     margin-left: 5%;
 }
 .review {
     width: 90%;
-    height: 20vh;
+    height: 15vh;
     resize: none;
-    margin-top: 10px;
     margin-left: auto;
     margin-right: auto;
     border-radius: 15px;
@@ -71,7 +74,8 @@ textarea:focus {
 .submit-container {
     display: flex;
     justify-content: center;
-    margin-top: auto;
+    margin-bottom: auto;
+    /* margin-top: auto; */
 }
 .submit-container button {
     padding: 10px 20px;
