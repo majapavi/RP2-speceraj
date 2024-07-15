@@ -58,11 +58,7 @@ class KosaricaController
                     $cookiePath
                 );
                 header($setCookieHeader);
-                }
-
-        }
-        else{
-            $kosarica = [];
+            }
         }
 
         // Dohvaćanje artikala za prikaz
