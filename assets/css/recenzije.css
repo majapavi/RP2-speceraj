@@ -29,14 +29,21 @@
     justify-content: space-between;
     overflow: hidden;
 }
+.left-box label[for="review"], .left-box label[for="store"] {
+    margin-left: 5%;
+}
 .review {
     width: 90%;
     height: 20vh;
     resize: none;
     margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
     border-radius: 15px;
     border: 2px solid #2C3E50;
     background-color: #ECF0F1;
+    padding: 1em;
+    display: block;
 }
 textarea:focus {
     box-shadow: none;
