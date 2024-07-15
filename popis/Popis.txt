@@ -1,5 +1,8 @@
 Naziv proizvoda           Ducan           Kolicina        Za platiti     
 ---------------------------------------------------------------------------
-Mlijeko                   Konzum          3               1.08           
-Kiselo vrhnje             Konzum          1               0.69           
-Maslac                    Konzum          1               2.43           
+Mlijeko                   Spar            1 kom           1.07 €  
+Kiselo vrhnje             Lidl            1 kom           0.61 €  
+Kukuruzne pahuljice       Bio&Bio         1 kom           2.23 €  
+Pileća prsa               Robin           0.2 kg          0.84 €  
+---------------------------------------------------------------------------
+Ukupno za platiti: 4.75 €

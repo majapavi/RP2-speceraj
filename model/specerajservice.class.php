@@ -474,34 +474,49 @@ class SpecerajService
         else return ['Potrosnja' => -1, 'NovePonude' => []];  // nema svih proizvoda u ducanu
     }
 
-    function getStavka( $id_ponuda, $kolicina )
+    function getStavka($id_ponuda, $kolicina)
     {
-        $ponuda = $this->getPonudaById( $id_ponuda );
-        $proizvod = $this->getProizvodById( $ponuda->ID_Proizvod );
-        $ducan = $this->getDucanById( $ponuda->ID_Ducan );
-
-        if( $ponuda->Akcija === NULL ) {
-            $stavkaString = sprintf("%-25s %-15s %-15s %-15s €", $proizvod->Naziv, $ducan->Naziv, $kolicina, round($ponuda->Cijena*$kolicina, 2));
+        $ponuda = $this->getPonudaById($id_ponuda);
+        $proizvod = $this->getProizvodById($ponuda->ID_Proizvod);
+        $ducan = $this->getDucanById($ponuda->ID_Ducan);
+    
+        if ($ponuda->Akcija === NULL) {
+            $price = $ponuda->Cijena;
+        } else {
+            $price = $ponuda->Akcija;
         }
-        else {
-            $stavkaString = sprintf("%-25s %-15s %-15s %-15s €", $proizvod->Naziv, $ducan->Naziv, $kolicina, round($ponuda->Akcija*$kolicina, 2));
+        $zaPlatiti = round($price * $kolicina, 2);
+    
+        if ($proizvod->Korak == 0.1) {
+            $stavkaString = sprintf("%-26s %-15s %-15s %-10s", $proizvod->Naziv, $ducan->Naziv, $kolicina . " kg", $zaPlatiti . " €");
+        } else {
+            $stavkaString = sprintf("%-25s %-15s %-15s %-10s", $proizvod->Naziv, $ducan->Naziv, $kolicina . " kom", $zaPlatiti . " €");
         }
-        print_r($stavkaString); echo '<br>';
-        return $stavkaString;
+    
+    
+        return [
+            'stavka' => $stavkaString,
+            'cijena_stavke' => round($price * $kolicina, 2)
+        ];
     }
-
-    function getAllStavke( $kosarica )
+    
+    function getAllStavke($kosarica)
     {
-        $stavke = sprintf("%-25s %-15s %-15s %-15s\n---------------------------------------------------------------------------\n", "Naziv proizvoda", "Ducan", "Kolicina", "Za platiti");
-        foreach( $kosarica as $id_ponuda => $kolicina ) {
-            $stavkaString = $this->getStavka( $id_ponuda, $kolicina );
-            $stavke .= $stavkaString . "\n";
+        $popis = sprintf("%-25s %-15s %-15s %-15s\n---------------------------------------------------------------------------\n", "Naziv proizvoda", "Ducan", "Kolicina", "Za platiti");
+        $totalSum = 0;
+    
+        foreach ($kosarica as $id_ponuda => $kolicina) {
+            $stavkaData = $this->getStavka($id_ponuda, $kolicina);
+            $popis .= $stavkaData['stavka'] . "\n";
+            $totalSum += $stavkaData['cijena_stavke'];
         }
-
-        print_r($stavke); echo '<br>';
-        return $stavke;
+        $popis .= "---------------------------------------------------------------------------\n" . 
+                    "Ukupno za platiti: " . $totalSum . " €\n";
+    
+        print_r($popis); echo '<br>';
+        return $popis;
     }
-
+    
     //-------------------------------------------------------------------------------------------------------------------------
     // funkcije za Recenzije
     //-------------------------------------------------------------------------------------------------------------------------
