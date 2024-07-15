@@ -25,15 +25,20 @@
     let kosaricaZaView = <?php echo json_encode($kosaricaZaView); ?>;
     let userID = <?php echo $_SESSION["ID"]; ?>;
     let ukupna_cijena = 0;
+    let mijenjani = localStorage.getItem('index_mijenjanog');
 
     if( kosaricaZaView.length == 0 ){
-        $('#kosarica').append(`<p style="margin-left:20px">Vaša košarica je prazna.</p>`);
+        $('#kosarica').append(`<p style="margin-left: 40px">Vaša košarica je prazna.</p>`);
         $('#gumbi').hide();
     }
     else{
         // Punimo kosaricu artiklima (u css-u im je height i opacity 0)
-        kosaricaZaView.forEach( artiklZaView => {
-            $('#kosarica').append( stvori_karticu_artikla(artiklZaView, userID) );
+        kosaricaZaView.forEach( (artiklZaView, index) => {
+            const nova = stvori_karticu_artikla(artiklZaView, userID, index);
+            if(mijenjani && index != mijenjani){
+                nova.addClass('fade-in');
+            }
+            $('#kosarica').append( nova );
             // Paralelno racunamo cijenu
             if(artiklZaView.Akcija == null){
                 ukupna_cijena += Math.round(artiklZaView.Cijena*artiklZaView.Kolicina*100)/100;
@@ -42,13 +47,19 @@
                 ukupna_cijena += Math.round(artiklZaView.Akcija*artiklZaView.Kolicina*100)/100;
             }
         });
-
-        // Kartice se polako pojavljuju jedna po jedna
-        $('.kartica_artikla').each(function(index){
+        if(mijenjani && $('.kartica_artikla').eq(mijenjani).length ){
             setTimeout(() => {
-                $(this).addClass('fade-in');
-            }, 100*(index+1));
-        });
+                $('.kartica_artikla').eq(mijenjani).addClass('fade-in');
+            }, 100);
+        }
+        else{
+            // Kartice se polako pojavljuju jedna po jedna
+            $('.kartica_artikla').each(function(index){
+                setTimeout(() => {
+                    $(this).addClass('fade-in');
+                }, 100*(index+1));
+            });
+        }
     }
     // Zapisujemo cijenu
     $('#ukupna_cijena').html(`Ukupna cijena: `).append(`<label id="broj">${Math.round(ukupna_cijena*100)/100}</label> €`);
@@ -56,17 +67,14 @@
     // Praznjenje kosarice
     $('#isprazni').on('click', function() {
         // Kartice polako nestaju
-        var sve_kartice = $('.kartica_artikla');
-        for (var i = sve_kartice.length - 1; i >= 0; i--) {
-            (function(index) {
-                setTimeout(function() {
-                    $(sve_kartice[index]).removeClass('fade-in');
-                }, (sve_kartice.length - 1 - index) * 100);
-            })(i);
-        }
+        $('.kartica_artikla').each(function(index){
+            setTimeout(() => {
+                $(this).removeClass('fade-in');
+            }, 100*(index+1));
+        });
         // Micemo gumbe
         $('#gumbi').addClass('fade-out');
-        const poruka = $(`<p style="margin-left:20px">Vaša košarica je prazna.</p>`);
+        const poruka = $(`<p style="margin-left: 40px">Vaša košarica je prazna.</p>`);
         poruka.hide();
         $('#kosarica').append(poruka);
         poruka.fadeIn(500);
@@ -78,37 +86,32 @@
     $('#max_usteda').on('submit', function(event){
         event.preventDefault();
         // Kartice polako nestaju
-        var sve_kartice = $('.kartica_artikla');
-        for (var i = sve_kartice.length - 1; i >= 0; i--) {
-            (function(index) {
-                setTimeout(function() {
-                    $(sve_kartice[index]).removeClass('fade-in');
-                }, (sve_kartice.length - 1 - index) * 100);
-            })(i);
-        }
+        $('.kartica_artikla').each(function(index){
+            setTimeout(() => {
+                $(this).removeClass('fade-in');
+            }, 100*(index+1));
+        });
 
         setTimeout(() => {
             this.submit();
-        }, (sve_kartice.length+2)*100);
+        }, ($('.kartica_artikla').length+2)*100);
     });
 
-    // Gumb max usteda:
+    // Gumb jedan ducan:
     $('#jeftini_ducan').on('submit', function(event){
         event.preventDefault();
         // Kartice polako nestaju
-        var sve_kartice = $('.kartica_artikla');
-        for (var i = sve_kartice.length - 1; i >= 0; i--) {
-            (function(index) {
-                setTimeout(function() {
-                    $(sve_kartice[index]).removeClass('fade-in');
-                }, (sve_kartice.length - 1 - index) * 100);
-            })(i);
-        }
+        $('.kartica_artikla').each(function(index){
+            setTimeout(() => {
+                $(this).removeClass('fade-in');
+            }, 100*(index+1));
+        });
 
         setTimeout(() => {
             this.submit();
-        }, (sve_kartice.length+2)*100);
+        }, ($('.kartica_artikla').length+2)*100);
     });
+
 
 
 
@@ -121,6 +124,7 @@
         // AKo je postavljena pozicija scrolla, vratimo se gdi smo bili
         window.scrollTo(0, parseInt(scrollPosition, 10));
         localStorage.removeItem('scrollPosition'); // Clean up
+        localStorage.removeItem('index_mijenjanog'); // Clean up
     }
 </script>
 

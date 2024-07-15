@@ -36,6 +36,7 @@ class KosaricaController
             }
             unset($kosarica[$ponudaId]);
 
+            ksort($kosarica);
             $jsonValue = json_encode($kosarica);
 
             // Construct the Set-Cookie header
@@ -54,7 +55,7 @@ class KosaricaController
         }
 
         $kosaricaZaView = $ss->getAllArtikliInfo($kosarica);
-        $title = 'Moja košarica (nakon optimizacije 1)';
+        $title = 'Moja košarica';
         require_once __DIR__ . '/../view/kosarica_index.php';
     }
 

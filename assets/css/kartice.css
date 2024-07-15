@@ -3,6 +3,10 @@
 /* CSS file s definiranim izgledom kartica:
     -   search i sort bar
     -   kartica_proizvoda
+    -   kartica_akcija
+    -   kartica_artikla (košarica)  -   ukljucujuci animacije nastajanja i nestajanja
+    -   pop-up za stavljanje artikla u košaricu
+    -   traku s gumbima na tabu 'Moja košarica'
 
 /* općenito na karticama */
 #sve_ponude, #sve_akcije, #kosarica{
@@ -306,7 +310,7 @@ h3{
 /* -------------------------------------- */
 /* Gumbi u tabu moja košarica */
 #gumbi{
-    width: 1000px;
+    width: 1005px;
     display: flex;
     flex-direction: row;
     border-radius: 15px;
@@ -320,6 +324,8 @@ h3{
     transition: height 0.5s ease, padding 0.5s ease, opacity 0.5s ease;
     opacity: 1;
     overflow: hidden;
+    position: sticky;
+    top: 5px;
 }
 #gumbi.fade-out {
     opacity: 0;

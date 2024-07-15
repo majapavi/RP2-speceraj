@@ -180,7 +180,7 @@ function stvori_karticu_akcije( input, userID){
 
 
 // artikl = {ArtiklID, ArtiklSlika, ArtiklaNaziv, DucanSlika, Kolicina, Cijena, Akcija, Korak?}
-function stvori_karticu_artikla(artiklZaView, userID) {
+function stvori_karticu_artikla(artiklZaView, userID, index) {
     const sadrzaj = $('<div>', { class: 'kartica_artikla' });
 
     const slika_proizvoda = $('<img>', { src: artiklZaView.ArtiklSlika });
@@ -231,21 +231,21 @@ function stvori_karticu_artikla(artiklZaView, userID) {
         broj_label.text(broj.toFixed(2));
 
         // fade
-        sadrzaj.classList.remove('fade-in');
+        sadrzaj.removeClass('fade-in');
         // brisanje
-        sadrzaj.addEventListener('transitionend', function() {
-            // sadrzaj.style.display = 'none';
-
+        sadrzaj.on('transitionend', function handler(event) {
+            // Unbind the event
+            sadrzaj.off('transitionend', handler);
+            
             // Provjera ima li jos vidljivih elemenata
-            if($('.kartica_artikla').filter('.fade-in').length  == 0){
+            if ($('.kartica_artikla').filter('.fade-in').length == 0) {
                 $('#gumbi').addClass('fade-out');
-                const poruka = $(`<p style="margin-left:20px">Vaša košarica je prazna.</p>`);
+                const poruka = $('<p style="margin-left: 40px">Vaša košarica je prazna.</p>');
                 poruka.hide();
                 $('#kosarica').append(poruka);
                 poruka.fadeIn(500);
             }
-
-        }, { once: true });
+        });
     });
 
     // TEST gumb za formu "pronađi jeftiniji dućan"
@@ -270,10 +270,17 @@ function stvori_karticu_artikla(artiklZaView, userID) {
         text: 'Nađi jeftinije'
     });
     
-    forma_za_gumb2.onsubmit = function() {
+    forma_za_gumb2.on('submit', function(event) {
+        event.preventDefault();
+        sadrzaj.removeClass('fade-in');
         // Spremamo poziciju scrolla
+        localStorage.setItem('index_mijenjanog', index);
         localStorage.setItem('scrollPosition', window.scrollY);
-    };
+
+        setTimeout(() => {
+            this.submit();
+        }, 400);
+    });
 
     forma_za_gumb2.append(gumb2);
     gumbici.append(forma_za_gumb2);
